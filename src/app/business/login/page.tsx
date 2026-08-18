@@ -1,11 +1,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { brand } from "@/lib/brand";
-import { getBusinessLoginEmail, isBusinessLoggedIn } from "@/lib/business-auth";
+import {
+  getBusinessLoginEmail,
+  isBusinessLoggedIn,
+  isDevelopmentBusinessAuthFallbackEnabled,
+} from "@/lib/business-auth";
 
 type BusinessLoginPageProps = {
   searchParams: Promise<{
     error?: string;
+    setup?: string;
   }>;
 };
 
@@ -16,7 +21,8 @@ export default async function BusinessLoginPage({
     redirect("/business/users");
   }
 
-  const { error } = await searchParams;
+  const { error, setup } = await searchParams;
+  const showsDevelopmentHint = isDevelopmentBusinessAuthFallbackEnabled();
 
   return (
     <main className="min-h-screen bg-[#f4f6fa] text-slate-800">
@@ -56,6 +62,12 @@ export default async function BusinessLoginPage({
             </div>
           ) : null}
 
+          {setup ? (
+            <div className="mt-5 rounded-md bg-amber-50 px-4 py-3 text-sm font-bold leading-6 text-amber-700">
+              業者ログインが未設定です。Supabaseのpartnersテーブルに業者を登録するか、開発用の業者ログイン環境変数を設定してください。
+            </div>
+          ) : null}
+
           <form action="/api/business/login" method="post" className="mt-6">
             <label className="block">
               <span className="text-sm font-black text-slate-600">
@@ -64,7 +76,9 @@ export default async function BusinessLoginPage({
               <input
                 type="email"
                 name="email"
-                defaultValue={getBusinessLoginEmail()}
+                defaultValue={
+                  showsDevelopmentHint ? getBusinessLoginEmail() : undefined
+                }
                 required
                 className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
               />
@@ -77,7 +91,9 @@ export default async function BusinessLoginPage({
               <input
                 type="password"
                 name="password"
-                placeholder="password123"
+                placeholder={
+                  showsDevelopmentHint ? "password123" : "パスワードを入力"
+                }
                 required
                 className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
               />
@@ -88,14 +104,16 @@ export default async function BusinessLoginPage({
             </button>
           </form>
 
-          <div className="mt-6 rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-500">
-            <p className="font-black text-slate-600">開発用ログイン情報</p>
-            <p>メール: {getBusinessLoginEmail()}</p>
-            <p>パスワード: password123</p>
-            <p className="mt-2">
-              管理者画面で追加した業者は、そのメールアドレスと設定したパスワードでログインできます。
-            </p>
-          </div>
+          {showsDevelopmentHint ? (
+            <div className="mt-6 rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-500">
+              <p className="font-black text-slate-600">開発用ログイン情報</p>
+              <p>メール: {getBusinessLoginEmail()}</p>
+              <p>パスワード: password123</p>
+              <p className="mt-2">
+                管理者画面で追加した業者は、そのメールアドレスと設定したパスワードでログインできます。
+              </p>
+            </div>
+          ) : null}
         </section>
       </div>
     </main>

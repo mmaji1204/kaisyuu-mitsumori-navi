@@ -29,6 +29,19 @@ ADMIN_SESSION_TOKEN
 ADMIN_NOTIFY_EMAIL
 ```
 
+最低限、公開直後に必要なのは以下です。
+
+```text
+NEXT_PUBLIC_SUPABASE_URL
+SUPABASE_SERVICE_ROLE_KEY
+ADMIN_LOGIN_EMAIL
+ADMIN_LOGIN_PASSWORD
+ADMIN_SESSION_TOKEN
+```
+
+`ADMIN_LOGIN_PASSWORD` と `ADMIN_SESSION_TOKEN` は推測されにくい長い文字列にしてください。
+未設定のままだと、本番の管理者ログインは無効になります。
+
 必要になったら追加するもの:
 
 ```text

@@ -40,6 +40,14 @@ ADMIN_SESSION_TOKEN
 ADMIN_NOTIFY_EMAIL
 ```
 
+本番では `ADMIN_LOGIN_EMAIL` / `ADMIN_LOGIN_PASSWORD` /
+`ADMIN_SESSION_TOKEN` が未設定の場合、管理者ログインは無効になります。
+開発中だけ `admin@example.com` / `admin123` のデモログインが表示されます。
+
+業者ログインは Supabase の `partners` テーブルに登録した業者アカウントを使います。
+Supabase 未接続のローカル開発時だけ `partner@example.com` / `password123` の
+デモログインが使えます。
+
 本番公開前に必ず変更するもの:
 
 ```text

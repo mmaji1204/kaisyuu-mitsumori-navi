@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getAdminLoginEmail, isAdminLoggedIn } from "@/lib/admin-auth";
+import {
+  getAdminLoginEmail,
+  isAdminAuthConfigured,
+  isAdminLoggedIn,
+  isDevelopmentAuthFallbackEnabled,
+} from "@/lib/admin-auth";
 import { brand } from "@/lib/brand";
 
 type AdminLoginPageProps = {
   searchParams: Promise<{
     error?: string;
+    setup?: string;
   }>;
 };
 
@@ -16,7 +22,9 @@ export default async function AdminLoginPage({
     redirect("/admin");
   }
 
-  const { error } = await searchParams;
+  const { error, setup } = await searchParams;
+  const isConfigured = isAdminAuthConfigured();
+  const showsDevelopmentHint = isDevelopmentAuthFallbackEnabled();
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -37,7 +45,7 @@ export default async function AdminLoginPage({
               運営者用の管理画面
             </h1>
             <p className="mt-5 text-lg font-bold leading-8 text-slate-300">
-              案件、業者、配信状況をまとめて確認します。まずは開発用ログインで管理画面を確認します。
+              案件、業者、配信状況をまとめて確認します。公開後は環境変数で設定した管理者アカウントだけがログインできます。
             </p>
           </div>
         </section>
@@ -45,8 +53,16 @@ export default async function AdminLoginPage({
         <section className="rounded-2xl bg-white p-7 text-slate-800 shadow-2xl shadow-black/40">
           <h2 className="text-3xl font-black">管理者ログイン</h2>
           <p className="mt-2 text-sm font-bold text-slate-400">
-            公開前にパスワードは必ず変更します。
+            運営者だけが案件・業者・配信状況を管理できます。
           </p>
+
+          {!isConfigured || setup ? (
+            <div className="mt-5 rounded-md bg-amber-50 px-4 py-3 text-sm font-bold leading-6 text-amber-700">
+              管理者ログインが未設定です。Vercelの環境変数に
+              ADMIN_LOGIN_EMAIL / ADMIN_LOGIN_PASSWORD /
+              ADMIN_SESSION_TOKEN を設定してください。
+            </div>
+          ) : null}
 
           {error ? (
             <div className="mt-5 rounded-md bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
@@ -63,6 +79,7 @@ export default async function AdminLoginPage({
                 type="email"
                 name="email"
                 defaultValue={getAdminLoginEmail()}
+                disabled={!isConfigured}
                 required
                 className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
               />
@@ -75,22 +92,30 @@ export default async function AdminLoginPage({
               <input
                 type="password"
                 name="password"
-                placeholder="admin123"
+                placeholder={
+                  showsDevelopmentHint ? "admin123" : "パスワードを入力"
+                }
+                disabled={!isConfigured}
                 required
                 className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
               />
             </label>
 
-            <button className="mt-7 h-13 w-full rounded-md bg-orange-500 text-lg font-black text-white shadow-lg shadow-orange-200 transition-colors hover:bg-orange-600">
+            <button
+              disabled={!isConfigured}
+              className="mt-7 h-13 w-full rounded-md bg-orange-500 text-lg font-black text-white shadow-lg shadow-orange-200 transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+            >
               ログインする
             </button>
           </form>
 
-          <div className="mt-6 rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-500">
-            <p className="font-black text-slate-600">開発用ログイン情報</p>
-            <p>メール: {getAdminLoginEmail()}</p>
-            <p>パスワード: admin123</p>
-          </div>
+          {showsDevelopmentHint ? (
+            <div className="mt-6 rounded-md bg-slate-50 p-4 text-sm leading-6 text-slate-500">
+              <p className="font-black text-slate-600">開発用ログイン情報</p>
+              <p>メール: {getAdminLoginEmail()}</p>
+              <p>パスワード: admin123</p>
+            </div>
+          ) : null}
         </section>
       </div>
     </main>

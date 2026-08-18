@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   ADMIN_AUTH_COOKIE,
+  isAdminAuthConfigured,
   getAdminLoginEmail,
   getAdminLoginPassword,
   getAdminSessionToken,
@@ -10,6 +11,12 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const email = formData.get("email")?.toString() ?? "";
   const password = formData.get("password")?.toString() ?? "";
+
+  if (!isAdminAuthConfigured()) {
+    return NextResponse.redirect(new URL("/admin/login?setup=1", request.url), {
+      status: 303,
+    });
+  }
 
   if (email !== getAdminLoginEmail() || password !== getAdminLoginPassword()) {
     return NextResponse.redirect(new URL("/admin/login?error=1", request.url), {

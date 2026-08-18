@@ -4,6 +4,7 @@ import {
   createBusinessSessionValue,
   getBusinessLoginEmail,
   getBusinessLoginPassword,
+  isBusinessFallbackAuthConfigured,
 } from "@/lib/business-auth";
 import { hashPassword } from "@/lib/password";
 import {
@@ -48,6 +49,13 @@ export async function POST(request: NextRequest) {
 
     partnerId = loginPartner.id;
   } else {
+    if (!isBusinessFallbackAuthConfigured()) {
+      return NextResponse.redirect(
+        new URL("/business/login?setup=1", request.url),
+        { status: 303 },
+      );
+    }
+
     if (
       email !== getBusinessLoginEmail() ||
       password !== getBusinessLoginPassword()

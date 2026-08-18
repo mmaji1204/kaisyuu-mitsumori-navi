@@ -7,8 +7,15 @@ const defaultPassword = "password123";
 const defaultToken = "local-business-session";
 const defaultPartnerName = "クリーンリンク";
 
+export function isDevelopmentBusinessAuthFallbackEnabled() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export function getBusinessLoginEmail() {
-  return process.env.BUSINESS_LOGIN_EMAIL || defaultEmail;
+  return (
+    process.env.BUSINESS_LOGIN_EMAIL ||
+    (isDevelopmentBusinessAuthFallbackEnabled() ? defaultEmail : "")
+  );
 }
 
 export function getBusinessPartnerEmail() {
@@ -20,11 +27,25 @@ export function getBusinessPartnerName() {
 }
 
 export function getBusinessLoginPassword() {
-  return process.env.BUSINESS_LOGIN_PASSWORD || defaultPassword;
+  return (
+    process.env.BUSINESS_LOGIN_PASSWORD ||
+    (isDevelopmentBusinessAuthFallbackEnabled() ? defaultPassword : "")
+  );
 }
 
 export function getBusinessSessionToken() {
-  return process.env.BUSINESS_SESSION_TOKEN || defaultToken;
+  return (
+    process.env.BUSINESS_SESSION_TOKEN ||
+    (isDevelopmentBusinessAuthFallbackEnabled() ? defaultToken : "")
+  );
+}
+
+export function isBusinessFallbackAuthConfigured() {
+  return Boolean(
+    getBusinessLoginEmail() &&
+      getBusinessLoginPassword() &&
+      getBusinessSessionToken(),
+  );
 }
 
 export function createBusinessSessionValue(partnerId: string) {

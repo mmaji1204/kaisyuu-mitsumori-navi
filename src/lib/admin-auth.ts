@@ -6,16 +6,37 @@ const defaultEmail = "admin@example.com";
 const defaultPassword = "admin123";
 const defaultToken = "local-admin-session";
 
+export function isDevelopmentAuthFallbackEnabled() {
+  return process.env.NODE_ENV !== "production";
+}
+
 export function getAdminLoginEmail() {
-  return process.env.ADMIN_LOGIN_EMAIL || defaultEmail;
+  return (
+    process.env.ADMIN_LOGIN_EMAIL ||
+    (isDevelopmentAuthFallbackEnabled() ? defaultEmail : "")
+  );
 }
 
 export function getAdminLoginPassword() {
-  return process.env.ADMIN_LOGIN_PASSWORD || defaultPassword;
+  return (
+    process.env.ADMIN_LOGIN_PASSWORD ||
+    (isDevelopmentAuthFallbackEnabled() ? defaultPassword : "")
+  );
 }
 
 export function getAdminSessionToken() {
-  return process.env.ADMIN_SESSION_TOKEN || defaultToken;
+  return (
+    process.env.ADMIN_SESSION_TOKEN ||
+    (isDevelopmentAuthFallbackEnabled() ? defaultToken : "")
+  );
+}
+
+export function isAdminAuthConfigured() {
+  return Boolean(
+    getAdminLoginEmail() &&
+      getAdminLoginPassword() &&
+      getAdminSessionToken(),
+  );
 }
 
 export function isValidAdminSession(value?: string) {
