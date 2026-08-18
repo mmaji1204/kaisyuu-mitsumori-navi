@@ -1,16 +1,52 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { brand } from "@/lib/brand";
 
+const siteUrl = "https://kaisyuu-mitsumori-navi.vercel.app";
+
+export const metadata: Metadata = {
+  title: "不用品回収の相見積もり・料金比較なら回収見積もりナビ",
+  description:
+    "不用品回収・粗大ゴミ処分の見積もりを無料で比較。最大5社の料金、口コミ、対応スピード、追加費用をまとめて確認できます。写真を送って最短即日相談。",
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title: "不用品回収の相見積もり・料金比較なら回収見積もりナビ",
+    description:
+      "不用品回収・粗大ゴミ処分の見積もりを無料で比較。料金、口コミ、対応スピードをまとめて確認できます。",
+    url: siteUrl,
+    siteName: brand.name,
+    locale: "ja_JP",
+    type: "website",
+    images: [
+      {
+        url: `${siteUrl}/hero-photo-original.png`,
+        width: 1200,
+        height: 630,
+        alt: "回収見積もりナビの不用品回収相見積もりサービス",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "不用品回収の相見積もり・料金比較なら回収見積もりナビ",
+    description:
+      "最大5社の不用品回収見積もりを無料比較。料金、口コミ、対応スピードを見て選べます。",
+    images: [`${siteUrl}/hero-photo-original.png`],
+  },
+};
+
 const navItems = [
-  "ホーム",
-  "一括見積もりの流れ",
-  "料金目安",
-  "回収品目一覧",
-  "対応エリア",
-  "口コミ",
-  "よくある質問",
+  { label: "ホーム", href: "#" },
+  { label: "流れ", href: "#flow" },
+  { label: "料金目安", href: "#price" },
+  { label: "回収品目", href: "#items" },
+  { label: "対応エリア", href: "#area" },
+  { label: "口コミ", href: "#reviews" },
+  { label: "よくある質問", href: "#faq" },
 ];
 
 const trustStats = [
@@ -115,6 +151,36 @@ const priceGuides = [
   { title: "2tトラック", volume: "家族住まい・大型家具", price: "48,000円〜", note: "現地確認がおすすめ" },
 ];
 
+const searchIntentCards = [
+  {
+    title: "不用品回収の費用を安くしたい",
+    body: "同じ品目でも業者によって料金差が出やすいため、複数社の総額見積もりを比べるのがおすすめです。",
+  },
+  {
+    title: "粗大ゴミを早く片付けたい",
+    body: "自治体回収の予約が先になる場合でも、民間業者なら即日・土日対応を相談できます。",
+  },
+  {
+    title: "大型家具や家電をまとめて処分したい",
+    body: "搬出経路、階段、トラック量を写真で共有すると、追加費用のズレを減らせます。",
+  },
+];
+
+const pickupItems = [
+  "ソファ",
+  "ベッド",
+  "マットレス",
+  "冷蔵庫",
+  "洗濯機",
+  "テレビ",
+  "タンス",
+  "食器棚",
+  "机",
+  "椅子",
+  "エアコン",
+  "電子レンジ",
+];
+
 const priceCompare = [
   { company: "A社", price: "98,000円" },
   { company: "B社", price: "78,000円" },
@@ -146,6 +212,47 @@ const reasons = [
   ["営業を抑制", "必要な連絡だけ受け取る"],
 ];
 
+const reviewCards = [
+  {
+    area: "広島県広島市",
+    title: "ソファと棚をまとめて回収",
+    body: "写真を送ったので当日の追加説明が少なく、料金も比較して選べました。",
+  },
+  {
+    area: "東京都港区",
+    title: "引っ越し前の家電回収",
+    body: "返信が早い業者と料金が安い業者を見比べられて、急ぎでも決めやすかったです。",
+  },
+  {
+    area: "大阪府大阪市",
+    title: "大型家具を2tトラックで相談",
+    body: "階段作業の追加費用まで事前に確認でき、見積もりの不安が減りました。",
+  },
+];
+
+const faqItems = [
+  {
+    question: "不用品回収の見積もりは本当に無料ですか？",
+    answer:
+      "はい。回収見積もりナビからの一括見積もり依頼は無料です。実際に回収を依頼する前に、料金や追加費用を確認できます。",
+  },
+  {
+    question: "写真なしでも見積もりできますか？",
+    answer:
+      "写真なしでも相談できますが、品目の量や搬出状況が分かる写真を送ると、概算見積もりのズレを減らしやすくなります。",
+  },
+  {
+    question: "自治体の粗大ゴミ回収と何が違いますか？",
+    answer:
+      "自治体回収は安い場合がありますが、日時指定や搬出に制限があります。民間業者は即日対応や室内からの搬出、まとめて回収を相談しやすい点が特徴です。",
+  },
+  {
+    question: "どのくらいの業者に見積もり依頼できますか？",
+    answer:
+      "地域や回収内容に応じて、対応可能な業者へ最大5社を目安に見積もり依頼できます。",
+  },
+];
+
 const areaLabels = [
   { name: "北海道", x: "76%", y: "10%" },
   { name: "東北", x: "72%", y: "28%" },
@@ -159,8 +266,51 @@ const areaLabels = [
 ];
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        name: brand.name,
+        url: siteUrl,
+        description: metadata.description,
+      },
+      {
+        "@type": "Service",
+        name: "不用品回収の相見積もり・料金比較",
+        provider: {
+          "@type": "Organization",
+          name: brand.operatorName,
+        },
+        areaServed: "JP",
+        serviceType: "不用品回収、粗大ゴミ処分、一括見積もり",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "JPY",
+          description: "無料一括見積もり",
+        },
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      },
+    ],
+  };
+
   return (
     <main className="min-h-screen bg-[#fffaf2] text-slate-900">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="sticky top-0 z-30 bg-white shadow-sm">
         <div className="mx-auto flex w-full max-w-[1180px] items-center gap-4 px-4 py-3 lg:px-5">
           <a href="#" className="flex min-w-0 items-center gap-3">
@@ -224,8 +374,8 @@ export default function Home() {
           <div className="mx-auto flex w-full max-w-[1180px] overflow-x-auto px-4 lg:px-5">
             {navItems.map((item, index) => (
               <a
-                key={item}
-                href={index === 0 ? "#" : "#contact"}
+                key={item.label}
+                href={item.href}
                 className={`whitespace-nowrap border-r border-slate-200 px-5 py-3 text-sm font-black first:border-l hover:bg-orange-50 hover:text-orange-600 ${
                   index === 0
                     ? "border-b-2 border-orange-600 text-orange-600"
@@ -233,7 +383,7 @@ export default function Home() {
                 }`}
               >
                 <span className="mr-2 text-orange-500">{index === 0 ? "◆" : "●"}</span>
-                {item}
+                {item.label}
               </a>
             ))}
           </div>
@@ -302,7 +452,7 @@ export default function Home() {
               width={560}
               height={360}
               priority
-              className="absolute bottom-24 left-0 w-[560px] max-w-none drop-shadow-xl"
+              className="absolute bottom-24 left-0 h-auto w-[560px] max-w-none drop-shadow-xl"
             />
 
             <div className="absolute left-0 top-2 w-full max-w-[360px] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl shadow-slate-200 lg:left-4">
@@ -353,6 +503,29 @@ export default function Home() {
       </section>
 
       <section className="mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
+        <div className="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm">
+          <p className="text-sm font-black text-orange-600">検索で来た方へ</p>
+          <h2 className="mt-1 text-2xl font-black">
+            不用品回収・粗大ゴミ処分でよくある悩みを、相見積もりで解決
+          </h2>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {searchIntentCards.map((item) => (
+              <article key={item.title} className="rounded-xl bg-orange-50 p-4">
+                <h3 className="font-black">{item.title}</h3>
+                <p className="mt-2 text-sm font-bold leading-6 text-slate-600">{item.body}</p>
+              </article>
+            ))}
+          </div>
+          <a
+            href="#contact"
+            className="mt-5 inline-flex rounded-lg bg-orange-600 px-6 py-3 font-black text-white shadow-sm"
+          >
+            まずは無料で料金を比較する
+          </a>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-black text-orange-600">比較できる項目</p>
@@ -375,7 +548,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
+      <section id="price" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="mb-4 text-center">
           <p className="text-sm font-black text-orange-600">対応業者の例</p>
           <h2 className="text-2xl font-black">あなたの地域で比較できる回収業者</h2>
@@ -477,6 +650,22 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="reviews" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
+        <div className="mb-4 text-center">
+          <p className="text-sm font-black text-orange-600">利用者の声</p>
+          <h2 className="text-2xl font-black">不用品回収の見積もり比較で安心できた口コミ</h2>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          {reviewCards.map((review) => (
+            <article key={review.title} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-xs font-black text-green-700">{review.area}</p>
+              <h3 className="mt-2 font-black">{review.title}</h3>
+              <p className="mt-3 text-sm font-bold leading-6 text-slate-600">{review.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto grid w-full max-w-[1180px] gap-4 px-4 py-6 lg:grid-cols-2 lg:px-5">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-4 text-center text-xl font-black">最近の見積もり依頼</h2>
@@ -493,7 +682,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div id="area" className="scroll-mt-32 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-4 text-center text-xl font-black">対応エリア</h2>
           <div className="grid gap-3 lg:grid-cols-[0.72fr_1.28fr]">
             <div>
@@ -591,7 +780,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1180px] gap-4 px-4 py-6 lg:grid-cols-2 lg:px-5">
+      <section id="items" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-black text-orange-600">回収品目一覧</p>
+              <h2 className="text-2xl font-black">家具・家電・粗大ゴミをまとめて見積もり</h2>
+            </div>
+            <p className="max-w-md text-sm font-bold leading-6 text-slate-600">
+              複数品目をまとめるほど、トラック量と搬出条件の比較が大切です。
+            </p>
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+            {pickupItems.map((item) => (
+              <a
+                key={item}
+                href="#contact"
+                className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center text-sm font-black hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="flow" className="scroll-mt-32 mx-auto grid w-full max-w-[1180px] gap-4 px-4 py-6 lg:grid-cols-2 lg:px-5">
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h2 className="mb-5 text-center text-xl font-black">ご利用の流れ</h2>
           <div className="grid gap-2 sm:grid-cols-5">
@@ -615,6 +829,23 @@ export default function Home() {
                 <p className="font-black text-orange-600">{title}</p>
                 <p className="mt-2 text-sm font-bold">{body}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <p className="text-center text-sm font-black text-orange-600">よくある質問</p>
+          <h2 className="mt-1 text-center text-2xl font-black">
+            不用品回収の見積もり比較でよくある質問
+          </h2>
+          <div className="mt-5 grid gap-3 md:grid-cols-2">
+            {faqItems.map((item) => (
+              <details key={item.question} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <summary className="cursor-pointer font-black">{item.question}</summary>
+                <p className="mt-3 text-sm font-bold leading-6 text-slate-600">{item.answer}</p>
+              </details>
             ))}
           </div>
         </div>
