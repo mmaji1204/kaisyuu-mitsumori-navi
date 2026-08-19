@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { brand } from "@/lib/brand";
 
-const siteUrl = "https://kaisyuu-mitsumori-navi.vercel.app";
+const siteUrl = brand.siteUrl;
 
 export default function robots(): MetadataRoute.Robots {
   return {

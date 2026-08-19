@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
 import { brand } from "@/lib/brand";
 
-const siteUrl = "https://kaisyuu-mitsumori-navi.vercel.app";
+const siteUrl = brand.siteUrl;
 
 export const metadata: Metadata = {
   title: "不用品回収の相見積もり・料金比較なら回収見積もりナビ",
