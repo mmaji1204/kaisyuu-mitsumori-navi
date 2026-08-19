@@ -28,30 +28,30 @@ export default async function AdminLoginPage({
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-10 px-5 py-10 lg:grid-cols-[1fr_460px]">
+      <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-6 px-4 py-8 sm:px-5 sm:py-10 lg:grid-cols-[1fr_460px] lg:gap-10">
         <section>
           <Link href="/" className="inline-block">
-            <p className="text-[10px] font-bold tracking-[0.45em] text-orange-300">
+            <p className="text-[10px] font-bold tracking-[0.32em] text-orange-300 sm:tracking-[0.45em]">
               ADMIN CONSOLE
             </p>
-            <p className="mt-2 text-4xl font-black tracking-normal">
+            <p className="mt-2 text-3xl font-black tracking-normal sm:text-4xl">
               {brand.name}
             </p>
           </Link>
 
-          <div className="mt-12 max-w-xl">
+          <div className="mt-8 max-w-xl sm:mt-12">
             <p className="text-sm font-black text-orange-400">OWNER ADMIN</p>
-            <h1 className="mt-4 text-5xl font-black leading-tight">
+            <h1 className="mt-3 text-4xl font-black leading-tight sm:mt-4 sm:text-5xl">
               運営者用の管理画面
             </h1>
-            <p className="mt-5 text-lg font-bold leading-8 text-slate-300">
+            <p className="mt-4 text-base font-bold leading-7 text-slate-300 sm:mt-5 sm:text-lg sm:leading-8">
               案件、業者、配信状況をまとめて確認します。公開後は環境変数で設定した管理者アカウントだけがログインできます。
             </p>
           </div>
         </section>
 
-        <section className="rounded-2xl bg-white p-7 text-slate-800 shadow-2xl shadow-black/40">
-          <h2 className="text-3xl font-black">管理者ログイン</h2>
+        <section className="rounded-2xl bg-white p-5 text-slate-800 shadow-2xl shadow-black/40 sm:p-7">
+          <h2 className="text-2xl font-black sm:text-3xl">管理者ログイン</h2>
           <p className="mt-2 text-sm font-bold text-slate-400">
             運営者だけが案件・業者・配信状況を管理できます。
           </p>
@@ -81,7 +81,7 @@ export default async function AdminLoginPage({
                 defaultValue={getAdminLoginEmail()}
                 disabled={!isConfigured}
                 required
-                className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
+                className="mt-2 h-[52px] w-full rounded-md border border-slate-300 px-4 text-base outline-none focus:border-orange-500 sm:text-lg"
               />
             </label>
 
@@ -97,13 +97,13 @@ export default async function AdminLoginPage({
                 }
                 disabled={!isConfigured}
                 required
-                className="mt-2 h-13 w-full rounded-md border border-slate-300 px-4 text-lg outline-none focus:border-orange-500"
+                className="mt-2 h-[52px] w-full rounded-md border border-slate-300 px-4 text-base outline-none focus:border-orange-500 sm:text-lg"
               />
             </label>
 
             <button
               disabled={!isConfigured}
-              className="mt-7 h-13 w-full rounded-md bg-orange-500 text-lg font-black text-white shadow-lg shadow-orange-200 transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
+              className="mt-7 h-[52px] w-full rounded-md bg-orange-500 text-base font-black text-white shadow-lg shadow-orange-200 transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none sm:text-lg"
             >
               ログインする
             </button>

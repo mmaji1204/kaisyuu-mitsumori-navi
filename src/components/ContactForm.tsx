@@ -161,9 +161,9 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg bg-white p-6 text-slate-900 shadow-sm"
+      className="rounded-lg bg-white p-4 text-slate-900 shadow-sm sm:p-6"
     >
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
         <label className="block">
           <span className="text-sm font-bold">お名前</span>
           <input
@@ -171,7 +171,7 @@ export function ContactForm() {
             name="name"
             placeholder="山田 太郎"
             required
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -182,7 +182,7 @@ export function ContactForm() {
             name="tel"
             placeholder="090-0000-0000"
             required
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -194,7 +194,7 @@ export function ContactForm() {
             inputMode="numeric"
             placeholder="7300011"
             onBlur={(event) => handlePostalCodeBlur(event.currentTarget.value)}
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -207,7 +207,7 @@ export function ContactForm() {
             required
             value={area}
             onChange={(event) => setArea(event.currentTarget.value)}
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -218,7 +218,7 @@ export function ContactForm() {
             name="item"
             placeholder="ソファ、冷蔵庫、洗濯機など"
             required
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -228,7 +228,7 @@ export function ContactForm() {
             type="text"
             name="desired_date"
             placeholder="例: 土日午前、8/20 14時以降"
-            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none transition-colors focus:border-emerald-600"
+            className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
@@ -239,7 +239,7 @@ export function ContactForm() {
             name="photos"
             accept="image/*"
             multiple
-            className="mt-2 block h-12 w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-bold text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-2 file:font-bold file:text-emerald-700"
+            className="mt-2 block min-h-12 w-full rounded-md border border-slate-300 px-2 py-2 text-sm font-bold text-slate-600 file:mr-2 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-2 file:text-sm file:font-bold file:text-emerald-700 sm:px-3"
           />
         </label>
       </div>
@@ -250,14 +250,14 @@ export function ContactForm() {
           name="message"
           placeholder="回収したいものの量や希望日があれば入力してください。"
           rows={5}
-          className="mt-2 w-full rounded-md border border-slate-300 px-4 py-3 outline-none transition-colors focus:border-emerald-600"
+          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
         />
       </label>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-5 inline-flex h-12 w-full items-center justify-center rounded-md bg-emerald-600 px-6 font-bold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto"
+        className="mt-5 inline-flex h-[52px] w-full items-center justify-center rounded-md bg-emerald-600 px-6 text-base font-bold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400 sm:h-12 sm:w-auto"
       >
         {isSubmitting ? "送信中..." : "入力内容を送信する"}
       </button>
