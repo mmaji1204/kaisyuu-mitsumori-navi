@@ -70,6 +70,31 @@ const meritCards = [
   { title: "無料で依頼", body: "キャンセル相談も無料", mark: "0" },
 ];
 
+const trustPhotoCards = [
+  {
+    title: "写真で状況を共有",
+    body: "品目の量や搬出経路を写真で伝えると、概算見積もりのズレを減らせます。",
+    image: "/hero-photo-original.png",
+    alt: "不用品と回収トラックを背景にスマホで見積もり相談する女性",
+    badge: "写真見積もり対応",
+    imageClassName: "object-cover",
+  },
+  {
+    title: "対応できる車両を比較",
+    body: "軽トラックから2t車まで、回収量に合う業者を比較しやすく整理します。",
+    image: "/hero-truck.png",
+    alt: "不用品回収に対応するトラックのイメージ",
+    badge: "軽トラ・2t相談",
+    imageClassName: "object-cover object-bottom",
+  },
+];
+
+const assurancePoints = [
+  "料金だけでなく口コミ・返信速度も確認",
+  "追加費用や作業条件を事前に比較",
+  "見積もり前のしつこい営業を抑えた設計",
+];
+
 const comparisonPoints = [
   {
     title: "総額見積もり",
@@ -499,6 +524,74 @@ export default function Home() {
             </span>
           </div>
         ))}
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="p-5 sm:p-6 lg:p-8">
+              <p className="text-sm font-black text-orange-600">
+                写真があるから安心して比較
+              </p>
+              <h2 className="mt-2 text-2xl font-black leading-tight sm:text-3xl">
+                回収前の状況が見えると、見積もりの信頼度が上がります
+              </h2>
+              <p className="mt-4 text-sm font-bold leading-7 text-slate-600 sm:text-base">
+                不用品回収は、量・搬出経路・階段の有無で料金が変わりやすいサービスです。
+                {brand.name}では写真つきで相談できる導線を用意し、業者側も状況を把握しやすくしています。
+              </p>
+
+              <div className="mt-5 grid gap-3">
+                {assurancePoints.map((point) => (
+                  <div
+                    key={point}
+                    className="flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-black text-slate-800"
+                  >
+                    <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-600 text-white">
+                      ✓
+                    </span>
+                    {point}
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href="#contact"
+                className="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-orange-600 px-6 py-4 text-center font-black text-white shadow-sm sm:w-auto"
+              >
+                写真を添えて無料見積もりする
+              </a>
+            </div>
+
+            <div className="grid gap-3 bg-slate-50 p-3 sm:grid-cols-2 lg:grid-cols-1 lg:p-4">
+              {trustPhotoCards.map((card) => (
+                <article
+                  key={card.title}
+                  className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
+                >
+                  <div className="relative aspect-[16/10] bg-orange-50">
+                    <Image
+                      src={card.image}
+                      alt={card.alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 420px"
+                      className={card.imageClassName}
+                    />
+                    <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-black text-orange-600 shadow-sm">
+                      {card.badge}
+                    </span>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-black">{card.title}</h3>
+                    <p className="mt-2 text-sm font-bold leading-6 text-slate-600">
+                      {card.body}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
