@@ -312,23 +312,23 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <header className="sticky top-0 z-30 bg-white shadow-sm">
-        <div className="mx-auto flex w-full max-w-[1180px] items-center gap-4 px-4 py-3 lg:px-5">
-          <a href="#" className="flex min-w-0 items-center gap-3">
-            <span className="relative h-16 w-20 shrink-0">
-              <span className="absolute left-1 top-2 h-12 w-12 rounded-full bg-[#5b351f] shadow-sm" />
-              <span className="absolute left-0 top-1 h-5 w-5 rounded-full bg-[#5b351f]" />
-              <span className="absolute left-9 top-1 h-5 w-5 rounded-full bg-[#5b351f]" />
-              <span className="absolute left-3 top-4 h-8 w-8 rounded-full bg-white" />
-              <span className="absolute left-4 top-5 h-3 w-3 rounded-full bg-neutral-900" />
-              <span className="absolute left-8 top-5 h-3 w-3 rounded-full bg-neutral-900" />
-              <span className="absolute left-[26px] top-8 h-2 w-2 rounded-full bg-orange-500" />
-              <span className="absolute left-5 top-0 h-4 w-7 rounded-t-full bg-green-600" />
-              <span className="absolute bottom-1 right-0 h-8 w-10 rounded bg-amber-700 shadow-sm" />
-              <span className="absolute bottom-5 right-0 h-1 w-10 bg-amber-500" />
+        <div className="mx-auto flex w-full max-w-[1180px] items-center gap-2 px-3 py-2 sm:gap-4 sm:px-4 sm:py-3 lg:px-5">
+          <a href="#" className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <span className="relative h-12 w-15 shrink-0 sm:h-16 sm:w-20">
+              <span className="absolute left-1 top-1.5 h-9 w-9 rounded-full bg-[#5b351f] shadow-sm sm:top-2 sm:h-12 sm:w-12" />
+              <span className="absolute left-0 top-1 h-4 w-4 rounded-full bg-[#5b351f] sm:h-5 sm:w-5" />
+              <span className="absolute left-7 top-1 h-4 w-4 rounded-full bg-[#5b351f] sm:left-9 sm:h-5 sm:w-5" />
+              <span className="absolute left-2 top-3 h-7 w-7 rounded-full bg-white sm:left-3 sm:top-4 sm:h-8 sm:w-8" />
+              <span className="absolute left-3 top-4 h-2.5 w-2.5 rounded-full bg-neutral-900 sm:left-4 sm:top-5 sm:h-3 sm:w-3" />
+              <span className="absolute left-6 top-4 h-2.5 w-2.5 rounded-full bg-neutral-900 sm:left-8 sm:top-5 sm:h-3 sm:w-3" />
+              <span className="absolute left-[20px] top-6 h-1.5 w-1.5 rounded-full bg-orange-500 sm:left-[26px] sm:top-8 sm:h-2 sm:w-2" />
+              <span className="absolute left-4 top-0 h-3 w-6 rounded-t-full bg-green-600 sm:left-5 sm:h-4 sm:w-7" />
+              <span className="absolute bottom-1 right-0 h-6 w-8 rounded bg-amber-700 shadow-sm sm:h-8 sm:w-10" />
+              <span className="absolute bottom-4 right-0 h-1 w-8 bg-amber-500 sm:bottom-5 sm:w-10" />
             </span>
             <span className="leading-tight">
-              <span className="block text-xs font-bold text-slate-600">{brand.longTagline}</span>
-              <span className="block text-2xl font-black tracking-normal sm:text-3xl">
+              <span className="block text-[10px] font-bold leading-4 text-slate-600 sm:text-xs">{brand.longTagline}</span>
+              <span className="block text-xl font-black tracking-normal sm:text-3xl">
                 {brand.namePrefix}
                 <span className="text-orange-600">{brand.nameAccent}</span>
               </span>
@@ -364,19 +364,19 @@ export default function Home() {
 
           <a
             href="#contact"
-            className="ml-auto rounded-md bg-orange-600 px-4 py-3 text-sm font-black text-white lg:hidden"
+            className="ml-auto shrink-0 rounded-md bg-orange-600 px-3 py-2 text-xs font-black text-white sm:px-4 sm:py-3 sm:text-sm lg:hidden"
           >
             無料見積もり
           </a>
         </div>
 
         <nav className="border-y border-slate-200 bg-white">
-          <div className="mx-auto flex w-full max-w-[1180px] overflow-x-auto px-4 lg:px-5">
+          <div className="mx-auto flex w-full max-w-[1180px] overflow-x-auto px-3 lg:px-5">
             {navItems.map((item, index) => (
               <a
                 key={item.label}
                 href={item.href}
-                className={`whitespace-nowrap border-r border-slate-200 px-5 py-3 text-sm font-black first:border-l hover:bg-orange-50 hover:text-orange-600 ${
+                className={`whitespace-nowrap border-r border-slate-200 px-4 py-2.5 text-xs font-black first:border-l hover:bg-orange-50 hover:text-orange-600 sm:px-5 sm:py-3 sm:text-sm ${
                   index === 0
                     ? "border-b-2 border-orange-600 text-orange-600"
                     : "text-slate-700"
@@ -392,25 +392,24 @@ export default function Home() {
 
       <section className="relative overflow-hidden bg-[linear-gradient(110deg,#fff3d8_0%,#fffaf2_44%,#eaf8db_100%)]">
         <div className="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(90deg,rgba(30,151,92,0.12),rgba(255,255,255,0.7)),repeating-linear-gradient(90deg,transparent_0_34px,rgba(30,151,92,0.13)_34px_36px)]" />
-        <div className="mx-auto grid w-full max-w-[1180px] gap-7 px-4 py-7 lg:grid-cols-[530px_1fr] lg:px-5 lg:py-9">
+        <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-4 py-6 lg:grid-cols-[530px_1fr] lg:px-5 lg:py-9">
           <div className="relative z-10">
-            <p className="mb-5 w-fit bg-orange-600 px-7 py-2 text-center text-lg font-black text-white [clip-path:polygon(5%_0,95%_0,100%_50%,95%_100%,5%_100%,0_50%)] sm:text-xl">
+            <p className="mb-4 w-fit bg-orange-600 px-5 py-2 text-center text-sm font-black text-white [clip-path:polygon(5%_0,95%_0,100%_50%,95%_100%,5%_100%,0_50%)] sm:px-7 sm:text-xl">
               不用品回収の相見積もりサイト
             </p>
-            <h1 className="text-4xl font-black leading-tight tracking-normal sm:text-5xl lg:text-[48px]">
+            <h1 className="text-[32px] font-black leading-[1.14] tracking-normal sm:text-5xl lg:text-[48px]">
               料金も口コミも比べて
-              <br />
-              <span className="text-orange-600">納得できる回収業者へ</span>
+              <span className="block text-orange-600">納得できる回収業者へ</span>
             </h1>
-            <p className="mt-4 max-w-xl text-lg font-bold leading-8 text-slate-700">
+            <p className="mt-4 max-w-xl text-base font-bold leading-7 text-slate-700 sm:text-lg sm:leading-8">
               回収品目・地域・写真を送るだけ。対応できる業者の見積もりをまとめて受け取り、
               料金、返信速度、口コミ、追加費用を同じ画面で比較できます。
             </p>
 
-            <ul className="mt-5 grid gap-2 text-base font-black">
+            <ul className="mt-5 grid gap-2 text-sm font-black sm:text-base">
               {heroChecks.map((item) => (
-                <li key={item} className="flex items-center gap-3 rounded-md bg-white/80 px-3 py-2 shadow-sm">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                <li key={item} className="flex items-start gap-3 rounded-md bg-white/80 px-3 py-2 shadow-sm">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
                     ✓
                   </span>
                   {item}
@@ -420,18 +419,18 @@ export default function Home() {
 
             <a
               href="#contact"
-              className="relative mt-7 flex max-w-xl items-center gap-3 rounded-xl border-2 border-orange-500 bg-white p-3 shadow-lg shadow-orange-100"
+              className="relative mt-7 grid max-w-xl grid-cols-[60px_1fr_18px] items-center gap-2 rounded-xl border-2 border-orange-500 bg-white p-2 shadow-lg shadow-orange-100 sm:grid-cols-[80px_1fr_24px] sm:gap-3 sm:p-3"
             >
-              <span className="absolute -top-5 left-1/2 rounded-full border-2 border-orange-500 bg-white px-8 py-1 text-sm font-black text-orange-600 -translate-x-1/2">
+              <span className="absolute -top-4 left-1/2 whitespace-nowrap rounded-full border-2 border-orange-500 bg-white px-5 py-0.5 text-xs font-black text-orange-600 -translate-x-1/2 sm:-top-5 sm:px-8 sm:py-1 sm:text-sm">
                 たったの30秒で完了！
               </span>
-              <span className="rounded-full bg-yellow-400 px-4 py-5 text-xl font-black text-orange-600">
+              <span className="grid h-14 w-14 place-items-center rounded-full bg-yellow-400 text-base font-black text-orange-600 sm:h-auto sm:w-auto sm:px-4 sm:py-5 sm:text-xl">
                 無料
               </span>
-              <span className="flex-1 rounded-lg bg-orange-600 px-4 py-5 text-center text-lg font-black text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.14)] sm:text-2xl">
+              <span className="rounded-lg bg-orange-600 px-3 py-4 text-center text-base font-black leading-tight text-white shadow-[inset_0_-4px_0_rgba(0,0,0,0.14)] sm:px-4 sm:py-5 sm:text-2xl">
                 一括見積もりを依頼する
               </span>
-              <span className="text-3xl font-black text-orange-600">›</span>
+              <span className="text-2xl font-black text-orange-600 sm:text-3xl">›</span>
             </a>
 
             <div className="mt-5 grid max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
@@ -444,7 +443,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative z-10 min-h-[520px] lg:min-h-[500px]">
+          <div className="relative z-10 min-h-[470px] sm:min-h-[520px] lg:min-h-[500px]">
             <div className="absolute right-2 top-6 h-72 w-72 rounded-full bg-lime-200/70 blur-sm" />
             <Image
               src="/hero-photo-original.png"
@@ -452,10 +451,10 @@ export default function Home() {
               width={560}
               height={360}
               priority
-              className="absolute bottom-24 left-0 h-auto w-[560px] max-w-none drop-shadow-xl"
+              className="absolute bottom-24 left-1/2 h-auto w-[420px] max-w-none -translate-x-1/2 drop-shadow-xl sm:w-[560px] lg:left-0 lg:translate-x-0"
             />
 
-            <div className="absolute left-0 top-2 w-full max-w-[360px] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl shadow-slate-200 lg:left-4">
+            <div className="absolute left-1/2 top-0 w-full max-w-[340px] -translate-x-1/2 rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-xl shadow-slate-200 sm:max-w-[360px] sm:p-4 lg:left-4 lg:translate-x-0">
               <p className="text-sm font-black text-orange-600">見積もり条件チェック</p>
               <div className="mt-3 space-y-2 text-sm font-bold">
                 {["郵便番号・エリア", "回収したい品目", "写真・希望日時", "連絡先"].map((item, index) => (
@@ -475,13 +474,13 @@ export default function Home() {
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 rounded-xl border-2 border-green-500 bg-white p-3 shadow-lg">
-              <p className="mx-auto -mt-7 mb-2 w-fit rounded-full bg-green-600 px-8 py-2 text-center text-base font-black text-white">
+              <p className="mx-auto mb-2 w-fit rounded-full bg-green-600 px-5 py-2 text-center text-sm font-black text-white sm:-mt-7 sm:px-8 sm:text-base">
                 写真を送るだけでOK！
               </p>
-              <div className="grid grid-cols-3 gap-2 text-center text-xs font-black">
+              <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-black sm:text-xs">
                 <div className="rounded-md bg-orange-50 p-2">1 情報を入力</div>
                 <div className="rounded-md bg-orange-50 p-2">2 写真を送る</div>
-                <div className="rounded-md bg-orange-50 p-2">3 見積もりが届く</div>
+                <div className="rounded-md bg-orange-50 p-2">3 見積到着</div>
               </div>
             </div>
           </div>
@@ -505,7 +504,7 @@ export default function Home() {
       <section className="mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm">
           <p className="text-sm font-black text-orange-600">検索で来た方へ</p>
-          <h2 className="mt-1 text-2xl font-black">
+          <h2 className="mt-1 text-xl font-black sm:text-2xl">
             不用品回収・粗大ゴミ処分でよくある悩みを、相見積もりで解決
           </h2>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
@@ -529,7 +528,7 @@ export default function Home() {
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-black text-orange-600">比較できる項目</p>
-            <h2 className="text-2xl font-black">安さだけで選ばないためのチェック項目</h2>
+            <h2 className="text-xl font-black sm:text-2xl">安さだけで選ばないためのチェック項目</h2>
           </div>
           <p className="max-w-md text-sm font-bold leading-6 text-slate-600">
             他社の相見積もりサイトでよく見られる「料金・口コミ・量・対応条件」を、最初から比較しやすい形にしました。
@@ -551,7 +550,7 @@ export default function Home() {
       <section id="price" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="mb-4 text-center">
           <p className="text-sm font-black text-orange-600">対応業者の例</p>
-          <h2 className="text-2xl font-black">あなたの地域で比較できる回収業者</h2>
+          <h2 className="text-xl font-black sm:text-2xl">あなたの地域で比較できる回収業者</h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {vendors.map((vendor) => (
@@ -592,7 +591,7 @@ export default function Home() {
           <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-black text-orange-600">料金目安</p>
-              <h2 className="text-2xl font-black">量に合わせて相場感を先に確認</h2>
+              <h2 className="text-xl font-black sm:text-2xl">量に合わせて相場感を先に確認</h2>
             </div>
             <p className="text-sm font-bold text-slate-600">実際の料金は品目・階段・距離・地域で変わります。</p>
           </div>
@@ -611,7 +610,7 @@ export default function Home() {
 
       <section className="mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="rounded-2xl border-2 border-lime-500 bg-lime-50 p-5">
-          <h2 className="text-center text-2xl font-black text-green-700">
+          <h2 className="text-center text-xl font-black text-green-700 sm:text-2xl">
             一括見積もりでこんなにお得！
           </h2>
           <div className="mt-5 grid gap-3 lg:grid-cols-[220px_1fr]">
@@ -623,7 +622,7 @@ export default function Home() {
                 回収品目：冷蔵庫・洗濯機・ソファ・タンスなど
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-5">
               {priceCompare.map((item) => (
                 <div
                   key={item.company}
@@ -637,14 +636,14 @@ export default function Home() {
                       一番お得！
                     </p>
                   ) : null}
-                  <p className={`mt-3 text-2xl font-black ${item.best ? "text-orange-600" : ""}`}>
+                  <p className={`mt-3 text-xl font-black sm:text-2xl ${item.best ? "text-orange-600" : ""}`}>
                     {item.price}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-          <p className="mt-5 rounded-full border-2 border-orange-400 bg-white px-4 py-3 text-center text-3xl font-black text-orange-600">
+          <p className="mt-5 rounded-2xl border-2 border-orange-400 bg-white px-4 py-3 text-center text-2xl font-black text-orange-600 sm:rounded-full sm:text-3xl">
             40,000円もお得に！
           </p>
         </div>
@@ -653,7 +652,7 @@ export default function Home() {
       <section id="reviews" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="mb-4 text-center">
           <p className="text-sm font-black text-orange-600">利用者の声</p>
-          <h2 className="text-2xl font-black">不用品回収の見積もり比較で安心できた口コミ</h2>
+          <h2 className="text-xl font-black sm:text-2xl">不用品回収の見積もり比較で安心できた口コミ</h2>
         </div>
         <div className="grid gap-3 md:grid-cols-3">
           {reviewCards.map((review) => (
@@ -785,7 +784,7 @@ export default function Home() {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-black text-orange-600">回収品目一覧</p>
-              <h2 className="text-2xl font-black">家具・家電・粗大ゴミをまとめて見積もり</h2>
+              <h2 className="text-xl font-black sm:text-2xl">家具・家電・粗大ゴミをまとめて見積もり</h2>
             </div>
             <p className="max-w-md text-sm font-bold leading-6 text-slate-600">
               複数品目をまとめるほど、トラック量と搬出条件の比較が大切です。
@@ -837,7 +836,7 @@ export default function Home() {
       <section id="faq" className="scroll-mt-32 mx-auto w-full max-w-[1180px] px-4 py-6 lg:px-5">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <p className="text-center text-sm font-black text-orange-600">よくある質問</p>
-          <h2 className="mt-1 text-center text-2xl font-black">
+          <h2 className="mt-1 text-center text-xl font-black sm:text-2xl">
             不用品回収の見積もり比較でよくある質問
           </h2>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
@@ -851,10 +850,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="scroll-mt-32 bg-green-600">
+      <section id="contact" className="scroll-mt-40 bg-green-600 lg:scroll-mt-32">
         <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-4 py-8 lg:grid-cols-[0.8fr_1.2fr] lg:px-5">
           <div className="text-white">
-            <h2 className="text-3xl font-black">無料一括見積もりを依頼する</h2>
+            <h2 className="text-2xl font-black sm:text-3xl">無料一括見積もりを依頼する</h2>
             <p className="mt-3 font-bold leading-7">
               回収したいものやお住まいの地域を入力してください。複数社の料金・スピード・口コミを比較できます。
             </p>
