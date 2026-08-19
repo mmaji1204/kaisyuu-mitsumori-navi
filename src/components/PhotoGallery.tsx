@@ -36,10 +36,10 @@ export function PhotoGallery({
             action={uploadAction}
             method="post"
             encType="multipart/form-data"
-            className="grid min-w-0 gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-3 md:grid-cols-[minmax(0,1fr)_84px]"
+            className="grid min-w-0 gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-3 sm:grid-cols-[minmax(0,1fr)_96px]"
           >
             <input type="hidden" name="photo_kind" value={photoKind} />
-            <label className="min-w-0 cursor-pointer rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-600 transition hover:border-orange-300 hover:bg-orange-50/60">
+            <label className="flex min-h-12 min-w-0 cursor-pointer items-center rounded-xl border border-dashed border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-600 transition hover:border-orange-300 hover:bg-orange-50/60">
               <span className="block truncate">写真ファイルを選択</span>
               <input
                 type="file"
@@ -49,7 +49,7 @@ export function PhotoGallery({
                 className="sr-only"
               />
             </label>
-            <button className="rounded-xl bg-orange-500 px-4 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600">
+            <button className="min-h-12 rounded-xl bg-orange-500 px-4 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20 transition hover:bg-orange-600">
               追加
             </button>
           </form>
@@ -57,7 +57,7 @@ export function PhotoGallery({
       </div>
 
       {urls.length > 0 ? (
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
           {urls.map((url, index) => (
             <div
               key={url}
@@ -75,7 +75,7 @@ export function PhotoGallery({
                   className="aspect-[4/3] w-full object-cover"
                 />
               </button>
-              <div className="flex flex-wrap items-center justify-between gap-2 p-3">
+              <div className="grid gap-2 p-3 sm:grid-cols-[1fr_auto]">
                 <button
                   type="button"
                   onClick={() => setPreviewUrl(url)}

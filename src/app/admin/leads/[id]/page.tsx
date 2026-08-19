@@ -111,13 +111,49 @@ function billingStatusLabel(status: BillingItem["status"]) {
 
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-0 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
+    <div className="min-w-0 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
       <p className="text-xs font-black tracking-[0.16em] text-slate-400">{label}</p>
       <p className="mt-2 break-words text-lg font-black text-slate-700">
         {value || "未入力"}
       </p>
     </div>
   );
+}
+
+function progressTone(progress: Lead["progress"]) {
+  const tones = {
+    未対応: "bg-orange-50 text-orange-600 ring-orange-100",
+    現地見積: "bg-blue-50 text-blue-600 ring-blue-100",
+    商談中: "bg-violet-50 text-violet-600 ring-violet-100",
+    成約: "bg-emerald-50 text-emerald-600 ring-emerald-100",
+    失注: "bg-slate-100 text-slate-500 ring-slate-200",
+  };
+
+  return tones[progress];
+}
+
+function nextActionLabel(progress: Lead["progress"]) {
+  const labels = {
+    未対応: "電話確認と配信判断",
+    現地見積: "訪問日程と概算確認",
+    商談中: "追客して成約確認",
+    成約: "請求状態と作業写真確認",
+    失注: "失注理由をメモへ記録",
+  };
+
+  return labels[progress];
+}
+
+function feeLabel(fee: string) {
+  if (!fee) {
+    return "未設定";
+  }
+
+  return fee.includes("円") ? fee : `${fee}円`;
+}
+
+function phoneHref(phone: string) {
+  return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
 async function loadLeadDetail(leadId: string): Promise<LeadDetailData | null> {
@@ -209,6 +245,11 @@ export default async function AdminLeadDetailPage({
   const billingByDelivery = new Map(
     billingItems.map((item) => [item.lead_delivery_id, item]),
   );
+  const beforePhotoCount = lead.photoUrls?.length ?? 0;
+  const afterPhotoCount = lead.afterPhotoUrls?.length ?? 0;
+  const unbilledTotal = billingItems
+    .filter((item) => item.status === "unbilled")
+    .reduce((total, item) => total + item.amount, 0);
 
   return (
     <AdminShell
@@ -224,7 +265,7 @@ export default async function AdminLeadDetailPage({
               戻る
             </Link>
             <a
-              href={`tel:${lead.phone}`}
+              href={phoneHref(lead.phone)}
               className="rounded-xl bg-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/25"
             >
               電話する
@@ -263,15 +304,100 @@ export default async function AdminLeadDetailPage({
           </div>
         ) : null}
 
-        <section className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+        <section className="mb-6 overflow-hidden rounded-3xl border border-white/70 bg-slate-950 shadow-2xl shadow-slate-300/60">
+          <div className="grid gap-0 2xl:grid-cols-[minmax(0,1fr)_360px]">
+            <div className="min-w-0 p-6 text-white lg:p-8">
+              <div className="flex flex-wrap items-center gap-3">
+                <span
+                  className={`rounded-full px-4 py-2 text-sm font-black ring-1 ${progressTone(
+                    lead.progress,
+                  )}`}
+                >
+                  {lead.progress}
+                </span>
+                {lead.duplicateWarning ? (
+                  <span className="rounded-full bg-red-500/15 px-4 py-2 text-sm font-black text-red-200 ring-1 ring-red-400/30">
+                    重複注意
+                  </span>
+                ) : null}
+                <span className="rounded-full bg-white/10 px-4 py-2 text-sm font-black text-slate-300 ring-1 ring-white/10">
+                  受付 {lead.date}
+                </span>
+              </div>
+
+              <h2 className="mt-5 text-3xl font-black leading-tight lg:text-5xl">
+                {lead.request}
+              </h2>
+              <p className="mt-4 max-w-3xl text-base font-bold leading-8 text-slate-300">
+                次の対応:{" "}
+                <span className="text-orange-300">
+                  {nextActionLabel(lead.progress)}
+                </span>
+              </p>
+
+              <div className="mt-6 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+                {[
+                  ["お客様", lead.name || "未入力"],
+                  ["電話番号", lead.phone || "未入力"],
+                  ["対応地域", lead.address || "未入力"],
+                  ["希望日時", lead.desiredDate || "未入力"],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="min-w-0 rounded-2xl border border-white/10 bg-white/5 p-4"
+                  >
+                    <p className="text-xs font-black tracking-[0.16em] text-slate-500">
+                      {label}
+                    </p>
+                    <p className="mt-2 truncate text-lg font-black text-white">
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="border-t border-white/10 bg-white/[0.03] p-6 2xl:border-l 2xl:border-t-0">
+              <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-1">
+                {[
+                  ["配信先", `${deliveries.length}社`, "業者へ送信済み"],
+                  ["配信単価", feeLabel(lead.fee), "この案件の課金単価"],
+                  ["写真", `前${beforePhotoCount} / 後${afterPhotoCount}`, "作業証跡"],
+                  ["未請求", `${formatCurrency(unbilledTotal)}円`, "請求回収待ち"],
+                ].map(([label, value, helper]) => (
+                  <div
+                    key={label}
+                    className="rounded-2xl border border-white/10 bg-white/10 p-4 text-white"
+                  >
+                    <p className="text-xs font-black tracking-[0.16em] text-slate-400">
+                      {label}
+                    </p>
+                    <p className="mt-2 text-2xl font-black text-orange-300">
+                      {value}
+                    </p>
+                    <p className="mt-1 text-xs font-bold text-slate-500">
+                      {helper}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid min-w-0 gap-6 2xl:grid-cols-[minmax(0,1fr)_420px]">
           <div className="min-w-0 space-y-6">
             <div className="rounded-2xl border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
               <div className="mb-5 flex flex-wrap gap-3">
-                <span className="rounded-full bg-slate-100 px-4 py-2 text-sm font-black text-slate-600">
+                <span
+                  className={`rounded-full px-4 py-2 text-sm font-black ring-1 ${progressTone(
+                    lead.progress,
+                  )}`}
+                >
                   {lead.progress}
                 </span>
                 <span className="rounded-full bg-orange-50 px-4 py-2 text-sm font-black text-orange-500">
-                  配信金額 {lead.fee || "未設定"}
+                  配信金額 {feeLabel(lead.fee)}
                 </span>
                 <span className="rounded-full bg-emerald-50 px-4 py-2 text-sm font-black text-emerald-600">
                   配信先 {deliveries.length}社
