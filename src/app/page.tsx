@@ -191,6 +191,51 @@ const searchIntentCards = [
   },
 ];
 
+const urgencyCards = [
+  {
+    label: "今日・明日中",
+    title: "即日対応できる業者を優先",
+    body: "急ぎの場合は、返信速度・対応エリア・トラック空き状況を重視して比較します。",
+    cta: "急ぎで相談する",
+  },
+  {
+    label: "今週中",
+    title: "料金と日程のバランスで比較",
+    body: "複数社の候補を見ながら、希望日時に合う業者を無理なく選べます。",
+    cta: "今週中で探す",
+  },
+  {
+    label: "料金重視",
+    title: "追加費用まで含めて確認",
+    body: "階段作業、搬出距離、家電リサイクル料金などを含めた総額で比べます。",
+    cta: "安い業者を比較",
+  },
+];
+
+const costCheckItems = [
+  "基本料金・作業費・処分費の内訳",
+  "階段作業や搬出距離の追加費用",
+  "家電リサイクル対象品の扱い",
+  "キャンセル料・日時変更の条件",
+  "買取できる品目があるか",
+  "作業後の簡易清掃や養生対応",
+];
+
+const trustOperationItems = [
+  {
+    title: "見積もり内容を記録",
+    body: "金額、対応日時、連絡状況を案件として残せるので、あとから確認しやすい運用にできます。",
+  },
+  {
+    title: "写真つきで認識ズレを減らす",
+    body: "回収量や搬出経路を事前に共有することで、当日の追加説明や金額差を抑えやすくなります。",
+  },
+  {
+    title: "業者ごとの対応品質を比較",
+    body: "料金だけでなく、返信速度・口コミ・対応条件も見ながら選べる設計です。",
+  },
+];
+
 const pickupItems = [
   "ソファ",
   "ベッド",
@@ -204,6 +249,19 @@ const pickupItems = [
   "椅子",
   "エアコン",
   "電子レンジ",
+];
+
+const seoAreaLinks = [
+  "広島市の不用品回収",
+  "東京都の粗大ゴミ処分",
+  "横浜市の家具回収",
+  "大阪市の家電回収",
+  "福岡市の引っ越し不用品",
+  "即日対応の不用品回収",
+  "軽トラック積み放題の見積もり",
+  "ソファ回収の料金比較",
+  "冷蔵庫回収の相見積もり",
+  "遺品整理前の不用品相談",
 ];
 
 const priceCompare = [
@@ -618,6 +676,39 @@ export default function Home() {
       </section>
 
       <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
+        <div className="rounded-2xl border border-slate-200 bg-slate-950 p-5 text-white shadow-sm sm:p-6">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-black text-orange-400">急ぎ度に合わせて探せる</p>
+              <h2 className="mt-1 text-xl font-black sm:text-2xl">
+                今日回収したい人も、安く比べたい人も迷わない
+              </h2>
+            </div>
+            <p className="max-w-md text-sm font-bold leading-6 text-slate-300">
+              問い合わせ前に優先条件を整理しておくと、業者からの返信を比較しやすくなります。
+            </p>
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {urgencyCards.map((card) => (
+              <article key={card.title} className="rounded-xl border border-white/10 bg-white p-4 text-slate-900">
+                <p className="w-fit rounded-full bg-orange-100 px-3 py-1 text-xs font-black text-orange-600">
+                  {card.label}
+                </p>
+                <h3 className="mt-3 text-lg font-black">{card.title}</h3>
+                <p className="mt-2 text-sm font-bold leading-6 text-slate-600">{card.body}</p>
+                <a
+                  href="#contact"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-lg bg-orange-600 px-4 py-3 text-sm font-black text-white"
+                >
+                  {card.cta}
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-black text-orange-600">比較できる項目</p>
@@ -702,6 +793,33 @@ export default function Home() {
       </section>
 
       <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <p className="text-sm font-black text-orange-600">追加費用を見逃さない</p>
+            <h2 className="mt-1 text-xl font-black sm:text-2xl">
+              依頼前に確認したい料金チェックリスト
+            </h2>
+            <p className="mt-3 text-sm font-bold leading-6 text-slate-600">
+              不用品回収は「最初に見た金額」だけでなく、作業条件込みの総額で比べるのが大切です。
+            </p>
+            <a href="#contact" className="mt-5 inline-flex rounded-lg bg-green-600 px-5 py-3 font-black text-white">
+              条件込みで見積もる
+            </a>
+          </div>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {costCheckItems.map((item) => (
+              <div key={item} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm font-black shadow-sm">
+                <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-orange-100 text-xs text-orange-600">
+                  ✓
+                </span>
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
         <div className="rounded-2xl border-2 border-lime-500 bg-lime-50 p-5">
           <h2 className="text-center text-xl font-black text-green-700 sm:text-2xl">
             一括見積もりでこんなにお得！
@@ -739,6 +857,37 @@ export default function Home() {
           <p className="mt-5 rounded-2xl border-2 border-orange-400 bg-white px-4 py-3 text-center text-2xl font-black text-orange-600 sm:rounded-full sm:text-3xl">
             40,000円もお得に！
           </p>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="text-sm font-black text-orange-600">運用まで見据えた安心設計</p>
+              <h2 className="mt-1 text-xl font-black sm:text-2xl">
+                送って終わりではなく、比較・確認・管理までつながる
+              </h2>
+              <p className="mt-3 text-sm font-bold leading-6 text-slate-600">
+                サイトから入った相談は案件として管理し、業者側・運営側で見落としにくい流れにしています。
+              </p>
+            </div>
+            <div className="grid gap-3">
+              {trustOperationItems.map((item, index) => (
+                <article key={item.title} className="rounded-xl bg-slate-50 p-4">
+                  <div className="flex items-start gap-3">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-900 text-sm font-black text-white">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <h3 className="font-black">{item.title}</h3>
+                      <p className="mt-1 text-sm font-bold leading-6 text-slate-600">{item.body}</p>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -891,6 +1040,29 @@ export default function Home() {
                 className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-3 text-center text-sm font-black hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600"
               >
                 {item}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[1180px] px-3 py-4 sm:px-4 sm:py-6 lg:px-5">
+        <div className="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm">
+          <p className="text-sm font-black text-orange-600">地域・品目から探す</p>
+          <h2 className="mt-1 text-xl font-black sm:text-2xl">
+            よく検索される不用品回収の相談内容
+          </h2>
+          <p className="mt-3 text-sm font-bold leading-6 text-slate-600">
+            地域名や回収品目が決まっている方も、そのまま無料見積もりへ進めます。
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {seoAreaLinks.map((label) => (
+              <a
+                key={label}
+                href="#contact"
+                className="rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-black text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 sm:text-sm"
+              >
+                {label}
               </a>
             ))}
           </div>
