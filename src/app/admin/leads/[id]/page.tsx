@@ -156,6 +156,54 @@ function phoneHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
 }
 
+function smsHref(phone: string, message: string) {
+  const cleanPhone = phone.replace(/[^\d+]/g, "");
+
+  return `sms:${cleanPhone}?body=${encodeURIComponent(message)}`;
+}
+
+function customerContactTemplate(lead: Lead) {
+  return `${lead.name || "お客様"}様
+回収見積もりナビです。
+
+${lead.request || "不用品回収"}のお見積もり依頼を確認しました。
+お住まいの地域: ${lead.address || "未入力"}
+ご希望日時: ${lead.desiredDate || "未入力"}
+
+このあと担当者より、回収内容・日程・概算料金について確認のご連絡をいたします。
+写真や追加情報がある場合は、あわせてお知らせください。`;
+}
+
+function operatorChecklist(lead: Lead, deliveries: LeadDeliveryRow[]) {
+  return [
+    {
+      label: "電話確認",
+      done: lead.progress !== "未対応" || Boolean(lead.memo),
+      helper: "品目・量・階段・駐車場所を確認",
+    },
+    {
+      label: "写真確認",
+      done: (lead.photoUrls?.length ?? 0) > 0,
+      helper: "写真がない場合は追加送付を依頼",
+    },
+    {
+      label: "業者配信",
+      done: deliveries.length > 0,
+      helper: "対応エリアと上限を見て配信",
+    },
+    {
+      label: "見積金額",
+      done: Boolean(lead.estimate),
+      helper: "見積金額または概算を記録",
+    },
+    {
+      label: "請求確認",
+      done: lead.progress !== "成約" || deliveries.length > 0,
+      helper: "成約後は請求・入金状況を確認",
+    },
+  ];
+}
+
 async function loadLeadDetail(leadId: string): Promise<LeadDetailData | null> {
   if (!hasSupabaseServerEnv()) {
     return null;
@@ -250,6 +298,9 @@ export default async function AdminLeadDetailPage({
   const unbilledTotal = billingItems
     .filter((item) => item.status === "unbilled")
     .reduce((total, item) => total + item.amount, 0);
+  const contactTemplate = customerContactTemplate(lead);
+  const checklist = operatorChecklist(lead, deliveries);
+  const completedChecklist = checklist.filter((item) => item.done).length;
 
   return (
     <AdminShell
@@ -381,6 +432,90 @@ export default async function AdminLeadDetailPage({
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-6 grid gap-6 2xl:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-3xl border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-xs font-black tracking-[0.22em] text-orange-500">
+                  CONTACT READY
+                </p>
+                <h2 className="mt-1 text-2xl font-black text-slate-900">
+                  初回連絡セット
+                </h2>
+                <p className="mt-2 text-sm font-bold leading-6 text-slate-500">
+                  電話・SMS・確認文面をまとめています。
+                </p>
+              </div>
+              <div className="flex shrink-0 gap-2">
+                <a
+                  href={phoneHref(lead.phone)}
+                  className="rounded-md bg-orange-500 px-4 py-3 text-sm font-black text-white shadow-sm hover:bg-orange-600"
+                >
+                  電話する
+                </a>
+                <a
+                  href={smsHref(lead.phone, contactTemplate)}
+                  className="rounded-md border border-slate-300 px-4 py-3 text-sm font-black text-slate-700 hover:border-orange-400 hover:text-orange-500"
+                >
+                  SMS
+                </a>
+              </div>
+            </div>
+
+            <textarea
+              readOnly
+              value={contactTemplate}
+              rows={9}
+              className="mt-5 w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-bold leading-7 text-slate-700 outline-none"
+            />
+            <p className="mt-3 text-xs font-bold text-slate-400">
+              文面は選択してコピーできます。電話後の内容は下の管理メモに残してください。
+            </p>
+          </div>
+
+          <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-xl shadow-slate-300/70">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-black tracking-[0.22em] text-orange-300">
+                  OPERATION CHECK
+                </p>
+                <h2 className="mt-1 text-2xl font-black">対応チェックリスト</h2>
+                <p className="mt-2 text-sm font-bold text-slate-400">
+                  完了 {completedChecklist} / {checklist.length}
+                </p>
+              </div>
+              <span className="rounded-2xl bg-white/10 px-4 py-3 text-2xl font-black text-orange-300">
+                {Math.round((completedChecklist / checklist.length) * 100)}%
+              </span>
+            </div>
+
+            <div className="mt-5 grid gap-3">
+              {checklist.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4"
+                >
+                  <span
+                    className={`mt-0.5 grid size-7 shrink-0 place-items-center rounded-full text-sm font-black ${
+                      item.done
+                        ? "bg-emerald-400 text-slate-950"
+                        : "bg-white/10 text-slate-400"
+                    }`}
+                  >
+                    {item.done ? "✓" : ""}
+                  </span>
+                  <div>
+                    <p className="font-black text-white">{item.label}</p>
+                    <p className="mt-1 text-sm font-bold text-slate-400">
+                      {item.helper}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
