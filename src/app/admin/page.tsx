@@ -82,6 +82,7 @@ async function loadAdminData() {
       deliveries: [] as Delivery[],
       billingItems: [] as BillingItem[],
       notificationLogs: [] as NotificationLog[],
+      loadedAt: new Date().toISOString(),
       error: "Supabaseが未設定です。",
     };
   }
@@ -125,6 +126,7 @@ async function loadAdminData() {
     deliveries: (deliveriesResult.data ?? []) as Delivery[],
     billingItems: (billingResult.data ?? []) as BillingItem[],
     notificationLogs: (notificationResult.data ?? []) as NotificationLog[],
+    loadedAt: new Date().toISOString(),
     error,
   };
 }
@@ -159,6 +161,72 @@ function statusLabel(status: BillingItem["status"]) {
   return labels[status];
 }
 
+function elapsedHours(value: string, nowMs: number) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return 0;
+  }
+
+  return Math.max(0, (nowMs - date.getTime()) / (1000 * 60 * 60));
+}
+
+function elapsedLabel(value: string, nowMs: number) {
+  const hours = elapsedHours(value, nowMs);
+
+  if (hours >= 24) {
+    return `${Math.floor(hours / 24)}日経過`;
+  }
+
+  if (hours >= 1) {
+    return `${Math.floor(hours)}時間経過`;
+  }
+
+  return "1時間以内";
+}
+
+function priorityBadge(lead: Lead, deliveryCount: number, nowMs: number) {
+  const hours = elapsedHours(lead.requested_at, nowMs);
+
+  if (lead.progress === "未対応" && deliveryCount === 0 && hours >= 6) {
+    return {
+      label: "最優先",
+      tone: "bg-red-100 text-red-600",
+      action: "未配信のまま時間が経っています。すぐに配信先を決めてください。",
+    };
+  }
+
+  if (lead.progress === "未対応" && deliveryCount === 0) {
+    return {
+      label: "配信待ち",
+      tone: "bg-orange-100 text-orange-600",
+      action: "対応できる業者へ配信してください。",
+    };
+  }
+
+  if (lead.progress === "未対応") {
+    return {
+      label: "初回対応",
+      tone: "bg-amber-100 text-amber-700",
+      action: "業者の返信状況を確認し、必要なら追い配信します。",
+    };
+  }
+
+  if (lead.progress === "現地見積" || lead.progress === "商談中") {
+    return {
+      label: "追客",
+      tone: "bg-blue-100 text-blue-700",
+      action: "見積金額と次回連絡予定をメモしてください。",
+    };
+  }
+
+  return {
+    label: "確認",
+    tone: "bg-slate-100 text-slate-600",
+    action: "状況に変更がないか確認します。",
+  };
+}
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   if (!(await isAdminLoggedIn())) {
     redirect("/admin/login");
@@ -168,7 +236,15 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const q = messages.q?.trim() ?? "";
   const progressFilter = messages.progress ?? "";
   const partnerFilter = messages.partner ?? "";
-  const { partners, leads, deliveries, billingItems, notificationLogs, error } =
+  const {
+    partners,
+    leads,
+    deliveries,
+    billingItems,
+    notificationLogs,
+    loadedAt,
+    error,
+  } =
     await loadAdminData();
   const activePartners = partners.filter((partner) => partner.status === "active");
   const unhandledLeads = leads.filter((lead) => lead.progress === "未対応");
@@ -226,6 +302,51 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     (log) => log.status === "failed",
   );
   const pausedPartners = partners.filter((partner) => partner.status === "paused");
+  const nowMs = Date.parse(loadedAt);
+  const leadsWithoutDelivery = leads.filter(
+    (lead) => (deliveriesByLead[lead.id] ?? []).length === 0,
+  );
+  const staleUnhandledLeads = unhandledLeads.filter(
+    (lead) => elapsedHours(lead.requested_at, nowMs) >= 6,
+  );
+  const hotLeads = leads
+    .map((lead) => {
+      const deliveryCount = (deliveriesByLead[lead.id] ?? []).length;
+      const priority = priorityBadge(lead, deliveryCount, nowMs);
+      const score =
+        (lead.progress === "未対応" ? 40 : 0) +
+        (deliveryCount === 0 ? 30 : 0) +
+        Math.min(30, Math.floor(elapsedHours(lead.requested_at, nowMs))) +
+        (lead.phone ? 5 : 0);
+
+      return { lead, deliveryCount, priority, score };
+    })
+    .filter(({ lead }) => !["成約", "失注"].includes(lead.progress))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
+  const actionCards = [
+    {
+      title: "最優先対応",
+      value: `${staleUnhandledLeads.length}件`,
+      body: "未対応のまま6時間以上経過",
+      href: "/admin/board",
+      tone: "border-red-100 bg-red-50 text-red-600",
+    },
+    {
+      title: "配信待ち",
+      value: `${leadsWithoutDelivery.length}件`,
+      body: "まだ業者に配信されていない案件",
+      href: "/admin#leads",
+      tone: "border-orange-100 bg-orange-50 text-orange-600",
+    },
+    {
+      title: "通知エラー",
+      value: `${failedNotifications.length}件`,
+      body: "メール・システム通知の失敗",
+      href: "/admin#notifications",
+      tone: "border-amber-100 bg-amber-50 text-amber-700",
+    },
+  ];
 
   return (
     <AdminShell
@@ -287,7 +408,93 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </div>
           ) : null}
 
-          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <section className="grid gap-4 xl:grid-cols-[1.2fr_0.8fr]">
+            <div className="rounded-3xl border border-slate-800 bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/60">
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <p className="text-xs font-black tracking-[0.22em] text-orange-300">
+                    TODAY PRIORITY
+                  </p>
+                  <h2 className="mt-2 text-2xl font-black">今日やるべき案件</h2>
+                  <p className="mt-2 text-sm font-bold leading-7 text-slate-300">
+                    未配信・未対応・時間経過を優先して並べています。
+                  </p>
+                </div>
+                <Link
+                  href="/admin/board"
+                  className="w-fit rounded-md bg-white px-4 py-3 text-sm font-black text-slate-950 hover:bg-orange-100"
+                >
+                  案件ボードで見る
+                </Link>
+              </div>
+
+              <div className="mt-5 grid gap-3">
+                {hotLeads.length > 0 ? (
+                  hotLeads.map(({ lead, deliveryCount, priority }) => (
+                    <Link
+                      key={lead.id}
+                      href={`/admin/leads/${lead.id}`}
+                      className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.06] p-4 transition hover:border-orange-300 hover:bg-white/[0.1] lg:grid-cols-[120px_1fr_150px]"
+                    >
+                      <div>
+                        <span
+                          className={`inline-flex rounded-full px-3 py-1 text-xs font-black ${priority.tone}`}
+                        >
+                          {priority.label}
+                        </span>
+                        <p className="mt-2 text-xs font-black text-slate-400">
+                          {elapsedLabel(lead.requested_at, nowMs)}
+                        </p>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate font-black text-white">
+                          {lead.request}
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-slate-300">
+                          {lead.name} / {lead.address}
+                        </p>
+                        <p className="mt-2 text-sm font-bold text-orange-200">
+                          {priority.action}
+                        </p>
+                      </div>
+                      <div className="rounded-xl bg-slate-900/80 p-3 text-sm font-black text-slate-300">
+                        <p>配信 {deliveryCount}社</p>
+                        <p className="mt-1 text-slate-500">
+                          {formatDate(lead.requested_at)}
+                        </p>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <p className="rounded-2xl bg-white/[0.06] p-5 text-sm font-bold text-slate-300">
+                    いま急ぎの案件はありません。
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="grid gap-3">
+              {actionCards.map((card) => (
+                <Link
+                  key={card.title}
+                  href={card.href}
+                  className={`rounded-2xl border p-5 shadow-xl shadow-slate-200/70 transition hover:-translate-y-0.5 ${card.tone}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-black">{card.title}</p>
+                      <p className="mt-2 text-sm font-bold text-slate-500">
+                        {card.body}
+                      </p>
+                    </div>
+                    <p className="text-3xl font-black">{card.value}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
             {[
               ["総案件数", leads.length, "件"],
               ["未対応案件", unhandledLeads.length, "件"],
@@ -547,7 +754,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/70 bg-white/85 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
+            <div id="notifications" className="rounded-2xl border border-white/70 bg-white/85 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
               <div className="mb-5 flex items-center justify-between">
                 <h2 className="text-2xl font-black">通知ログ</h2>
                 <span className="rounded-full bg-blue-50 px-3 py-1 text-sm font-black text-blue-600">
