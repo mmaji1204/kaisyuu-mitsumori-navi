@@ -15,6 +15,76 @@ const progressOptions: Lead["progress"][] = [
   "失注",
 ];
 
+function cleanNumber(value: string) {
+  return Number(value.replace(/[^0-9]/g, ""));
+}
+
+function hasEstimate(lead: Lead) {
+  return Boolean(lead.estimate && !lead.estimate.startsWith("例"));
+}
+
+function actionLabel(lead: Lead) {
+  if (lead.progress === "未対応") {
+    return "まず電話";
+  }
+
+  if (!hasEstimate(lead)) {
+    return "見積入力";
+  }
+
+  if (lead.progress === "現地見積") {
+    return "予約確認";
+  }
+
+  if (lead.progress === "商談中") {
+    return "追客";
+  }
+
+  return "確認";
+}
+
+function progressTone(progress: Lead["progress"]) {
+  if (progress === "成約") {
+    return "bg-emerald-100 text-emerald-700";
+  }
+
+  if (progress === "失注") {
+    return "bg-slate-100 text-slate-500";
+  }
+
+  if (progress === "未対応") {
+    return "bg-orange-100 text-orange-700";
+  }
+
+  return "bg-blue-100 text-blue-700";
+}
+
+function priorityScore(lead: Lead) {
+  let score = 0;
+
+  if (lead.status === "課金") {
+    score += 20;
+  }
+
+  if (lead.progress === "未対応") {
+    score += 40;
+  }
+
+  if (!hasEstimate(lead)) {
+    score += 20;
+  }
+
+  if (lead.photoUrls?.length) {
+    score += 10;
+  }
+
+  if (lead.message) {
+    score += 5;
+  }
+
+  return score;
+}
+
 function loadStoredLeads() {
   try {
     return JSON.parse(localStorage.getItem(LEADS_STORAGE_KEY) ?? "[]") as Lead[];
@@ -92,17 +162,14 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
 
   const summaryCards = useMemo(() => {
     const activeLeads = leads.filter((lead) => lead.status === "課金");
-    const today = new Date();
-    const todayText = `${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}`;
     const totalFee = activeLeads.reduce((sum, lead) => {
-      const amount = Number(lead.fee.replace(/[^0-9]/g, ""));
-      return sum + amount;
+      return sum + cleanNumber(lead.fee);
     }, 0);
 
     return [
       {
-        label: "本日の新規案件",
-        value: String(leads.filter((lead) => lead.date.startsWith(todayText)).length),
+        label: "配信案件",
+        value: String(activeLeads.length),
         unit: "件",
         color: "text-blue-500",
       },
@@ -119,12 +186,45 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
         color: "text-emerald-500",
       },
       {
+        label: "見積未入力",
+        value: String(activeLeads.filter((lead) => !hasEstimate(lead)).length),
+        unit: "件",
+        color: "text-rose-500",
+      },
+      {
         label: "配信金額合計",
         value: totalFee.toLocaleString(),
         unit: "円",
         color: "text-slate-700",
       },
     ];
+  }, [leads]);
+
+  const priorityLeads = useMemo(() => {
+    return [...leads]
+      .filter((lead) => lead.status === "課金" && lead.progress !== "成約")
+      .sort((a, b) => priorityScore(b) - priorityScore(a))
+      .slice(0, 3);
+  }, [leads]);
+
+  const salesMetrics = useMemo(() => {
+    const activeLeads = leads.filter((lead) => lead.status === "課金");
+    const closedLeads = activeLeads.filter((lead) => lead.progress === "成約");
+    const estimatedLeads = activeLeads.filter(hasEstimate);
+    const estimatedTotal = estimatedLeads.reduce(
+      (sum, lead) => sum + cleanNumber(lead.estimate),
+      0,
+    );
+
+    return {
+      closeRate: activeLeads.length
+        ? Math.round((closedLeads.length / activeLeads.length) * 100)
+        : 0,
+      estimatedAverage: estimatedLeads.length
+        ? Math.round(estimatedTotal / estimatedLeads.length).toLocaleString()
+        : "0",
+      nextCalls: activeLeads.filter((lead) => lead.progress === "未対応").length,
+    };
   }, [leads]);
 
   const insightLead = useMemo(
@@ -277,7 +377,7 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
 
   return (
     <>
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {summaryCards.map((card) => (
           <div
             key={card.label}
@@ -292,6 +392,88 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
             </p>
           </div>
         ))}
+      </div>
+
+      <div className="mb-7 grid gap-5 xl:grid-cols-[1.25fr_0.75fr]">
+        <section className="rounded-2xl border border-slate-900/10 bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/50">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-black tracking-[0.18em] text-orange-300">
+                TODAY ACTION
+              </p>
+              <h2 className="mt-2 text-2xl font-black">今日の優先対応</h2>
+            </div>
+            <p className="text-sm font-bold text-slate-300">
+              未対応・見積未入力・写真ありを優先表示
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-3 lg:grid-cols-3">
+            {priorityLeads.map((lead) => (
+              <div
+                key={lead.id}
+                className="rounded-2xl border border-white/10 bg-white/10 p-4"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-orange-500 px-3 py-1 text-xs font-black">
+                    {actionLabel(lead)}
+                  </span>
+                  <span className="text-xs font-bold text-slate-300">{lead.date}</span>
+                </div>
+                <p className="mt-4 text-lg font-black">{lead.name} 様</p>
+                <p className="mt-1 text-sm font-bold text-slate-300">{lead.address}</p>
+                <p className="mt-3 line-clamp-2 text-sm font-bold leading-6 text-slate-200">
+                  {lead.request}
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-2 text-center text-xs font-black">
+                  <a
+                    href={`tel:${lead.phone}`}
+                    className="rounded-xl bg-white px-3 py-3 text-slate-950"
+                  >
+                    電話
+                  </a>
+                  <a
+                    href={`/business/users/${lead.id}`}
+                    className="rounded-xl border border-white/20 px-3 py-3 text-white"
+                  >
+                    詳細
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="rounded-2xl border border-white/70 bg-white/90 p-5 shadow-xl shadow-slate-200/70 backdrop-blur">
+          <p className="text-xs font-black tracking-[0.18em] text-slate-400">
+            SALES CHECK
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            対応の進み具合
+          </h2>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3 xl:grid-cols-1">
+            <div className="rounded-2xl bg-emerald-50 p-4">
+              <p className="text-sm font-black text-emerald-700">成約率</p>
+              <p className="mt-2 text-3xl font-black text-emerald-600">
+                {salesMetrics.closeRate}%
+              </p>
+            </div>
+            <div className="rounded-2xl bg-orange-50 p-4">
+              <p className="text-sm font-black text-orange-700">次に電話する案件</p>
+              <p className="mt-2 text-3xl font-black text-orange-600">
+                {salesMetrics.nextCalls}
+                <span className="ml-1 text-base">件</span>
+              </p>
+            </div>
+            <div className="rounded-2xl bg-blue-50 p-4">
+              <p className="text-sm font-black text-blue-700">平均見積金額</p>
+              <p className="mt-2 text-3xl font-black text-blue-600">
+                {salesMetrics.estimatedAverage}
+                <span className="ml-1 text-base">円</span>
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
 
       <div className="mb-7 rounded-2xl border border-white/70 bg-white/90 p-5 shadow-xl shadow-slate-200/70 backdrop-blur">
@@ -389,7 +571,94 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
         </div>
       ) : null}
 
-      <div className="relative overflow-x-auto rounded-2xl border border-white/70 bg-white/70 p-3 shadow-xl shadow-slate-200/70 backdrop-blur">
+      <div className="mb-4 grid gap-3 lg:hidden">
+        {filteredLeads.map((lead) => (
+          <article
+            key={lead.id}
+            className="rounded-2xl border border-white/70 bg-white/95 p-4 shadow-xl shadow-slate-200/70"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="truncate text-lg font-black text-slate-900">
+                  {lead.name} 様
+                </p>
+                <p className="mt-1 text-xs font-bold text-slate-400">{lead.date}</p>
+              </div>
+              <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-black ${progressTone(lead.progress)}`}>
+                {lead.progress}
+              </span>
+            </div>
+            <p className="mt-4 text-sm font-black leading-6 text-slate-700">
+              {lead.request}
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-3 text-sm font-bold text-slate-500">
+              <p className="rounded-xl bg-slate-50 p-3">
+                住所
+                <span className="mt-1 block font-black text-slate-800">
+                  {lead.address}
+                </span>
+              </p>
+              <p className="rounded-xl bg-slate-50 p-3">
+                配信金額
+                <span className="mt-1 block font-black text-slate-800">
+                  {lead.fee}
+                </span>
+              </p>
+            </div>
+            {lead.message ? (
+              <p className="mt-3 rounded-xl bg-orange-50 p-3 text-sm font-bold leading-6 text-orange-700">
+                {lead.message}
+              </p>
+            ) : null}
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <select
+                value={lead.progress}
+                onChange={(event) =>
+                  updateLead(lead.id, {
+                    progress: event.target.value as Lead["progress"],
+                  })
+                }
+                className="h-12 rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold"
+              >
+                {progressOptions.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+              <input
+                inputMode="numeric"
+                value={lead.estimate.startsWith("例") ? "" : lead.estimate}
+                onChange={(event) =>
+                  updateLead(lead.id, { estimate: event.target.value })
+                }
+                placeholder="見積金額"
+                className="h-12 rounded-xl border border-slate-200 px-3 text-sm font-bold"
+              />
+            </div>
+            <div className="mt-3 grid grid-cols-3 gap-2 text-center text-sm font-black">
+              <a
+                href={`tel:${lead.phone}`}
+                className="rounded-xl bg-orange-500 px-3 py-3 text-white"
+              >
+                電話
+              </a>
+              <a
+                href={`/business/users/${lead.id}`}
+                className="rounded-xl bg-slate-900 px-3 py-3 text-white"
+              >
+                詳細
+              </a>
+              <button
+                onClick={() => updateLead(lead.id, { memo: lead.memo || "確認済み" })}
+                className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-slate-700"
+              >
+                保存
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="relative hidden overflow-x-auto rounded-2xl border border-white/70 bg-white/70 p-3 shadow-xl shadow-slate-200/70 backdrop-blur lg:block">
         {insightLead ? (
           <div className="absolute right-10 top-16 z-10 w-[min(520px,calc(100vw-2rem))] rounded-2xl bg-white shadow-2xl shadow-slate-300">
             <div className="rounded-t-lg bg-sky-50 px-6 py-4">
