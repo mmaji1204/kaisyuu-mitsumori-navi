@@ -51,6 +51,51 @@ function formatCurrency(value: number) {
   return new Intl.NumberFormat("ja-JP").format(value);
 }
 
+function formatDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("ja-JP", {
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function statusLabel(status: BillingItem["status"]) {
+  const labels = {
+    unbilled: "未請求",
+    invoiced: "請求済み",
+    paid: "入金済み",
+    void: "無効",
+  };
+
+  return labels[status];
+}
+
+function statusTone(status: BillingItem["status"]) {
+  const tones = {
+    unbilled: "bg-orange-100 text-orange-600",
+    invoiced: "bg-blue-100 text-blue-700",
+    paid: "bg-emerald-100 text-emerald-700",
+    void: "bg-slate-100 text-slate-500",
+  };
+
+  return tones[status];
+}
+
+function percent(value: number, total: number) {
+  if (total === 0) {
+    return 0;
+  }
+
+  return Math.round((value / total) * 100);
+}
+
 async function loadBillingData() {
   if (!hasSupabaseServerEnv()) {
     return {
@@ -135,6 +180,37 @@ export default async function AdminBillingPage({
       .filter((item) => item.status !== "void")
       .reduce((sum, item) => sum + item.amount, 0),
   };
+  const collectionRate = percent(totals.paid, totals.all);
+  const attentionItems = filteredBillingItems
+    .filter((item) => item.status === "unbilled" || item.status === "invoiced")
+    .sort((a, b) => b.amount - a.amount)
+    .slice(0, 5);
+  const partnerBillingSummaries = partners
+    .map((partner) => {
+      const items = filteredBillingItems.filter(
+        (item) => item.partner_id === partner.id,
+      );
+      const activeItems = items.filter((item) => item.status !== "void");
+      const total = activeItems.reduce((sum, item) => sum + item.amount, 0);
+      const unbilled = items
+        .filter((item) => item.status === "unbilled")
+        .reduce((sum, item) => sum + item.amount, 0);
+      const paid = items
+        .filter((item) => item.status === "paid")
+        .reduce((sum, item) => sum + item.amount, 0);
+
+      return {
+        partner,
+        count: activeItems.length,
+        paid,
+        paidRate: percent(paid, total),
+        total,
+        unbilled,
+      };
+    })
+    .filter((summary) => summary.total > 0 || summary.unbilled > 0)
+    .sort((a, b) => b.unbilled - a.unbilled || b.total - a.total)
+    .slice(0, 6);
 
   return (
     <main className="min-h-screen bg-[#f4f6fa] text-slate-800">
@@ -192,6 +268,157 @@ export default async function AdminBillingPage({
           ))}
         </section>
 
+        <section className="mt-7 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5 text-white shadow-xl shadow-slate-300/70">
+            <p className="text-xs font-black tracking-[0.2em] text-orange-300">
+              CASH FLOW
+            </p>
+            <h2 className="mt-2 text-2xl font-black">入金状況サマリー</h2>
+            <p className="mt-2 text-sm font-bold leading-7 text-slate-300">
+              月末に見るべき未請求・請求済み・入金済みをまとめます。
+            </p>
+
+            <div className="mt-6 rounded-2xl bg-white p-5 text-slate-950">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-sm font-black text-slate-400">回収率</p>
+                  <p className="mt-1 text-5xl font-black text-emerald-600">
+                    {collectionRate}%
+                  </p>
+                </div>
+                <p className="text-right text-sm font-bold leading-6 text-slate-500">
+                  入金済み {formatCurrency(totals.paid)}円
+                  <br />
+                  対象合計 {formatCurrency(totals.all)}円
+                </p>
+              </div>
+              <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-100">
+                <div
+                  className="h-full rounded-full bg-emerald-500"
+                  style={{ width: `${collectionRate}%` }}
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <Link
+                href="/admin/billing?status=unbilled"
+                className="rounded-xl bg-orange-500 px-4 py-3 text-sm font-black text-white hover:bg-orange-600"
+              >
+                未請求だけ見る
+              </Link>
+              <Link
+                href="/admin/billing?status=paid"
+                className="rounded-xl bg-white/[0.08] px-4 py-3 text-sm font-black text-white hover:bg-white/[0.14]"
+              >
+                入金済みだけ見る
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/70 bg-white p-5 shadow-xl shadow-slate-200/70">
+            <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-black tracking-[0.18em] text-slate-400">
+                  ATTENTION
+                </p>
+                <h2 className="mt-2 text-2xl font-black">優先して確認する請求</h2>
+              </div>
+              <p className="text-sm font-bold text-slate-400">
+                金額が大きい順に表示
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {attentionItems.length > 0 ? (
+                attentionItems.map((item) => {
+                  const partner = partnerMap.get(item.partner_id);
+                  const delivery = deliveryMap.get(item.lead_delivery_id);
+                  const lead = delivery ? leadMap.get(delivery.lead_id) : null;
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="grid gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 sm:grid-cols-[1fr_auto]"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-black ${statusTone(item.status)}`}
+                          >
+                            {statusLabel(item.status)}
+                          </span>
+                          <span className="text-xs font-black text-slate-400">
+                            {formatDate(item.created_at)}
+                          </span>
+                        </div>
+                        <p className="mt-2 font-black text-slate-900">
+                          {lead?.request ?? item.description ?? "案件配信料"}
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-slate-500">
+                          {partner?.name ?? "不明な業者"} /{" "}
+                          {lead ? `${lead.name}・${lead.address}` : "案件なし"}
+                        </p>
+                      </div>
+                      <p className="text-2xl font-black text-orange-500">
+                        {formatCurrency(item.amount)}円
+                      </p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p className="rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-500">
+                  優先確認が必要な請求はありません。
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-7 rounded-2xl border border-white/70 bg-white p-5 shadow-xl shadow-slate-200/70">
+          <div className="mb-5">
+            <p className="text-xs font-black tracking-[0.18em] text-slate-400">
+              PARTNER BALANCE
+            </p>
+            <h2 className="mt-2 text-2xl font-black">業者別の請求状況</h2>
+          </div>
+          <div className="grid gap-3 lg:grid-cols-2">
+            {partnerBillingSummaries.length > 0 ? (
+              partnerBillingSummaries.map((summary) => (
+                <Link
+                  key={summary.partner.id}
+                  href={`/admin/partners/${summary.partner.id}`}
+                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4 transition hover:border-orange-300 hover:bg-orange-50"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="font-black text-slate-900">
+                        {summary.partner.name}
+                      </p>
+                      <p className="mt-1 text-sm font-bold text-slate-500">
+                        請求対象 {summary.count}件 / 入金率 {summary.paidRate}%
+                      </p>
+                    </div>
+                    <p className="text-xl font-black text-orange-500">
+                      未請求 {formatCurrency(summary.unbilled)}円
+                    </p>
+                  </div>
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
+                    <div
+                      className="h-full rounded-full bg-emerald-500"
+                      style={{ width: `${summary.paidRate}%` }}
+                    />
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p className="rounded-xl bg-slate-50 p-4 text-sm font-bold text-slate-500">
+                業者別の請求データはまだありません。
+              </p>
+            )}
+          </div>
+        </section>
+
         <section className="mt-7 rounded-xl bg-white p-6 shadow-sm">
           <form
             action="/admin/billing"
@@ -237,8 +464,65 @@ export default async function AdminBillingPage({
             </button>
           </form>
 
+          <div className="mt-6 space-y-3 lg:hidden">
+            {filteredBillingItems.map((item) => {
+              const partner = partnerMap.get(item.partner_id);
+              const delivery = deliveryMap.get(item.lead_delivery_id);
+              const lead = delivery ? leadMap.get(delivery.lead_id) : null;
+
+              return (
+                <div
+                  key={item.id}
+                  className="rounded-2xl border border-slate-100 bg-slate-50 p-4"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-black ${statusTone(item.status)}`}
+                    >
+                      {statusLabel(item.status)}
+                    </span>
+                    <p className="text-xl font-black text-orange-500">
+                      {formatCurrency(item.amount)}円
+                    </p>
+                  </div>
+                  <p className="mt-3 font-black text-slate-900">
+                    {lead?.request ?? item.description ?? "案件配信料"}
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-slate-500">
+                    {partner?.name ?? "不明な業者"}
+                  </p>
+                  <p className="mt-1 text-sm font-bold text-slate-500">
+                    {lead
+                      ? `${lead.name} / ${lead.address} / ${lead.phone}`
+                      : "-"}
+                  </p>
+                  <form
+                    action={`/api/admin/billing/${item.id}`}
+                    method="post"
+                    className="mt-4 grid grid-cols-[1fr_auto] gap-2"
+                  >
+                    <input type="hidden" name="return_to" value="/admin/billing" />
+                    <select
+                      name="status"
+                      defaultValue={item.status}
+                      className="h-11 min-w-0 rounded-md border border-slate-300 px-2 text-sm font-bold"
+                    >
+                      <option value="unbilled">未請求</option>
+                      <option value="invoiced">請求済み</option>
+                      <option value="paid">入金済み</option>
+                      <option value="void">無効</option>
+                    </select>
+                    <button className="rounded-md bg-slate-900 px-4 text-sm font-black text-white">
+                      保存
+                    </button>
+                  </form>
+                </div>
+              );
+            })}
+          </div>
+
           <div className="mt-6 overflow-x-auto">
-            <table className="w-full min-w-[900px] text-left text-sm">
+            <table className="hidden w-full min-w-[900px] text-left text-sm lg:table">
               <thead className="text-xs font-black text-slate-400">
                 <tr>
                   <th className="py-3">月</th>
