@@ -30,6 +30,14 @@ type BillingItem = {
   status: "unbilled" | "invoiced" | "paid" | "void";
 };
 
+type Delivery = {
+  lead_id: string;
+  partner_id: string;
+  delivery_status: string;
+  fee: string | null;
+  created_at: string;
+};
+
 const funnelSteps: LeadProgress[] = [
   "未対応",
   "現地見積",
@@ -84,22 +92,28 @@ async function loadAnalyticsData() {
   if (!hasSupabaseServerEnv()) {
     return {
       billingItems: [] as BillingItem[],
+      deliveries: [] as Delivery[],
       leads: [] as Lead[],
       partners: [] as Partner[],
     };
   }
 
   const supabase = createSupabaseAdminClient();
-  const [leadsResult, partnersResult, billingResult] = await Promise.all([
+  const [leadsResult, partnersResult, billingResult, deliveriesResult] =
+    await Promise.all([
     supabase.from("leads").select("*").order("requested_at", {
       ascending: false,
     }),
     supabase.from("partners").select("id, name, status"),
     supabase.from("billing_items").select("*"),
+    supabase.from("lead_deliveries").select("*").order("created_at", {
+      ascending: false,
+    }),
   ]);
 
   return {
     billingItems: (billingResult.data ?? []) as BillingItem[],
+    deliveries: (deliveriesResult.data ?? []) as Delivery[],
     leads: (leadsResult.data ?? []) as Lead[],
     partners: (partnersResult.data ?? []) as Partner[],
   };
@@ -122,7 +136,7 @@ export default async function AdminAnalyticsPage() {
     redirect("/admin/login");
   }
 
-  const { billingItems, leads, partners } = await loadAnalyticsData();
+  const { billingItems, deliveries, leads, partners } = await loadAnalyticsData();
   const partnerMap = new Map(partners.map((partner) => [partner.id, partner.name]));
   const activePartnerCount = partners.filter(
     (partner) => partner.status === "active",
@@ -151,14 +165,28 @@ export default async function AdminAnalyticsPage() {
   const averageDailyLeads =
     dailyCount === 0 ? 0 : Math.round((leads.length / dailyCount) * 10) / 10;
   const duplicateCount = leads.filter((lead) => lead.duplicate_warning).length;
+  const deliveredLeadIds = new Set(deliveries.map((delivery) => delivery.lead_id));
+  const deliveryCoverageRate =
+    leads.length === 0 ? 0 : (deliveredLeadIds.size / leads.length) * 100;
+  const collectionRate =
+    totalSales === 0 ? 0 : (paidTotal / totalSales) * 100;
   const byMonth = groupedCounts(leads, (lead) => monthKey(lead.requested_at))
     .sort((a, b) => a[0].localeCompare(b[0]))
     .slice(-8);
   const monthMax = Math.max(...byMonth.map(([, count]) => count), 1);
+  const lastMonthCount = byMonth.at(-1)?.[1] ?? 0;
+  const previousMonthCount = byMonth.at(-2)?.[1] ?? 0;
+  const monthTrend =
+    previousMonthCount === 0
+      ? lastMonthCount > 0
+        ? 100
+        : 0
+      : ((lastMonthCount - previousMonthCount) / previousMonthCount) * 100;
   const byArea = groupedCounts(leads, (lead) => areaKey(lead.address))
     .sort((a, b) => b[1] - a[1])
     .slice(0, 8);
   const areaMax = Math.max(...byArea.map(([, count]) => count), 1);
+  const topArea = byArea[0]?.[0] ?? "未計測";
   const salesByPartner = Array.from(
     billingItems
       .filter((item) => item.status !== "void")
@@ -169,6 +197,66 @@ export default async function AdminAnalyticsPage() {
       .entries(),
   ).sort((a, b) => b[1] - a[1]);
   const salesMax = Math.max(...salesByPartner.map(([, amount]) => amount), 1);
+  const partnerDeliveryStats = partners
+    .map((partner) => {
+      const partnerDeliveries = deliveries.filter(
+        (delivery) => delivery.partner_id === partner.id,
+      );
+      const sales = salesByPartner.find(([partnerId]) => partnerId === partner.id)?.[1] ?? 0;
+
+      return {
+        partner,
+        deliveryCount: partnerDeliveries.length,
+        sales,
+        averageFee:
+          partnerDeliveries.length === 0
+            ? 0
+            : Math.round(sales / partnerDeliveries.length),
+      };
+    })
+    .sort((a, b) => b.deliveryCount - a.deliveryCount)
+    .slice(0, 6);
+  const actionPlan = [
+    {
+      title: "未対応案件を減らす",
+      value: formatPercent(unhandledRate),
+      body:
+        unhandledRate >= 25
+          ? "初動が遅れると成約率が落ちます。案件ボードで新着対応を優先してください。"
+          : "未対応率は抑えられています。今の対応速度を維持しましょう。",
+      href: "/admin/board",
+      tone:
+        unhandledRate >= 25
+          ? "border-red-100 bg-red-50 text-red-600"
+          : "border-emerald-100 bg-emerald-50 text-emerald-700",
+    },
+    {
+      title: "配信漏れをなくす",
+      value: formatPercent(deliveryCoverageRate),
+      body:
+        deliveryCoverageRate < 90
+          ? "業者へ配信されていない案件があります。配信待ち案件を確認してください。"
+          : "ほとんどの案件が業者へ配信されています。",
+      href: "/admin#leads",
+      tone:
+        deliveryCoverageRate < 90
+          ? "border-orange-100 bg-orange-50 text-orange-600"
+          : "border-emerald-100 bg-emerald-50 text-emerald-700",
+    },
+    {
+      title: "入金回収を確認する",
+      value: formatPercent(collectionRate),
+      body:
+        unbilledTotal > 0
+          ? "未請求が残っています。月末前に請求画面で確認してください。"
+          : "未請求はありません。請求管理は良い状態です。",
+      href: "/admin/billing",
+      tone:
+        unbilledTotal > 0
+          ? "border-amber-100 bg-amber-50 text-amber-700"
+          : "border-emerald-100 bg-emerald-50 text-emerald-700",
+    },
+  ];
 
   return (
     <AdminShell
@@ -283,6 +371,68 @@ export default async function AdminAnalyticsPage() {
         </div>
       </section>
 
+      <section className="mt-6 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-3xl border border-white/70 bg-slate-950 p-6 text-white shadow-xl shadow-slate-300/70">
+          <p className="text-xs font-black tracking-[0.22em] text-orange-300">
+            GROWTH SUMMARY
+          </p>
+          <h2 className="mt-1 text-2xl font-black">今月の伸びを見る</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              ["直近月の案件", `${lastMonthCount}件`, `前月比 ${formatPercent(monthTrend)}`],
+              ["強いエリア", topArea, "SEO記事・広告を厚くする候補"],
+              ["配信カバー率", formatPercent(deliveryCoverageRate), "業者に渡せた案件割合"],
+              ["入金回収率", formatPercent(collectionRate), "請求売上に対する入金割合"],
+            ].map(([label, value, helper]) => (
+              <div
+                key={label}
+                className="rounded-2xl border border-white/10 bg-white/[0.06] p-4"
+              >
+                <p className="text-sm font-black text-slate-400">{label}</p>
+                <p className="mt-2 text-2xl font-black text-white">{value}</p>
+                <p className="mt-2 text-xs font-bold text-slate-500">{helper}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-3xl border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-black tracking-[0.22em] text-orange-500">
+                NEXT ACTIONS
+              </p>
+              <h2 className="mt-1 text-2xl font-black text-slate-950">
+                改善アクション
+              </h2>
+            </div>
+            <p className="text-sm font-bold text-slate-500">
+              数字から優先作業を自動で整理
+            </p>
+          </div>
+
+          <div className="mt-5 grid gap-3">
+            {actionPlan.map((action) => (
+              <Link
+                key={action.title}
+                href={action.href}
+                className={`rounded-2xl border p-4 transition hover:-translate-y-0.5 hover:shadow-lg ${action.tone}`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-black">{action.title}</p>
+                    <p className="mt-2 text-sm font-bold text-slate-600">
+                      {action.body}
+                    </p>
+                  </div>
+                  <p className="shrink-0 text-2xl font-black">{action.value}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="mt-6 grid gap-6 xl:grid-cols-3">
         <div className="rounded-3xl border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
           <h2 className="text-2xl font-black text-slate-950">月別案件数</h2>
@@ -367,6 +517,67 @@ export default async function AdminAnalyticsPage() {
               </p>
             ) : null}
           </div>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-white/70 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="text-xs font-black tracking-[0.22em] text-orange-500">
+              PARTNER PERFORMANCE
+            </p>
+            <h2 className="mt-1 text-2xl font-black text-slate-950">
+              業者別の配信成果
+            </h2>
+          </div>
+          <Link
+            href="/admin#partners"
+            className="w-fit rounded-md border border-slate-300 px-4 py-3 text-sm font-black text-slate-700 hover:border-orange-400 hover:text-orange-500"
+          >
+            業者管理へ
+          </Link>
+        </div>
+
+        <div className="mt-5 overflow-hidden rounded-2xl border border-slate-100">
+          <div className="hidden grid-cols-[1fr_120px_140px_140px_120px] bg-slate-50 px-4 py-3 text-sm font-black text-slate-500 lg:grid">
+            <p>業者</p>
+            <p>状態</p>
+            <p>配信数</p>
+            <p>売上</p>
+            <p>平均単価</p>
+          </div>
+          {partnerDeliveryStats.map(({ partner, deliveryCount, sales, averageFee }) => (
+            <Link
+              key={partner.id}
+              href={`/admin/partners/${partner.id}`}
+              className="grid gap-3 border-t border-slate-100 px-4 py-4 text-sm font-bold transition hover:bg-orange-50/40 lg:grid-cols-[1fr_120px_140px_140px_120px] lg:items-center"
+            >
+              <div>
+                <p className="font-black text-slate-900">{partner.name}</p>
+                <p className="mt-1 text-xs text-slate-400">詳細を見る</p>
+              </div>
+              <p
+                className={`w-fit rounded-md px-3 py-1 text-xs font-black ${
+                  partner.status === "active"
+                    ? "bg-emerald-50 text-emerald-600"
+                    : "bg-slate-100 text-slate-500"
+                }`}
+              >
+                {partner.status === "active" ? "稼働中" : "停止中"}
+              </p>
+              <p className="text-slate-700">{deliveryCount}件</p>
+              <p className="font-black text-orange-500">
+                {formatCurrency(sales)}円
+              </p>
+              <p className="text-slate-700">{formatCurrency(averageFee)}円</p>
+            </Link>
+          ))}
+
+          {partnerDeliveryStats.length === 0 ? (
+            <p className="border-t border-slate-100 p-5 text-sm font-bold text-slate-500">
+              まだ配信データがありません。
+            </p>
+          ) : null}
         </div>
       </section>
     </AdminShell>
