@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { additionalArticles } from "@/lib/blog-articles";
 import Image from "next/image";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
@@ -56,6 +57,7 @@ export default function ArticlePage() {
         <section id="faq"><h2>見積もり前によくある質問</h2><h3>片付けが終わっていなくても見積もりできますか？</h3><p>まずは現在の状態で相談し、回収する範囲と、まだ数量が確定していないことを伝えましょう。袋詰めや分別をどちらが担当するかでも作業内容が変わるため、必要な準備を業者に確認してください。</p><h3>写真だけで料金は確定しますか？</h3><p>業者や品物、搬出条件によって異なります。写真では大きさや経路が十分にわからない場合もあるため、「概算か確定額か」を確認します。大型家具や大量の不用品は、現地見積もりの要否も相談しましょう。</p><h3>見積もりを取ったら契約しなければいけませんか？</h3><p>見積もり依頼と回収の契約は分けて確認しましょう。訪問・見積もり自体が有料の場合もあるので、申込み前に費用の有無と、どの時点で契約になるかを尋ねます。提示条件に納得してから依頼してください。</p></section>
       </div>
       <aside className="mt-10 rounded-xl bg-green-700 p-6 text-white"><h2 className="text-2xl font-black leading-relaxed">回収品と希望日を整理して、無料見積もりへ</h2><p className="mt-3 leading-8">わかる範囲の品目・地域・搬出条件を入力してください。写真も添えて、料金と作業条件を比較する準備を始めましょう。</p><Link href="/#contact" className="mt-5 inline-block rounded-lg bg-white px-6 py-4 font-black text-green-800 hover:bg-green-50">無料一括見積もりを依頼する</Link><p className="mt-4 text-sm leading-6">回収の可否・料金・日時は各業者の回答をご確認ください。</p></aside>
+      <section className="mt-8"><h2 className="text-xl font-bold">あわせて読みたい記事</h2><ul className="mt-4 space-y-3 leading-7">{additionalArticles.map(a => <li key={a.slug}><Link href={`/blog/${a.slug}`} className={linkStyle}>{a.title}</Link></li>)}</ul></section>
       <p className="mt-6 text-sm leading-7 text-slate-600">参考：国民生活センター「不用品回収サービスのトラブル」（2022年11月2日公表、2026年9月21日確認）。地域や品物によって取扱いが異なるため、お住まいの自治体の案内もご確認ください。</p>
     </article>
   </>;
