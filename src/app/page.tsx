@@ -47,6 +47,7 @@ const navItems = [
   { label: "対応エリア", href: "#area" },
   { label: "口コミ", href: "#reviews" },
   { label: "よくある質問", href: "#faq" },
+  { label: "お役立ち記事", href: "/blog" },
 ];
 
 const trustStats = [
