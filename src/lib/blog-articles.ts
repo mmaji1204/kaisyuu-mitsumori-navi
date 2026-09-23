@@ -1,12 +1,14 @@
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
   publishedAt: string; intro: string; takeaway: string;
+  image: { src: string; alt: string };
   sections: { id: string; title: string; paragraphs: string[]; checklist?: string[]; links?: { title: string; href: string }[] }[];
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
   {
     slug: "refrigerator-disposal", category: "家電の処分", publishedAt: "2026-09-24",
+    image: { src: "/blog/refrigerator-disposal.webp", alt: "キッチンに置かれた家庭用冷蔵庫" },
     title: "冷蔵庫の処分方法と費用｜買い替えなし・自分で運べない場合は？",
     metaTitle: "冷蔵庫の処分方法と費用｜買い替えなし・運べない場合",
     description: "冷蔵庫の処分先を、買い替え・処分のみ・購入店不明の場合に分けて解説。リサイクル料金と収集運搬料金の違い、自分で運べない場合の確認事項、回収前の準備をまとめました。",
@@ -59,6 +61,7 @@ export const additionalArticles: BlogArticle[] = [
   },
   {
     slug: "mattress-disposal", category: "寝具の処分", publishedAt: "2026-09-24",
+    image: { src: "/blog/mattress-disposal.webp", alt: "寝室の壁に立てかけたマットレス" },
     title: "マットレスの処分方法と費用｜スプリング入り・運べない場合の選び方",
     metaTitle: "マットレスの処分方法・費用｜スプリング入りも解説",
     description: "マットレスの処分方法を素材・費用・搬出条件で比較。スプリング入りとウレタンの違い、自治体の粗大ごみ、買い替え時の引取、自分で運べないときの確認事項を解説します。",
@@ -109,6 +112,7 @@ export const additionalArticles: BlogArticle[] = [
   },
   {
     slug: "kei-truck-plan", category: "料金・プラン比較", publishedAt: "2026-09-21",
+    image: { src: "/blog/kei-truck-plan.webp", alt: "家具や段ボールを荷台に積んだ軽トラック" },
     title: "不用品回収の軽トラ積み放題とは？料金と積める量の確認ポイント",
     metaTitle: "不用品回収の軽トラ積み放題｜料金・積載量の確認ポイント",
     description: "不用品回収の軽トラ積み放題を検討中の方へ。積める量、基本料金に含まれる作業、追加費用、単品回収との比べ方を解説。契約前に確認したい質問もまとめました。",
@@ -125,6 +129,7 @@ export const additionalArticles: BlogArticle[] = [
   },
   {
     slug: "moving-disposal-schedule", category: "引っ越し・片付け", publishedAt: "2026-09-21",
+    image: { src: "/blog/moving-disposal-schedule.webp", alt: "引っ越しに向けてまとめた段ボールと家財" },
     title: "引っ越し前の不用品処分はいつから？退去日から逆算する片付け手順",
     metaTitle: "引っ越し前の不用品処分はいつから？準備と手順",
     description: "引っ越し前の不用品処分を退去日から逆算する手順を紹介。粗大ごみの予約、家具の売却・譲渡、家電リサイクル、回収が間に合わないときの確認事項をまとめました。",
@@ -141,6 +146,7 @@ export const additionalArticles: BlogArticle[] = [
   },
   {
     slug: "sofa-disposal", category: "家具の処分", publishedAt: "2026-09-21",
+    image: { src: "/blog/sofa-disposal.webp", alt: "リビングに置かれた2人掛けのソファ" },
     title: "ソファの処分方法を比較｜粗大ごみ・買い替え引取・回収の選び方",
     metaTitle: "ソファの処分方法｜粗大ごみ・引取・回収の選び方",
     description: "ソファを処分する方法を、費用・搬出・日程の観点で比較。自治体の粗大ごみ、買い替え時の引取、売却・譲渡、回収依頼の違いと、運び出せない場合の確認事項を解説します。",
