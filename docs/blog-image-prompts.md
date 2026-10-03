@@ -1,5 +1,15 @@
 # ブログのアイキャッチ画像
 
+## washing-machine-disposal（2026-10-03）
+
+生成方法: 組み込み image_gen。
+保存先: `public/blog/washing-machine-disposal.webp`（1200×675、WebP）。記事用の説明イメージであり、実際の作業実績写真ではありません。
+
+最終プロンプト:
+
+Use case: photorealistic-natural. Asset type: Japanese household disposal advice blog thumbnail, consistent with warm cream and pale green editorial photography. Create one wide 16:9 professional realistic photograph of a clean white front-loading household washing machine standing upright on a floor drain pan in a bright ordinary Japanese apartment laundry area. Closed circular front door, no brand, no readable control labels. A small folded sage green towel and a wicker laundry basket nearby. Soft natural daylight, warm neutral walls, crisp main subject centered and fully visible with generous framing so it remains legible as a small card thumbnail. No people, no written text, no logo, no watermark, no collage. The image is an illustrative household scene, not a customer or completed-job photograph.
+
+
 生成方法: Codex の組み込み image_gen。2026-09-24 作成。
 用途: 関連記事カードとブログ一覧の説明用イメージ。実際の回収事例の写真ではありません。
 
@@ -44,4 +54,3 @@ Use case: photorealistic-natural. Asset type: Japanese waste collection advice b
 最終プロンプト:
 
 Use case: photorealistic-natural. Asset type: Japanese waste collection advice blog thumbnail. Create one professional realistic editorial photograph in wide 16:9 composition, intended to remain legible as a small thumbnail. Soft natural daylight, warm cream and pale green palette, welcoming everyday setting, crisp main subject, quiet background. Match a trustworthy Japanese household services website. No text, no lettering, no logo, no watermark, no collage. Keep main subject centered with generous framing, no important content cut off. Scene: A clean two-seater muted sage green fabric sofa with two cushions in a bright tidy Japanese apartment living room, next to a small cardboard moving box. Sofa fully visible, simple neutral background, warm wooden floor. No people.
-
