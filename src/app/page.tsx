@@ -61,20 +61,25 @@ export default function Home() {
       <section className="hero-section">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-kicker">不用品回収ナビ <span>無料見積もり相談</span></p>
-            <p className="hero-question">不用品回収、いくらかかる？</p>
-            <h1>料金も、対応も。<br /><em>比べて納得。</em></h1>
-            <p className="hero-description">回収したいものや希望日を伝えて、<br />あなたに合う不用品回収を。</p>
+            <p className="hero-kicker">不用品回収の無料見積もり相談</p>
+            <h1>料金も、対応も。<br /><em>納得して選ぶ、</em><br />不用品回収。</h1>
+            <p className="hero-description">片付けたいものも、希望の日程も。<br />あなたの条件を伝えて、<br className="mobile-break" />自分に合った回収方法を見つけましょう。</p>
             <div className="hero-checks"><span><Icon name="check" />家具1点から相談</span><span><Icon name="check" />写真も添付OK</span></div>
+            <div className="hero-action">
+              <a className="primary-button hero-button" href="#area">無料で見積もりを相談する <Icon name="arrow" /></a>
+              <p className="hero-note">まずは、お住まいの地域から。</p>
+            </div>
           </div>
-          <figure className="hero-visual">
-            <Image src="/hero-collection-truck.webp" alt="家具や家電、段ボールを積んだ緑と黄色の回収トラックのイラスト" fill sizes="(max-width: 767px) 90vw, 600px" preload className="hero-image" />
-            <figcaption>サービスのイメージイラスト</figcaption>
-          </figure>
-        </div>
-        <div className="site-container hero-action">
-          <a className="hero-button" href="#area"><span className="hero-free">無料</span>見積もりを相談する <span className="hero-button-arrow"><Icon name="arrow" /></span></a>
-          <p className="hero-note">お住まいの地域と、回収したいものを教えてください。</p>
+          <aside className="hero-guide" aria-label="見積もりの比較ポイント">
+            <p className="hero-guide-label">選ぶ前に、ここをチェック</p>
+            <h2>比べたいのは、<br />あなたに合うかどうか。</h2>
+            <ul>
+              <li><span className="hero-guide-icon"><Icon name="yen" /></span><div><strong>料金</strong><p>追加費用まで含めた総額</p></div></li>
+              <li><span className="hero-guide-icon"><Icon name="clock" /></span><div><strong>日程</strong><p>希望する日時に対応できるか</p></div></li>
+              <li><span className="hero-guide-icon"><Icon name="box" /></span><div><strong>作業内容</strong><p>搬出や取り外しの対応範囲</p></div></li>
+            </ul>
+            <div className="hero-guide-foot"><p>小さな片付けから、<br />新しい暮らしの準備まで。</p><Image src="/hero-collection-truck.webp" alt="家具や家電を載せた回収トラックのイメージイラスト" width={120} height={90} sizes="120px" className="hero-image" /></div>
+          </aside>
         </div>
       </section>
       <section id="area" className="site-container area-section" aria-labelledby="area-title">

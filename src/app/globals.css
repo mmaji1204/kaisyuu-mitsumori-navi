@@ -27,29 +27,32 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .main-nav a { white-space: nowrap; padding-block: 10px; }
 .main-nav a:hover, .text-link:hover { color: var(--orange); }
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .15em; color: var(--green); margin-bottom: 10px; }
-.hero-section { background: #ffe45b; padding: 32px 0 30px; }
-.hero-grid { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; min-height: 448px; border-radius: 32px; background: #55bfd0; padding: 32px 34px 26px 48px; gap: 14px; }
-.hero-copy { position: relative; z-index: 2; color: #103d38; }
-.hero-kicker { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 800; letter-spacing: .04em; }
-.hero-kicker span { font-size: 11px; border-left: 1px solid #277b82; padding-left: 12px; }
-.hero-question { position: relative; display: inline-block; border-radius: 30px; background: #103d38; color: white; padding: 9px 23px; margin-top: 23px; font-size: 21px; font-weight: 800; }
-.hero-question:after { content: ""; position: absolute; bottom: -9px; left: 43px; width: 19px; height: 19px; background: #103d38; transform: rotate(45deg); }
-.hero-copy h1 { margin-top: 25px; font-size: clamp(34px, 3.7vw, 50px); font-weight: 900; line-height: 1.55; letter-spacing: .02em; }
-.hero-copy h1 em { font-style: normal; color: #103d38; background: #ffe45b; padding: 0 7px 3px; box-decoration-break: clone; }
-.hero-description { margin-top: 22px; line-height: 1.9; color: #123e3f; font-size: 14px; font-weight: 600; }
-.hero-checks { display: flex; gap: 17px; flex-wrap: wrap; margin-top: 17px; font-size: 12px; font-weight: 700; }
+.hero-section { background: linear-gradient(110deg, #fff 55%, #f7f8f2); padding: 60px 0 54px; border-bottom: 1px solid #edf0e8; }
+.hero-grid { display: grid; grid-template-columns: 1.3fr .85fr; align-items: center; gap: 80px; }
+.hero-copy { color: #253e32; }
+.hero-kicker { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; letter-spacing: .07em; color: var(--green); }
+.hero-kicker:before { content: ""; width: 22px; height: 2px; background: var(--orange); }
+.hero-copy h1 { margin-top: 21px; font-size: clamp(36px, 3.5vw, 49px); font-weight: 800; line-height: 1.55; letter-spacing: .04em; }
+.hero-copy h1 em { font-style: normal; color: var(--green); text-decoration: underline; text-decoration-color: #efcfaa; text-decoration-thickness: 5px; text-underline-offset: 7px; }
+.hero-description { margin-top: 24px; line-height: 2; color: #627063; font-size: 14px; }
+.hero-checks { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px; font-size: 12px; font-weight: 600; }
 .hero-checks span { display: flex; gap: 5px; align-items: center; }
-.hero-checks svg { width: 17px; height: 17px; }
-.hero-visual { position: relative; min-width: 0; align-self: stretch; min-height: 355px; }
-.hero-image { object-fit: contain; }
-.hero-visual figcaption { position: absolute; bottom: -5px; right: 4px; font-size: 9px; color: #214f52; }
-.hero-action { text-align: center; margin-top: 24px; }
-.hero-button { display: inline-flex; align-items: center; justify-content: center; gap: 20px; width: min(100%, 620px); min-height: 75px; padding: 12px 28px; border: 3px solid white; border-radius: 60px; background: #215c44; color: white; font-size: 23px; font-weight: 800; line-height: 1.5; box-shadow: 0 5px 0 #103d38; transition: background .2s, transform .2s; }
-.hero-button:hover { background: #174b36; transform: translateY(-1px); }
-.hero-free { display: flex; align-items: center; justify-content: center; border-radius: 50%; width: 48px; height: 48px; flex-shrink: 0; background: #ffe45b; color: #123f37; font-size: 18px; }
-.hero-button-arrow { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: white; color: #215c44; }
-.hero-button-arrow svg { width: 24px; height: 24px; }
-.hero-note { font-size: 11px; color: #4f521f; margin-top: 14px; }
+.hero-checks svg { width: 17px; height: 17px; color: var(--green); }
+.hero-action { margin-top: 26px; }
+.hero-button { min-height: 54px; font-size: 14px; gap: 28px; padding-inline: 25px; }
+.hero-note { font-size: 11px; color: #6c776c; margin-top: 12px; }
+.hero-guide { background: #f2f6ed; border: 1px solid #e2e9dc; border-radius: 14px; padding: 30px; }
+.hero-guide-label { color: #657962; font-size: 11px; letter-spacing: .08em; margin-bottom: 12px; }
+.hero-guide h2 { font-size: 23px; line-height: 1.7; }
+.hero-guide ul { display: grid; gap: 17px; margin-top: 25px; }
+.hero-guide li { display: flex; align-items: center; gap: 13px; }
+.hero-guide-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: white; color: var(--green); flex-shrink: 0; }
+.hero-guide-icon svg { width: 21px; height: 21px; }
+.hero-guide strong { font-size: 13px; }
+.hero-guide li p { color: #627063; font-size: 11px; margin-top: 2px; }
+.hero-guide-foot { border-top: 1px solid #dbe4d3; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 24px; padding-top: 15px; }
+.hero-guide-foot p { font-size: 10px; line-height: 1.9; color: #677561; }
+.hero-image { width: 120px; height: 90px; object-fit: contain; flex-shrink: 0; }
 .area-section { position: relative; z-index: 3; padding-top: 30px; }
 .area-panel { border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 25px #203b2b08; padding: 27px 33px 23px; background: #fff; }
 .area-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
@@ -141,9 +144,9 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 @media (max-width: 1000px) {
   .site-container { width: calc(100% - 40px); }
   .header-actions > a:first-child { display: none; }
-  .hero-grid { padding: 28px; }
+  .hero-grid { gap: 35px; }
   .hero-copy h1 { font-size: 36px; }
-  .hero-question { font-size: 17px; padding-inline: 18px; }
+
   .comparison-grid, .price-grid, .journal-grid { gap: 15px; }
   .comparison-card { padding: 20px; }
   .comparison-card h3 { font-size: 16px; }
@@ -162,23 +165,20 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .header-actions .primary-button { padding: 9px 11px; min-height: 38px; font-size: 10px; gap: 0; }
   .header-actions svg { display: none; }
   .main-nav { justify-content: flex-start; overflow-x: auto; gap: 24px; min-height: 41px; font-size: 11px; scrollbar-width: none; }
-  .hero-section { padding: 20px 0 23px; }
-  .hero-grid { display: flex; flex-direction: column; align-items: stretch; width: calc(100% - 32px); padding: 25px 21px 17px; border-radius: 23px; gap: 0; }
-  .hero-copy { padding: 0; }
-  .hero-kicker { font-size: 13px; gap: 10px; }
-  .hero-kicker span { font-size: 9px; padding-left: 10px; }
-  .hero-question { margin-top: 18px; font-size: 16px; padding: 8px 17px; }
-  .hero-copy h1 { margin-top: 23px; font-size: clamp(29px, 8.5vw, 42px); line-height: 1.6; }
-  .hero-description { font-size: 12px; margin-top: 15px; }
-  .hero-checks { gap: 14px; font-size: 10px; margin-top: 13px; }
-  .hero-visual { height: 232px; min-height: 0; margin: 13px -8px 0; }
-  .hero-visual figcaption { font-size: 8px; bottom: -3px; right: 6px; }
-  .hero-action { margin-top: 19px; }
-  .hero-button { min-height: 61px; font-size: 17px; padding: 9px 13px; gap: 12px; }
-  .hero-free { width: 36px; height: 36px; font-size: 14px; }
-  .hero-button-arrow { width: 26px; height: 26px; flex-shrink: 0; }
-  .hero-button-arrow svg { width: 19px; height: 19px; }
-  .hero-note { font-size: 9px; margin-top: 12px; }
+  .hero-section { padding: 31px 0 29px; background: #fff; }
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero-kicker { font-size: 10px; }
+  .hero-copy h1 { margin-top: 17px; font-size: clamp(30px, 8.5vw, 40px); line-height: 1.6; }
+  .hero-copy h1 em { text-decoration-thickness: 4px; text-underline-offset: 5px; }
+  .hero-description { font-size: 12px; margin-top: 20px; }
+  .hero-checks { gap: 16px; font-size: 10px; margin-top: 16px; }
+  .hero-action { margin-top: 22px; }
+  .hero-button { width: 100%; min-height: 51px; font-size: 13px; gap: 15px; padding-inline: 14px; }
+  .hero-note { font-size: 10px; text-align: center; margin-top: 11px; }
+  .hero-guide { padding: 23px; }
+  .hero-guide h2 { font-size: 21px; }
+  .hero-guide ul { margin-top: 20px; gap: 14px; }
+  .hero-guide-foot { margin-top: 19px; padding-top: 10px; }
   .area-section { padding-top: 22px; }
   .area-panel { padding: 22px 17px 18px; }
   .area-heading { gap: 9px; margin-bottom: 20px; }
