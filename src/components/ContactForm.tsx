@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { LEADS_STORAGE_KEY, Lead } from "@/lib/leads";
+import { useQuoteArea } from "@/components/QuoteJourney";
 
 type SubmittedData = {
   name: string;
@@ -39,7 +40,7 @@ export function ContactForm() {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [area, setArea] = useState("");
+  const { area, setArea } = useQuoteArea();
 
   async function handlePostalCodeBlur(postalCode: string) {
     const normalizedPostalCode = postalCode.replace(/[^0-9]/g, "");
@@ -165,10 +166,11 @@ export function ContactForm() {
     >
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
         <label className="block">
-          <span className="text-sm font-bold">お名前</span>
+          <span className="text-sm font-bold">お名前 <span className="text-xs text-orange-700">必須</span></span>
           <input
             type="text"
             name="name"
+            autoComplete="name"
             placeholder="山田 太郎"
             required
             className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
@@ -176,10 +178,11 @@ export function ContactForm() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-bold">電話番号</span>
+          <span className="text-sm font-bold">電話番号 <span className="text-xs text-orange-700">必須</span></span>
           <input
             type="tel"
             name="tel"
+            autoComplete="tel"
             placeholder="090-0000-0000"
             required
             className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
@@ -191,6 +194,7 @@ export function ContactForm() {
           <input
             type="text"
             name="postal_code"
+            autoComplete="postal-code"
             inputMode="numeric"
             placeholder="7300011"
             onBlur={(event) => handlePostalCodeBlur(event.currentTarget.value)}
@@ -199,7 +203,7 @@ export function ContactForm() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-bold">お住まいの地域</span>
+          <span className="text-sm font-bold">お住まいの地域 <span className="text-xs text-orange-700">必須</span></span>
           <input
             type="text"
             name="area"
@@ -212,7 +216,7 @@ export function ContactForm() {
         </label>
 
         <label className="block">
-          <span className="text-sm font-bold">回収したい品目</span>
+          <span className="text-sm font-bold">回収したい品目 <span className="text-xs text-orange-700">必須</span></span>
           <input
             type="text"
             name="item"
@@ -227,13 +231,13 @@ export function ContactForm() {
           <input
             type="text"
             name="desired_date"
-            placeholder="例: 土日午前、8/20 14時以降"
+            placeholder="例: 土日午前、平日の14時以降"
             className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
           />
         </label>
 
         <label className="block">
-          <span className="text-sm font-bold">写真</span>
+          <span className="text-sm font-bold">写真 <span className="text-xs font-normal text-slate-500">任意・5枚まで</span></span>
           <input
             type="file"
             name="photos"
@@ -257,27 +261,24 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-5 inline-flex h-[52px] w-full items-center justify-center rounded-md bg-emerald-600 px-6 text-base font-bold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-400 sm:h-12 sm:w-auto"
+        className="primary-button mt-5 w-full disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "送信中..." : "入力内容を送信する"}
+        {isSubmitting ? "送信中..." : "無料見積もりを相談する →"}
       </button>
 
       {!submittedData && errorMessage ? (
-        <div className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
+        <div role="alert" className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
           {errorMessage}
         </div>
       ) : null}
 
       {submittedData ? (
-        <div className="mt-4 rounded-md bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-700">
+        <div role="status" className="mt-4 rounded-md bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-700">
           <p className="font-bold">
             {submittedData.name} 様、送信しました。
           </p>
           <p>
             「{submittedData.item}」について、担当者からの連絡をお待ちください。
-          </p>
-          <p className="mt-2">
-            送信内容は業者向け管理画面の案件一覧にも追加されます。
           </p>
           <button
             type="button"
@@ -289,7 +290,7 @@ export function ContactForm() {
         </div>
       ) : (
         <p className="mt-3 text-sm leading-6 text-slate-500">
-          送信内容は案件データとして保存され、業者向け管理画面に表示されます。
+          入力内容は、見積もりのご案内と対応業者への相談内容の共有に利用します。送信だけで回収予約は確定しません。
         </p>
       )}
     </form>

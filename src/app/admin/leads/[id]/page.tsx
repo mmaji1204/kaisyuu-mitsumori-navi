@@ -4,6 +4,7 @@ import { AdminShell } from "@/components/AdminShell";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { isAdminLoggedIn } from "@/lib/admin-auth";
 import { Lead } from "@/lib/leads";
+import { brand } from "@/lib/brand";
 import {
   LeadActivityRow,
   LeadDeliveryRow,
@@ -164,7 +165,7 @@ function smsHref(phone: string, message: string) {
 
 function customerContactTemplate(lead: Lead) {
   return `${lead.name || "お客様"}様
-回収見積もりナビです。
+${brand.name}です。
 
 ${lead.request || "不用品回収"}のお見積もり依頼を確認しました。
 お住まいの地域: ${lead.address || "未入力"}

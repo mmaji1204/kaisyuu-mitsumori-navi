@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const strengths = [
   {
@@ -33,11 +34,8 @@ export default function PartnersPage() {
   return (
     <main className="min-h-screen bg-[#fffdf6] text-neutral-900">
       <header className="border-b bg-white">
-        <div className="mx-auto flex w-full max-w-[1180px] items-center justify-between px-4 py-4 lg:px-5">
-          <Link href="/" className="text-2xl font-black">
-            {brand.namePrefix}
-            <span className="text-orange-600">{brand.nameAccent}</span>
-          </Link>
+        <div className="mx-auto flex w-full max-w-[1180px] flex-wrap items-center justify-between gap-3 px-4 py-4 lg:px-5">
+          <BrandLogo />
           <a
             href="#partner-contact"
             className="rounded-md bg-orange-600 px-5 py-3 text-sm font-black text-white"
