@@ -14,11 +14,8 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .site-container { width: min(1160px, calc(100% - 64px)); margin-inline: auto; }
 .site-header { position: sticky; top: 0; z-index: 30; background: #fff; box-shadow: 0 1px 0 #e4e8e2; }
 .header-main { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 91px; }
-.brand-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--green); flex-shrink: 0; }
-.brand-logo > svg { width: 44px; height: 44px; }
-.brand-logo small { display: block; font-size: 10px; font-weight: 600; letter-spacing: .07em; }
-.brand-logo strong { display: block; font-size: 25px; letter-spacing: .015em; line-height: 1.4; white-space: nowrap; }
-.brand-logo strong span { color: var(--orange); }
+.brand-logo { display: inline-flex; align-items: center; flex-shrink: 0; }
+.brand-logo > img { width: 300px; height: auto; }
 .header-actions { display: flex; align-items: center; gap: 25px; font-size: 12px; font-weight: 700; }
 .primary-button, .outline-button { display: inline-flex; align-items: center; justify-content: center; gap: 18px; min-height: 50px; padding: 12px 23px; border-radius: 7px; font-weight: 700; font-size: 14px; line-height: 1.6; cursor: pointer; transition: background .2s, box-shadow .2s; }
 .primary-button { background: var(--orange); color: #fff; box-shadow: 0 3px 0 #a84617; }
@@ -162,10 +159,7 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .collection-site { padding-bottom: 77px; }
   .site-container { width: calc(100% - 36px); }
   .header-main { min-height: 72px; gap: 8px; }
-  .brand-logo { gap: 7px; }
-  .brand-logo > svg { width: 33px; height: 33px; }
-  .brand-logo strong { font-size: 19px; }
-  .brand-logo small { font-size: 8px; letter-spacing: 0; }
+  .brand-logo > img { width: 210px; }
   .header-actions .primary-button { padding: 9px 11px; min-height: 38px; font-size: 10px; gap: 0; }
   .header-actions svg { display: none; }
   .main-nav { justify-content: flex-start; overflow-x: auto; gap: 24px; min-height: 41px; font-size: 11px; scrollbar-width: none; }
@@ -238,4 +232,4 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .mobile-cta a { min-height: 46px; font-size: 12px; padding: 10px 12px; gap: 12px; }
   .mobile-break { display: initial; }
 }
-@media (max-width: 360px) { .brand-logo strong { font-size: 17px; } .brand-logo > svg { width: 29px; height: 29px; } .header-actions .primary-button { padding-inline: 8px; } }
+@media (max-width: 360px) { .brand-logo > img { width: 190px; } .header-actions .primary-button { padding-inline: 8px; } }
