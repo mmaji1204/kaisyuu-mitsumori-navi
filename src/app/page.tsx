@@ -13,8 +13,8 @@ const description = "不用品回収の料金・対応日時・作業条件を�
 export const metadata: Metadata = {
   title, description,
   alternates: { canonical: brand.siteUrl },
-  openGraph: { title, description, url: brand.siteUrl, siteName: brand.name, locale: "ja_JP", type: "website", images: [{ url: `${brand.siteUrl}/hero-home-collection.webp`, width: 1440, height: 960, alt: "明るい室内で片付けをする回収スタッフのイメージ" }] },
-  twitter: { card: "summary_large_image", title, description, images: [`${brand.siteUrl}/hero-home-collection.webp`] },
+  openGraph: { title, description, url: brand.siteUrl, siteName: brand.name, locale: "ja_JP", type: "website", images: [{ url: `${brand.siteUrl}/hero-collection-truck.webp`, width: 1200, height: 900, alt: "家具や家電を積んだ回収トラックのイラスト" }] },
+  twitter: { card: "summary_large_image", title, description, images: [`${brand.siteUrl}/hero-collection-truck.webp`] },
 };
 
 const faqs = [
@@ -61,18 +61,20 @@ export default function Home() {
       <section className="hero-section">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow"><span /> 不用品回収・粗大ごみの見積もり相談</p>
-            <h1>片付けの、<br />その先の暮らしへ。<br /><em>納得できる</em>回収選び。</h1>
-            <p className="hero-description">料金も、対応日時も、安心感も。<br />条件をそろえて比べることから、<br className="mobile-break" />あなたに合った不用品回収を。</p>
-            <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />写真を添えて相談</span></div>
-            <a className="primary-button hero-button" href="#area">お住まいの地域から相談する <Icon name="arrow" /></a>
-            <p className="hero-note">家具1点から、お引っ越しの片付けまで。</p>
+            <p className="hero-kicker">不用品回収ナビ <span>無料見積もり相談</span></p>
+            <p className="hero-question">不用品回収、いくらかかる？</p>
+            <h1>料金も、対応も。<br /><em>比べて納得。</em></h1>
+            <p className="hero-description">回収したいものや希望日を伝えて、<br />あなたに合う不用品回収を。</p>
+            <div className="hero-checks"><span><Icon name="check" />家具1点から相談</span><span><Icon name="check" />写真も添付OK</span></div>
           </div>
           <figure className="hero-visual">
-            <Image src="/hero-home-collection.webp" alt="明るいリビングで段ボールを運ぶ回収スタッフのイメージ" fill sizes="(max-width: 767px) 100vw, 56vw" preload className="hero-image" />
-            <div className="hero-photo-card"><span><Icon name="photo" /></span><div><strong>「これ、どう片付けよう？」</strong><p>写真と一緒に、気軽にご相談ください。</p></div></div>
-            <figcaption>サービスのイメージ画像</figcaption>
+            <Image src="/hero-collection-truck.webp" alt="家具や家電、段ボールを積んだ緑と黄色の回収トラックのイラスト" fill sizes="(max-width: 767px) 90vw, 600px" preload className="hero-image" />
+            <figcaption>サービスのイメージイラスト</figcaption>
           </figure>
+        </div>
+        <div className="site-container hero-action">
+          <a className="hero-button" href="#area"><span className="hero-free">無料</span>見積もりを相談する <span className="hero-button-arrow"><Icon name="arrow" /></span></a>
+          <p className="hero-note">お住まいの地域と、回収したいものを教えてください。</p>
         </div>
       </section>
       <section id="area" className="site-container area-section" aria-labelledby="area-title">

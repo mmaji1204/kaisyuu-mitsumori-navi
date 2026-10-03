@@ -26,29 +26,30 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .main-nav { display: flex; justify-content: space-between; gap: 22px; min-height: 47px; align-items: center; border-top: 1px solid #edf0ea; font-weight: 600; font-size: 13px; }
 .main-nav a { white-space: nowrap; padding-block: 10px; }
 .main-nav a:hover, .text-link:hover { color: var(--orange); }
-.hero-section { background: #f6f8f1; overflow: hidden; }
-.hero-grid { display: grid; grid-template-columns: 1fr 1.08fr; align-items: stretch; min-height: 534px; }
-.hero-copy { padding: 53px 0 49px; position: relative; z-index: 2; }
 .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .15em; color: var(--green); margin-bottom: 10px; }
-.hero-copy .eyebrow { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .03em; }
-.hero-copy .eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: #ca7138; }
-.hero-copy h1 { font-size: clamp(32px, 3.25vw, 46px); line-height: 1.5; letter-spacing: .015em; }
-.hero-copy h1 em { font-style: normal; color: var(--green); text-decoration: underline; text-decoration-color: #e9bb7d; text-decoration-thickness: 7px; text-underline-offset: 0; text-decoration-skip-ink: none; }
-.hero-description { margin-top: 18px; line-height: 1.9; color: #5a685d; font-size: 14px; }
-.hero-checks { display: flex; gap: 17px; flex-wrap: wrap; margin-top: 23px; font-size: 12px; font-weight: 700; }
+.hero-section { background: #ffe45b; padding: 32px 0 30px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; min-height: 448px; border-radius: 32px; background: #55bfd0; padding: 32px 34px 26px 48px; gap: 14px; }
+.hero-copy { position: relative; z-index: 2; color: #103d38; }
+.hero-kicker { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 800; letter-spacing: .04em; }
+.hero-kicker span { font-size: 11px; border-left: 1px solid #277b82; padding-left: 12px; }
+.hero-question { position: relative; display: inline-block; border-radius: 30px; background: #103d38; color: white; padding: 9px 23px; margin-top: 23px; font-size: 21px; font-weight: 800; }
+.hero-question:after { content: ""; position: absolute; bottom: -9px; left: 43px; width: 19px; height: 19px; background: #103d38; transform: rotate(45deg); }
+.hero-copy h1 { margin-top: 25px; font-size: clamp(34px, 3.7vw, 50px); font-weight: 900; line-height: 1.55; letter-spacing: .02em; }
+.hero-copy h1 em { font-style: normal; color: #103d38; background: #ffe45b; padding: 0 7px 3px; box-decoration-break: clone; }
+.hero-description { margin-top: 22px; line-height: 1.9; color: #123e3f; font-size: 14px; font-weight: 600; }
+.hero-checks { display: flex; gap: 17px; flex-wrap: wrap; margin-top: 17px; font-size: 12px; font-weight: 700; }
 .hero-checks span { display: flex; gap: 5px; align-items: center; }
-.hero-checks svg { width: 17px; height: 17px; color: var(--green); }
-.hero-button { margin-top: 22px; min-height: 55px; }
-.hero-note { font-size: 11px; color: #657064; margin-top: 12px; }
-.hero-visual { position: relative; margin-right: min(-32px, calc((1160px - 100vw) / 2)); min-width: 0; }
-.hero-image { object-fit: cover; object-position: 60% center; }
-.hero-visual:after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #f6f8f1, #f6f8f100 18%); pointer-events: none; }
-.hero-photo-card { position: absolute; bottom: 59px; left: 33px; z-index: 1; display: flex; align-items: center; gap: 15px; background: #fffffff2; padding: 16px 22px; border-radius: 8px; box-shadow: 0 8px 35px #173c2920; }
-.hero-photo-card > span { color: var(--green); }
-.hero-photo-card svg { width: 34px; height: 34px; }
-.hero-photo-card strong { font-size: 15px; }
-.hero-photo-card p { color: #617065; font-size: 11px; margin-top: 3px; }
-.hero-visual figcaption { position: absolute; bottom: 12px; right: 18px; z-index: 1; font-size: 10px; color: #fff; background: #213b3270; border-radius: 3px; padding: 2px 7px; }
+.hero-checks svg { width: 17px; height: 17px; }
+.hero-visual { position: relative; min-width: 0; align-self: stretch; min-height: 355px; }
+.hero-image { object-fit: contain; }
+.hero-visual figcaption { position: absolute; bottom: -5px; right: 4px; font-size: 9px; color: #214f52; }
+.hero-action { text-align: center; margin-top: 24px; }
+.hero-button { display: inline-flex; align-items: center; justify-content: center; gap: 20px; width: min(100%, 620px); min-height: 75px; padding: 12px 28px; border: 3px solid white; border-radius: 60px; background: #215c44; color: white; font-size: 23px; font-weight: 800; line-height: 1.5; box-shadow: 0 5px 0 #103d38; transition: background .2s, transform .2s; }
+.hero-button:hover { background: #174b36; transform: translateY(-1px); }
+.hero-free { display: flex; align-items: center; justify-content: center; border-radius: 50%; width: 48px; height: 48px; flex-shrink: 0; background: #ffe45b; color: #123f37; font-size: 18px; }
+.hero-button-arrow { display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: white; color: #215c44; }
+.hero-button-arrow svg { width: 24px; height: 24px; }
+.hero-note { font-size: 11px; color: #4f521f; margin-top: 14px; }
 .area-section { position: relative; z-index: 3; padding-top: 30px; }
 .area-panel { border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 25px #203b2b08; padding: 27px 33px 23px; background: #fff; }
 .area-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
@@ -137,14 +138,12 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .skip-link { position: fixed; top: -80px; left: 12px; z-index: 100; background: white; padding: 10px; }
 .skip-link:focus { top: 10px; }
 
-@media (min-width: 1440px) { .hero-visual { margin-right: -100px; } }
 @media (max-width: 1000px) {
   .site-container { width: calc(100% - 40px); }
   .header-actions > a:first-child { display: none; }
-  .hero-copy h1 { font-size: 35px; }
-  .hero-photo-card { left: 25px; padding: 13px; gap: 9px; }
-  .hero-photo-card strong { font-size: 12px; }
-  .hero-photo-card p { font-size: 10px; }
+  .hero-grid { padding: 28px; }
+  .hero-copy h1 { font-size: 36px; }
+  .hero-question { font-size: 17px; padding-inline: 18px; }
   .comparison-grid, .price-grid, .journal-grid { gap: 15px; }
   .comparison-card { padding: 20px; }
   .comparison-card h3 { font-size: 16px; }
@@ -163,19 +162,23 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .header-actions .primary-button { padding: 9px 11px; min-height: 38px; font-size: 10px; gap: 0; }
   .header-actions svg { display: none; }
   .main-nav { justify-content: flex-start; overflow-x: auto; gap: 24px; min-height: 41px; font-size: 11px; scrollbar-width: none; }
-  .hero-grid { display: flex; flex-direction: column; width: 100%; }
-  .hero-copy { padding: 31px 23px 29px; }
-  .hero-copy .eyebrow { font-size: 10px; }
-  .hero-copy h1 { font-size: clamp(29px, 7.8vw, 40px); line-height: 1.55; }
+  .hero-section { padding: 20px 0 23px; }
+  .hero-grid { display: flex; flex-direction: column; align-items: stretch; width: calc(100% - 32px); padding: 25px 21px 17px; border-radius: 23px; gap: 0; }
+  .hero-copy { padding: 0; }
+  .hero-kicker { font-size: 13px; gap: 10px; }
+  .hero-kicker span { font-size: 9px; padding-left: 10px; }
+  .hero-question { margin-top: 18px; font-size: 16px; padding: 8px 17px; }
+  .hero-copy h1 { margin-top: 23px; font-size: clamp(29px, 8.5vw, 42px); line-height: 1.6; }
   .hero-description { font-size: 12px; margin-top: 15px; }
-  .hero-checks { gap: 14px; font-size: 10px; margin-top: 17px; }
-  .hero-button { margin-top: 20px; min-height: 51px; font-size: 12px; width: 100%; }
-  .hero-note { font-size: 10px; text-align: center; }
-  .hero-visual { height: 270px; margin: 0; }
-  .hero-image { object-position: 50% 43%; }
-  .hero-visual:after { background: linear-gradient(180deg, #f6f8f1, #f6f8f100 18%); }
-  .hero-photo-card { bottom: 30px; left: 19px; padding: 12px 15px; }
-  .hero-visual figcaption { font-size: 9px; bottom: 8px; }
+  .hero-checks { gap: 14px; font-size: 10px; margin-top: 13px; }
+  .hero-visual { height: 232px; min-height: 0; margin: 13px -8px 0; }
+  .hero-visual figcaption { font-size: 8px; bottom: -3px; right: 6px; }
+  .hero-action { margin-top: 19px; }
+  .hero-button { min-height: 61px; font-size: 17px; padding: 9px 13px; gap: 12px; }
+  .hero-free { width: 36px; height: 36px; font-size: 14px; }
+  .hero-button-arrow { width: 26px; height: 26px; flex-shrink: 0; }
+  .hero-button-arrow svg { width: 19px; height: 19px; }
+  .hero-note { font-size: 9px; margin-top: 12px; }
   .area-section { padding-top: 22px; }
   .area-panel { padding: 22px 17px 18px; }
   .area-heading { gap: 9px; margin-bottom: 20px; }
