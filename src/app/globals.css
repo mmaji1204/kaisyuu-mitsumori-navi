@@ -44,12 +44,19 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .hero-guide { background: #f2f6ed; border: 1px solid #e2e9dc; border-radius: 14px; padding: 30px; }
 .hero-guide-label { color: #657962; font-size: 11px; letter-spacing: .08em; margin-bottom: 12px; }
 .hero-guide h2 { font-size: 23px; line-height: 1.7; }
-.hero-guide ul { display: grid; gap: 17px; margin-top: 25px; }
-.hero-guide li { display: flex; align-items: center; gap: 13px; }
-.hero-guide-icon { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: white; color: var(--green); flex-shrink: 0; }
-.hero-guide-icon svg { width: 21px; height: 21px; }
-.hero-guide strong { font-size: 13px; }
-.hero-guide li p { color: #627063; font-size: 11px; margin-top: 2px; }
+.hero-estimates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 23px; }
+.estimate-sheet { background: #fff; border: 1px solid #d9e3d4; border-top: 4px solid var(--green); border-radius: 5px; padding: 15px 13px; box-shadow: 0 5px 10px #253e3205; }
+.estimate-sheet:nth-child(2) { border-top-color: var(--orange); }
+.estimate-company { display: block; color: #627063; font-size: 11px; }
+.estimate-sheet strong { display: block; font-size: 16px; margin: 2px 0 13px; }
+.estimate-sheet dl { display: grid; gap: 9px; }
+.estimate-sheet dl > div { display: flex; align-items: center; justify-content: space-between; gap: 9px; }
+.estimate-sheet dt { font-size: 10px; white-space: nowrap; }
+.estimate-sheet dd { width: 32%; }
+.estimate-line { display: block; height: 4px; border-radius: 2px; background: #dce5d9; }
+.estimate-caption { font-size: 10px; color: #6c776c; text-align: center; margin-top: 9px; }
+.hero-compare-message { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--green); margin-top: 14px; }
+.hero-compare-message svg { width: 18px; height: 18px; flex-shrink: 0; }
 .hero-guide-foot { border-top: 1px solid #dbe4d3; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 24px; padding-top: 15px; }
 .hero-guide-foot p { font-size: 10px; line-height: 1.9; color: #677561; }
 .hero-image { width: 120px; height: 90px; object-fit: contain; flex-shrink: 0; }
@@ -177,7 +184,8 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .hero-note { font-size: 10px; text-align: center; margin-top: 11px; }
   .hero-guide { padding: 23px; }
   .hero-guide h2 { font-size: 21px; }
-  .hero-guide ul { margin-top: 20px; gap: 14px; }
+  .hero-estimates { margin-top: 20px; gap: 12px; }
+  .estimate-sheet { padding: 13px 11px; }
   .hero-guide-foot { margin-top: 19px; padding-top: 10px; }
   .area-section { padding-top: 22px; }
   .area-panel { padding: 22px 17px 18px; }

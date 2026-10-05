@@ -8,8 +8,8 @@ import { AreaSearch, QuoteJourney } from "@/components/QuoteJourney";
 import { brand } from "@/lib/brand";
 import { additionalArticles } from "@/lib/blog-articles";
 
-const title = `不用品回収の無料見積もり・料金比較 | ${brand.name}`;
-const description = "不用品回収の料金・対応日時・作業条件をそろえて比較。お住まいの地域や回収品目、写真を添えて無料見積もりを相談できます。家具・家電の処分や見積もり準備に役立つ記事もご紹介。";
+const title = `不用品回収の相見積もり・業者比較なら | ${brand.name}`;
+const description = "不用品回収ナビは、不用品回収業者の相見積もりサイトです。一度の入力で対応業者へ無料見積もりを相談。複数業者の料金・日程・作業内容を比較して選べます。ご案内できる業者数は地域・回収内容によって異なります。";
 export const metadata: Metadata = {
   title, description,
   alternates: { canonical: brand.siteUrl },
@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 const faqs = [
+  { question: "相見積もりはどのように進みますか？", answer: "フォームに地域・回収品目・希望日を入力すると、対応業者へ相談内容を共有します。各業者から案内される料金・日程・作業内容を比較し、納得してから依頼先を選んでください。ご案内できる業者数は地域や回収内容、対応状況によって異なります。" },
   { question: "見積もりの相談は無料ですか？", answer: "このサイトからの見積もり相談は無料です。回収作業の費用は、品目・量・搬出条件によって異なります。見積もりの総額と追加費用の条件を確認してから依頼してください。" },
   { question: "写真がなくても相談できますか？", answer: "写真なしでも相談できます。品目・数量・サイズ・搬出経路が分かる写真を添えると、状況が伝わりやすくなります。写真は5枚まで添付できます。" },
   { question: "今日や明日の回収も相談できますか？", answer: "希望日時をフォームに記入してご相談ください。対応できる日時は地域・回収内容・業者の空き状況によって異なります。送信した時点では予約は確定しません。" },
@@ -42,7 +43,7 @@ export default function Home() {
   const articles = [...additionalArticles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
   const jsonLd = { "@context": "https://schema.org", "@graph": [
     { "@type": "WebSite", name: brand.name, url: brand.siteUrl, description },
-    { "@type": "Service", name: "不用品回収の無料見積もり相談", provider: { "@type": "Organization", name: brand.operatorName }, serviceType: "不用品回収の見積もり相談" },
+    { "@type": "Service", name: "不用品回収の無料相見積もり相談", provider: { "@type": "Organization", name: brand.operatorName }, serviceType: "不用品回収の相見積もり相談" },
     { "@type": "FAQPage", mainEntity: faqs.map(faq => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) },
   ] };
   return <QuoteJourney><div className="collection-site">
@@ -51,7 +52,7 @@ export default function Home() {
     <header className="site-header">
       <div className="site-container header-main">
         <BrandLogo />
-        <div className="header-actions"><Link href="/partners">掲載をご希望の事業者様へ <span aria-hidden="true">↗</span></Link><a className="primary-button" href="#contact">無料見積もり <Icon name="arrow" /></a></div>
+        <div className="header-actions"><Link href="/partners">掲載をご希望の事業者様へ <span aria-hidden="true">↗</span></Link><a className="primary-button" href="#contact">無料相見積もり <Icon name="arrow" /></a></div>
       </div>
       <nav className="site-container main-nav" aria-label="メインナビゲーション">
         <a href="#area">地域から相談</a><a href="#compare">業者の比較ポイント</a><a href="#price">料金の目安</a><a href="#flow">ご利用の流れ</a><Link href="/blog">お役立ち記事</Link><a href="#faq">よくある質問</a>
@@ -61,24 +62,27 @@ export default function Home() {
       <section className="hero-section">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-kicker">不用品回収の無料見積もり相談</p>
-            <h1>料金も、対応も。<br /><em>納得して選ぶ、</em><br />不用品回収。</h1>
-            <p className="hero-description">片付けたいものも、希望の日程も。<br />あなたの条件を伝えて、<br className="mobile-break" />自分に合った回収方法を見つけましょう。</p>
-            <div className="hero-checks"><span><Icon name="check" />家具1点から相談</span><span><Icon name="check" />写真も添付OK</span></div>
+            <p className="hero-kicker">不用品回収業者の相見積もりサイト</p>
+            <h1>不用品回収は、<br /><em>相見積もりで比較。</em><br />納得できる業者へ。</h1>
+            <p className="hero-description">一度の入力で、対応する回収業者へ見積もりを相談。<br />複数業者の料金・日程・作業内容を比べて選べます。</p>
+            <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />家具1点から相談</span><span><Icon name="check" />写真も添付OK</span></div>
             <div className="hero-action">
-              <a className="primary-button hero-button" href="#area">無料で見積もりを相談する <Icon name="arrow" /></a>
-              <p className="hero-note">まずは、お住まいの地域から。</p>
+              <a className="primary-button hero-button" href="#area">無料で相見積もりを相談する <Icon name="arrow" /></a>
+              <p className="hero-note">ご案内できる業者数は、地域・回収内容によって異なります。</p>
             </div>
           </div>
-          <aside className="hero-guide" aria-label="見積もりの比較ポイント">
-            <p className="hero-guide-label">選ぶ前に、ここをチェック</p>
-            <h2>比べたいのは、<br />あなたに合うかどうか。</h2>
-            <ul>
-              <li><span className="hero-guide-icon"><Icon name="yen" /></span><div><strong>料金</strong><p>追加費用まで含めた総額</p></div></li>
-              <li><span className="hero-guide-icon"><Icon name="clock" /></span><div><strong>日程</strong><p>希望する日時に対応できるか</p></div></li>
-              <li><span className="hero-guide-icon"><Icon name="box" /></span><div><strong>作業内容</strong><p>搬出や取り外しの対応範囲</p></div></li>
-            </ul>
-            <div className="hero-guide-foot"><p>小さな片付けから、<br />新しい暮らしの準備まで。</p><Image src="/hero-collection-truck.webp" alt="家具や家電を載せた回収トラックのイメージイラスト" width={120} height={90} sizes="120px" className="hero-image" /></div>
+          <aside className="hero-guide" aria-label="相見積もりで業者を比較">
+            <p className="hero-guide-label">一度の入力で、まとめて相談</p>
+            <h2>複数業者の見積もりを、<br />比べて選ぶ。</h2>
+            <div className="hero-estimates">
+              {["業者A", "業者B"].map(company => <div className="estimate-sheet" key={company}>
+                <span className="estimate-company">{company}</span><strong>お見積もり</strong>
+                <dl>{["料金", "日程", "作業内容"].map(label => <div key={label}><dt>{label}</dt><dd><span className="estimate-line" aria-hidden="true" /><span className="sr-only">比較する項目</span></dd></div>)}</dl>
+              </div>)}
+            </div>
+            <p className="estimate-caption">相見積もりのイメージ</p>
+            <p className="hero-compare-message"><Icon name="check" />料金・日程・作業内容を比較</p>
+            <div className="hero-guide-foot"><p>条件を確認してから、<br />納得できる1社に依頼。</p><Image src="/hero-collection-truck.webp" alt="家具や家電を載せた回収トラックのイメージイラスト" width={120} height={90} sizes="120px" className="hero-image" /></div>
           </aside>
         </div>
       </section>
@@ -119,8 +123,8 @@ export default function Home() {
       <section id="flow" className="flow-section">
         <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>相談から回収まで、<br className="mobile-break" />ひとつずつ。</h2></div>
           <ol className="flow-grid">{[
-            ["相談する", "地域・品目・希望日を入力。写真を添えると状況が伝わります。"],
-            ["見積もりを確認する", "連絡を受けたら、総額・作業範囲・対応日時を確認します。"],
+            ["まとめて相談する", "地域・品目・希望日を一度入力。対応業者へ見積もりの相談内容を共有します。"],
+            ["見積もりを比較する", "各業者からの案内をもとに、総額・作業範囲・対応日時を比べます。"],
             ["納得して依頼する", "条件に納得したら回収を予約。気になる点は契約前に確認を。"],
           ].map(([heading, body], i) => <li key={heading}><span className="step-number">STEP <b>0{i + 1}</b></span><h3>{heading}</h3><p>{body}</p></li>)}</ol>
         </div>
@@ -134,11 +138,11 @@ export default function Home() {
       </div></section>
       <section id="faq" className="site-container content-section faq-section"><div><p className="eyebrow">Q & A</p><h2>よくあるご質問</h2><p>ご相談前の気になること。</p></div><div className="faq-list">{faqs.map(faq => <details key={faq.question}><summary><span>Q.</span>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
       <section id="contact" className="contact-section"><div className="site-container contact-grid">
-        <div className="contact-copy"><p className="eyebrow">LET’S GET STARTED</p><h2>すっきりした暮らしを、<br />ここから。</h2><p>何を、いつ、どのくらい片付けたいか。<br />まずはお気軽にご相談ください。</p><ul><li><Icon name="check" />見積もりの相談は無料</li><li><Icon name="check" />写真は任意・5枚まで添付可能</li><li><Icon name="check" />条件を確認してから回収を予約</li></ul><div className="contact-note">地域や回収内容によって、ご案内できる業者・対応日時は異なります。</div></div>
-        <div className="quote-form"><div className="quote-form-heading"><span>無料</span><h3>見積もり相談フォーム</h3></div><ContactForm /></div>
+        <div className="contact-copy"><p className="eyebrow">LET’S GET STARTED</p><h2>相見積もりで比べて、<br />納得できる回収選び。</h2><p>何を、いつ、どのくらい片付けたいか。<br />一度の入力で、対応業者へまとめて相談できます。</p><ul><li><Icon name="check" />見積もりの相談は無料</li><li><Icon name="check" />写真は任意・5枚まで添付可能</li><li><Icon name="check" />条件を比較してから依頼先を選択</li></ul><div className="contact-note">地域や回収内容によって、ご案内できる業者数・対応日時は異なります。</div></div>
+        <div className="quote-form"><div className="quote-form-heading"><span>無料</span><h3>相見積もり相談フォーム</h3></div><ContactForm /></div>
       </div></section>
     </main>
     <footer className="site-footer"><div className="site-container"><div className="footer-main"><BrandLogo /><nav aria-label="フッターナビゲーション"><Link href="/blog">お役立ち記事</Link><Link href="/partners">掲載会社様へ</Link><Link href="/business/login">業者ログイン</Link></nav></div><div className="footer-bottom"><p>不用品回収の見積もりを、もっとわかりやすく。</p><small>© {new Date().getFullYear()} {brand.name}</small></div></div></footer>
-    <div className="mobile-cta"><a href="#area" className="outline-button">地域から相談</a><a href="#contact" className="primary-button">無料見積もり <Icon name="arrow" /></a></div>
+    <div className="mobile-cta"><a href="#area" className="outline-button">地域から相談</a><a href="#contact" className="primary-button">無料相見積もり <Icon name="arrow" /></a></div>
   </div></QuoteJourney>;
 }

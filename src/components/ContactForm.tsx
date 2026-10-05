@@ -263,7 +263,7 @@ export function ContactForm() {
         disabled={isSubmitting}
         className="primary-button mt-5 w-full disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {isSubmitting ? "送信中..." : "無料見積もりを相談する →"}
+        {isSubmitting ? "送信中..." : "無料で相見積もりを相談する →"}
       </button>
 
       {!submittedData && errorMessage ? (
