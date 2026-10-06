@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { BlogArticleCard } from "@/components/BlogArticleCard";
@@ -8,7 +7,7 @@ import { AreaSearch, QuoteJourney } from "@/components/QuoteJourney";
 import { brand } from "@/lib/brand";
 import { additionalArticles } from "@/lib/blog-articles";
 
-const title = `不用品回収の相見積もり・業者比較なら | ${brand.name}`;
+const title = `不用品回収の一括見積もり・相見積もり比較 | ${brand.name}`;
 const description = "不用品回収ナビは、不用品回収業者の相見積もりサイトです。一度の入力で対応業者へ無料見積もりを相談。複数業者の料金・日程・作業内容を比較して選べます。ご案内できる業者数は地域・回収内容によって異なります。";
 export const metadata: Metadata = {
   title, description,
@@ -62,32 +61,33 @@ export default function Home() {
       <section className="hero-section">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-kicker">不用品回収業者の相見積もりサイト</p>
-            <h1>不用品回収は、<br /><em>相見積もりで比較。</em><br />納得できる業者へ。</h1>
-            <p className="hero-description">一度の入力で、対応する回収業者へ見積もりを相談。<br />複数業者の料金・日程・作業内容を比べて選べます。</p>
-            <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />家具1点から相談</span><span><Icon name="check" />写真も添付OK</span></div>
+            <p className="hero-kicker">複数業者の見積もりを、まとめて比較</p>
+            <h1><span className="hero-title-intro">不用品回収の</span><em>相見積もり</em><span className="hero-title-detail">一括依頼・業者比較</span></h1>
+            <p className="hero-description"><strong>1回の入力で、複数の回収業者へ。</strong><br />料金・日程・作業内容を比べて、依頼先を選べます。</p>
+            <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />1社ずつの問い合わせ不要</span></div>
             <div className="hero-action">
-              <a className="primary-button hero-button" href="#area">無料で相見積もりを相談する <Icon name="arrow" /></a>
+              <a className="primary-button hero-button" href="#area"><span className="hero-button-free">無料</span>まとめて見積もりを依頼する <Icon name="arrow" /></a>
               <p className="hero-note">ご案内できる業者数は、地域・回収内容によって異なります。</p>
             </div>
           </div>
           <aside className="hero-guide" aria-label="相見積もりで業者を比較">
-            <p className="hero-guide-label">一度の入力で、まとめて相談</p>
-            <h2>複数業者の見積もりを、<br />比べて選ぶ。</h2>
+            <p className="hero-guide-label">相見積もりのしくみ</p>
+            <h2>1回の入力で、<br /><span>複数社へ一括見積もり。</span></h2>
+            <div className="estimate-request"><Icon name="box" /><span>あなたの回収条件<small>地域・回収品目・希望日を入力</small></span></div>
+            <div className="estimate-branches" aria-hidden="true"><span /><span /><span /></div>
             <div className="hero-estimates">
-              {["業者A", "業者B"].map(company => <div className="estimate-sheet" key={company}>
-                <span className="estimate-company">{company}</span><strong>お見積もり</strong>
-                <dl>{["料金", "日程", "作業内容"].map(label => <div key={label}><dt>{label}</dt><dd><span className="estimate-line" aria-hidden="true" /><span className="sr-only">比較する項目</span></dd></div>)}</dl>
+              {["A社", "B社", "C社"].map(company => <div className="estimate-sheet" key={company}>
+                <span className="estimate-company">{company}</span><Icon name="yen" /><strong>お見積もり</strong>
+                <div className="estimate-lines" aria-hidden="true"><span /><span /></div>
               </div>)}
             </div>
-            <p className="estimate-caption">相見積もりのイメージ</p>
-            <p className="hero-compare-message"><Icon name="check" />料金・日程・作業内容を比較</p>
-            <div className="hero-guide-foot"><p>条件を確認してから、<br />納得できる1社に依頼。</p><Image src="/hero-collection-truck.webp" alt="家具や家電を載せた回収トラックのイメージイラスト" width={120} height={90} sizes="120px" className="hero-image" /></div>
+            <div className="hero-compare-result"><p>料金<span>／</span>日程<span>／</span>作業内容</p><strong><Icon name="check" />比べて、納得できる1社へ</strong></div>
+            <p className="estimate-caption">比較のイメージです。ご案内できる業者数は条件により異なります。</p>
           </aside>
         </div>
       </section>
       <section id="area" className="site-container area-section" aria-labelledby="area-title">
-        <div className="area-panel"><div className="area-heading"><span className="icon-bubble"><Icon name="pin" /></span><div><p className="eyebrow">まずは、お住まいの地域から</p><h2 id="area-title">回収を希望する地域を入力</h2></div><span className="free-label">相談無料</span></div>
+        <div className="area-panel"><div className="area-heading"><span className="icon-bubble"><Icon name="pin" /></span><div><p className="eyebrow">複数業者への見積もり依頼はこちら</p><h2 id="area-title">回収する地域を選んで、一括見積もり</h2></div><span className="free-label">相談無料</span></div>
           <AreaSearch />
           <p className="field-note">入力した地域を見積もりフォームに引き継ぎます。対応可否は地域・回収内容をもとに確認します。</p>
         </div>
@@ -139,7 +139,7 @@ export default function Home() {
       <section id="faq" className="site-container content-section faq-section"><div><p className="eyebrow">Q & A</p><h2>よくあるご質問</h2><p>ご相談前の気になること。</p></div><div className="faq-list">{faqs.map(faq => <details key={faq.question}><summary><span>Q.</span>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
       <section id="contact" className="contact-section"><div className="site-container contact-grid">
         <div className="contact-copy"><p className="eyebrow">LET’S GET STARTED</p><h2>相見積もりで比べて、<br />納得できる回収選び。</h2><p>何を、いつ、どのくらい片付けたいか。<br />一度の入力で、対応業者へまとめて相談できます。</p><ul><li><Icon name="check" />見積もりの相談は無料</li><li><Icon name="check" />写真は任意・5枚まで添付可能</li><li><Icon name="check" />条件を比較してから依頼先を選択</li></ul><div className="contact-note">地域や回収内容によって、ご案内できる業者数・対応日時は異なります。</div></div>
-        <div className="quote-form"><div className="quote-form-heading"><span>無料</span><h3>相見積もり相談フォーム</h3></div><ContactForm /></div>
+        <div className="quote-form"><div className="quote-form-heading"><span>無料</span><h3>一括見積もり依頼フォーム</h3></div><ContactForm /></div>
       </div></section>
     </main>
     <footer className="site-footer"><div className="site-container"><div className="footer-main"><BrandLogo /><nav aria-label="フッターナビゲーション"><Link href="/blog">お役立ち記事</Link><Link href="/partners">掲載会社様へ</Link><Link href="/business/login">業者ログイン</Link></nav></div><div className="footer-bottom"><p>不用品回収の見積もりを、もっとわかりやすく。</p><small>© {new Date().getFullYear()} {brand.name}</small></div></div></footer>

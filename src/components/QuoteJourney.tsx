@@ -35,6 +35,6 @@ export function AreaSearch() {
       {prefectures.map(name => <option key={name}>{name}</option>)}
     </select></label>
     <label><span>市区町村</span><input name="city" placeholder="例：広島市中区" required pattern=".*\S.*" autoComplete="address-level2" /></label>
-    <button className="primary-button" type="submit">この地域で相見積もり相談 <span aria-hidden="true">→</span></button>
+    <button className="primary-button" type="submit">無料一括見積もりへ進む <span aria-hidden="true">→</span></button>
   </form>;
 }
