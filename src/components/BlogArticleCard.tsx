@@ -25,7 +25,7 @@ export function BlogArticleCard({ article, headingLevel = 3 }: {
           src={article.image.src}
           alt={article.image.alt}
           fill
-          loading="eager"
+          loading="lazy"
           sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 895px) 50vw, 432px"
           className="object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-[1.03]"
         />

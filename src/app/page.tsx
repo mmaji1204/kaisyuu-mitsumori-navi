@@ -92,8 +92,17 @@ export default function Home() {
           <p className="field-note">入力した地域を見積もりフォームに引き継ぎます。対応可否は地域・回収内容をもとに確認します。</p>
         </div>
       </section>
+      <section id="flow" className="flow-section">
+        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>一度入力して、<br className="mobile-break" />比べてから決める。</h2></div>
+          <ol className="flow-grid">{[
+            ["一度、入力する", "地域・品目・希望日を入力。対応業者へまとめて見積もりを依頼します。"],
+            ["連絡を受けて、比べる", "対応業者から電話等でご案内。総額・作業範囲・回収日時を比べます。"],
+            ["納得して依頼する", "条件に納得したら回収を予約。気になる点は契約前に確認を。"],
+          ].map(([heading, body], i) => <li key={heading}><span className="step-number">STEP <b>0{i + 1}</b></span><h3>{heading}</h3><p>{body}</p></li>)}</ol>
+        </div>
+      </section>
       <section id="compare" className="site-container content-section">
-        <div className="section-heading"><p className="eyebrow">COMPARE</p><h2>安さだけで決めない、<br className="mobile-break" />納得できる業者選び。</h2><p>同じ品目・作業条件を伝えて、見積もりを比べましょう。</p></div>
+        <div className="section-heading"><p className="eyebrow">COMPARE</p><h2>相見積もりで比べたい、<br className="mobile-break" />3つのポイント。</h2><p>同じ品目・作業条件を伝えて、見積もりを比べましょう。</p></div>
         <div className="comparison-grid">
           {[
             { icon: "yen" as const, num: "01", title: "追加費用を含む総額", body: "基本料金だけでなく、搬出・出張・処分にかかる費用まで。見積書で内訳を確認しましょう。", tags: ["税込の総額", "追加料金の条件"] },
@@ -118,16 +127,7 @@ export default function Home() {
       </section>
       <section id="items" className="site-container content-section items-section">
         <div><p className="eyebrow">PICKUP ITEMS</p><h2>片付けたいものから、<br />まずは調べてみる。</h2><p>処分の方法や準備は、品物によってさまざま。<br />相談前の疑問を、記事で解消できます。</p></div>
-        <div className="item-links">{[["洗濯機", "washing-machine-disposal"], ["冷蔵庫", "refrigerator-disposal"], ["ソファ", "sofa-disposal"], ["マットレス", "mattress-disposal"], ["引っ越しの不用品", "moving-disposal-schedule"], ["まとめて片付け", "kei-truck-plan"]].map(([name, slug]) => <Link href={`/blog/${slug}`} key={slug}>{name}<span aria-hidden="true">↗</span></Link>)}</div>
-      </section>
-      <section id="flow" className="flow-section">
-        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>相談から回収まで、<br className="mobile-break" />ひとつずつ。</h2></div>
-          <ol className="flow-grid">{[
-            ["まとめて相談する", "地域・品目・希望日を一度入力。対応業者へ見積もりの相談内容を共有します。"],
-            ["見積もりを比較する", "各業者からの案内をもとに、総額・作業範囲・対応日時を比べます。"],
-            ["納得して依頼する", "条件に納得したら回収を予約。気になる点は契約前に確認を。"],
-          ].map(([heading, body], i) => <li key={heading}><span className="step-number">STEP <b>0{i + 1}</b></span><h3>{heading}</h3><p>{body}</p></li>)}</ol>
-        </div>
+        <div className="item-links">{[["テレビ", "television-disposal"], ["洗濯機", "washing-machine-disposal"], ["冷蔵庫", "refrigerator-disposal"], ["ソファ", "sofa-disposal"], ["マットレス", "mattress-disposal"], ["引っ越しの不用品", "moving-disposal-schedule"], ["まとめて片付け", "kei-truck-plan"]].map(([name, slug]) => <Link href={`/blog/${slug}`} key={slug}>{name}<span aria-hidden="true">↗</span></Link>)}</div>
       </section>
       <section id="reviews" className="site-container review-guide">
         <span className="quote-mark" aria-hidden="true">“</span><div><p className="eyebrow">口コミを参考にするときは</p><h2>星の数より、<br className="mobile-break" />自分と近い依頼内容を。</h2><p>同じ品目・量・搬出条件の体験談かを確認しましょう。追加料金の説明や当日の対応など、具体的な内容が比較のヒントになります。</p></div><Link href="/blog/estimate-preparation" className="outline-button">業者選びの準備を読む <Icon name="arrow" /></Link>

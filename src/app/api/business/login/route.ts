@@ -4,6 +4,7 @@ import {
   createBusinessSessionValue,
   getBusinessLoginEmail,
   getBusinessLoginPassword,
+  getBusinessSessionToken,
   isBusinessFallbackAuthConfigured,
 } from "@/lib/business-auth";
 import { hashPassword } from "@/lib/password";
@@ -20,6 +21,11 @@ type PartnerLoginRow = {
 };
 
 export async function POST(request: NextRequest) {
+  if (!getBusinessSessionToken()) {
+    return NextResponse.redirect(new URL("/business/login?setup=1", request.url), {
+      status: 303,
+    });
+  }
   const formData = await request.formData();
   const email = formData.get("email")?.toString() ?? "";
   const password = formData.get("password")?.toString() ?? "";

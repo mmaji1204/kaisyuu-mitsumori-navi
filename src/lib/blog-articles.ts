@@ -1,11 +1,14 @@
+import { launchArticles } from "./launch-articles";
+
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
-  publishedAt: string; intro: string; takeaway: string;
+  publishedAt: string; verifiedAt?: string; intro: string; takeaway: string;
   image: { src: string; alt: string };
   sections: { id: string; title: string; paragraphs: string[]; checklist?: string[]; links?: { title: string; href: string }[] }[];
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  ...launchArticles,
   {
     slug: "washing-machine-disposal", category: "家電の処分", publishedAt: "2026-10-03",
     image: { src: "/blog/washing-machine-disposal.webp", alt: "明るい洗面室の防水パンに置かれたドラム式洗濯機" },

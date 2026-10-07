@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
-import { LEADS_STORAGE_KEY, Lead } from "@/lib/leads";
+import { useEffect, useMemo, useState } from "react";
+import { Lead } from "@/lib/leads";
 
 type BusinessLeadsManagerProps = {
   initialLeads: Lead[];
@@ -85,34 +85,7 @@ function priorityScore(lead: Lead) {
   return score;
 }
 
-function loadStoredLeads() {
-  try {
-    return JSON.parse(localStorage.getItem(LEADS_STORAGE_KEY) ?? "[]") as Lead[];
-  } catch {
-    return [];
-  }
-}
-
-function subscribeToStoredLeads(callback: () => void) {
-  window.addEventListener("storage", callback);
-
-  return () => window.removeEventListener("storage", callback);
-}
-
-function getStoredLeadsSnapshot() {
-  return localStorage.getItem(LEADS_STORAGE_KEY) ?? "[]";
-}
-
-function getServerStoredLeadsSnapshot() {
-  return "[]";
-}
-
 export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps) {
-  const storedLeadsSnapshot = useSyncExternalStore(
-    subscribeToStoredLeads,
-    getStoredLeadsSnapshot,
-    getServerStoredLeadsSnapshot,
-  );
   const [leadEdits, setLeadEdits] = useState<Record<string, Partial<Lead>>>({});
   const [keyword, setKeyword] = useState("");
   const [status, setStatus] = useState("すべて");
@@ -122,25 +95,12 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
 
-  const storedLeads = useMemo(() => {
-    try {
-      return JSON.parse(storedLeadsSnapshot) as Lead[];
-    } catch {
-      return [];
-    }
-  }, [storedLeadsSnapshot]);
-
   const leads = useMemo(() => {
-    const localOnlyLeads = storedLeads.filter(
-      (storedLead) =>
-        !serverLeads.some((serverLead) => serverLead.id === storedLead.id),
-    );
-
-    return [...serverLeads, ...localOnlyLeads, ...initialLeads].map((lead) => ({
+    return [...serverLeads, ...initialLeads].map((lead) => ({
       ...lead,
       ...leadEdits[lead.id],
     }));
-  }, [initialLeads, leadEdits, serverLeads, storedLeads]);
+  }, [initialLeads, leadEdits, serverLeads]);
 
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
@@ -253,7 +213,7 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
       setServerLeads(result.leads);
     } catch {
       setLoadError(
-        "サーバーの案件を取得できませんでした。ローカル保存分とデモ案件を表示しています。",
+        "案件を取得できませんでした。時間をおいて再読み込みしてください。",
       );
     } finally {
       setIsLoading(false);
@@ -284,7 +244,7 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
       } catch {
         if (!ignore) {
           setLoadError(
-            "サーバーの案件を取得できませんでした。ローカル保存分とデモ案件を表示しています。",
+            "案件を取得できませんでした。時間をおいて再読み込みしてください。",
           );
         }
       } finally {
@@ -311,23 +271,23 @@ export function BusinessLeadsManager({ initialLeads }: BusinessLeadsManagerProps
     }));
 
     if (!id.startsWith("demo-")) {
-      const nextStoredLeads = loadStoredLeads().map((lead) =>
-        lead.id === id ? { ...lead, ...updates } : lead,
-      );
-
-      localStorage.setItem(LEADS_STORAGE_KEY, JSON.stringify(nextStoredLeads));
-
       try {
-        await fetch(`/api/leads/${id}`, {
+        const response = await fetch(`/api/leads/${id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updates),
         });
+        if (!response.ok) throw new Error("Update failed");
       } catch {
+        setLeadEdits((current) => {
+          const next = { ...current };
+          delete next[id];
+          return next;
+        });
         setLoadError(
-          "進捗の保存に失敗しました。画面上は更新されていますが、再読み込み後に戻る可能性があります。",
+          "変更を保存できませんでした。再読み込みしてから、もう一度お試しください。",
         );
       }
     }

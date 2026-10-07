@@ -45,7 +45,7 @@ export default async function BlogArticlePage({ params }: Props) {
       <aside className="mt-10 rounded-xl bg-green-700 p-6 text-white"><h2 className="text-2xl font-black leading-relaxed">回収方法や費用を相談する</h2><p className="mt-3 leading-8">回収したい品物、お住まいの地域、希望日をお知らせください。搬出条件も伝えて、料金と作業内容を比較しましょう。</p><Link href="/#contact" className="mt-5 inline-block rounded-lg bg-white px-6 py-4 font-black text-green-800 hover:bg-green-50">無料一括見積もりを依頼する</Link><p className="mt-4 text-sm leading-7">回収の可否・料金・日時は各業者の回答をご確認ください。</p></aside>
       <nav aria-label="関連する案内" className="mt-6 flex flex-wrap gap-4 font-bold text-green-800 underline underline-offset-4"><Link href="/#price">料金目安</Link><Link href="/#items">回収品目</Link><Link href="/#flow">ご利用の流れ</Link></nav>
       <RelatedArticles articles={links} />
-      <section className="mt-8 text-sm leading-7 text-slate-600"><h2 className="font-bold">参考情報</h2><ul className="mt-2 space-y-2">{article.sources.map(s => <li key={s.url}><a href={s.url} className="underline underline-offset-4">{s.title}</a></li>)}</ul><p className="mt-3">{article.publishedAt.replaceAll("-", "/")}確認。自治体の案内は一例です。実際の手続きは、お住まいの自治体や依頼先の最新情報をご確認ください。</p></section>
+      <section className="mt-8 text-sm leading-7 text-slate-600"><h2 className="font-bold">参考情報</h2><ul className="mt-2 space-y-2">{article.sources.map(s => <li key={s.url}><a href={s.url} className="underline underline-offset-4">{s.title}</a></li>)}</ul><p className="mt-3">{(article.verifiedAt ?? article.publishedAt).replaceAll("-", "/")}確認。自治体の案内は一例です。実際の手続きは、お住まいの自治体や依頼先の最新情報をご確認ください。</p></section>
     </article>
   </>;
 }

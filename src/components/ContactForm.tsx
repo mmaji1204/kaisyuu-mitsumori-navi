@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { LEADS_STORAGE_KEY, Lead } from "@/lib/leads";
+import type { Lead } from "@/lib/leads";
 import { useQuoteArea } from "@/components/QuoteJourney";
 
 type SubmittedData = {
@@ -17,21 +17,6 @@ function formatDate(date: Date) {
   const minute = String(date.getMinutes()).padStart(2, "0");
 
   return `${year}/${month}/${day} ${hour}:${minute}`;
-}
-
-function saveLead(lead: Lead) {
-  try {
-    const currentLeads = JSON.parse(
-      localStorage.getItem(LEADS_STORAGE_KEY) ?? "[]",
-    ) as Lead[];
-
-    localStorage.setItem(
-      LEADS_STORAGE_KEY,
-      JSON.stringify([lead, ...currentLeads]),
-    );
-  } catch {
-    localStorage.setItem(LEADS_STORAGE_KEY, JSON.stringify([lead]));
-  }
 }
 
 export function ContactForm() {
@@ -138,11 +123,8 @@ export function ContactForm() {
         mode?: "demo" | "supabase";
       };
 
-      try {
-        saveLead(result.lead ?? lead);
-        window.dispatchEvent(new StorageEvent("storage"));
-      } catch {
-        // Supabaseに保存できていれば送信成功として扱います。
+      if (result.mode !== "supabase" || !result.lead?.id) {
+        throw new Error("受付の保存を確認できませんでした。");
       }
 
       setErrorMessage("");
@@ -164,6 +146,10 @@ export function ContactForm() {
       onSubmit={handleSubmit}
       className="rounded-lg bg-white p-4 text-slate-900 shadow-sm sm:p-6"
     >
+      <div className="mb-5 rounded-lg bg-[#f2f6ed] p-4 text-sm leading-7 text-[#263d32]">
+        <p className="font-bold">入力は1回。対応業者へまとめて相談できます。</p>
+        <p>送信後、対応業者から電話等でご連絡します。料金や日程を比べてから依頼先をお選びください。</p>
+      </div>
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
         <label className="block">
           <span className="text-sm font-bold">お名前 <span className="text-xs text-orange-700">必須</span></span>
@@ -241,10 +227,17 @@ export function ContactForm() {
           <input
             type="file"
             name="photos"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp,image/gif"
             multiple
+            onChange={(event) => {
+              const files = Array.from(event.currentTarget.files ?? []);
+              const invalid = files.length > 5 || files.some(file => file.size > 8 * 1024 * 1024);
+              event.currentTarget.setCustomValidity(invalid ? "写真は1枚8MB以下、5枚まで選択してください。" : "");
+              event.currentTarget.reportValidity();
+            }}
             className="mt-2 block min-h-12 w-full rounded-md border border-slate-300 px-2 py-2 text-sm font-bold text-slate-600 file:mr-2 file:rounded-md file:border-0 file:bg-emerald-50 file:px-3 file:py-2 file:text-sm file:font-bold file:text-emerald-700 sm:px-3"
           />
+          <span className="mt-1 block text-xs font-normal text-slate-500">JPEG・PNG・WebP・GIF／1枚8MB以下。住所や顔などは写さず、品物と搬出経路を撮影してください。</span>
         </label>
       </div>
 
