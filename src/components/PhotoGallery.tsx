@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getProtectedLeadPhotoUrl } from "@/lib/lead-photo-path";
 
 type PhotoGalleryProps = {
   canDelete?: boolean;
@@ -44,7 +45,7 @@ export function PhotoGallery({
               <input
                 type="file"
                 name="photos"
-                accept="image/*"
+                accept="image/jpeg,image/png,image/webp,image/gif"
                 multiple
                 className="sr-only"
               />
@@ -70,7 +71,7 @@ export function PhotoGallery({
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={url}
+                  src={getProtectedLeadPhotoUrl(url)}
                   alt={`${title} ${index + 1}`}
                   className="aspect-[4/3] w-full object-cover"
                 />
@@ -123,7 +124,7 @@ export function PhotoGallery({
             <div className="bg-slate-100 p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={previewUrl}
+                src={getProtectedLeadPhotoUrl(previewUrl)}
                 alt={`${title} プレビュー`}
                 className="mx-auto max-h-[75vh] w-auto max-w-full rounded-lg object-contain"
               />

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const name = formData.get("name")?.toString().trim() ?? "";
   const email = formData.get("email")?.toString().trim() ?? "";
-  const password = formData.get("password")?.toString() || "password123";
+  const password = formData.get("password")?.toString() || "";
   const serviceArea =
     formData.get("service_area")?.toString().trim() || "全国対応";
   const dailyDeliveryLimitValue = formData
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     ? Number(dailyDeliveryLimitValue)
     : 10;
 
-  if (!name || !email || password.length < 6 || Number.isNaN(dailyDeliveryLimit)) {
+  if (!name || !email || password.length < 12 || password.length > 256 || Number.isNaN(dailyDeliveryLimit)) {
     return NextResponse.redirect(new URL("/admin?partnerError=1", request.url), {
       status: 303,
     });
@@ -43,12 +43,12 @@ export async function POST(request: NextRequest) {
   const { error } = await supabase.from("partners").insert({
     name,
     email,
-    password_hash: hashPassword(password),
+    password_hash: await hashPassword(password),
     service_area: serviceArea,
     daily_delivery_limit: dailyDeliveryLimit,
     monthly_budget_limit: 300000,
     notification_email: email,
-    auto_assign_enabled: true,
+    auto_assign_enabled: false,
     status: "active",
   });
 

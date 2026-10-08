@@ -1,3 +1,5 @@
+import { isQuoteIntakeOpen } from "@/lib/intake-status";
+import { IntakeNotice } from "@/components/IntakeNotice";
 import type { Metadata } from "next";
 import { additionalArticles } from "@/lib/blog-articles";
 import Image from "next/image";
@@ -57,7 +59,7 @@ export default function ArticlePage() {
         <section id="message"><h2>そのまま使える見積もり依頼文の例</h2><p>以下は記入例です。ご自身の状況に置き換え、未確認の項目はその旨を記入してください。</p><blockquote className="mt-4 space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-5"><p>不用品回収の見積もりを希望します。</p><p>地域：○○市○○区<br />品目：2人掛けソファ1台（幅150×奥行80×高さ80cm）、衣装ケース3個<br />建物：集合住宅3階、エレベーターなし<br />搬出：玄関幅約80cm。ソファの分解が必要か未確認<br />駐車：敷地内は不可。近隣の駐車場所は未確認<br />希望日：○月○日または○月○日。○月○日までに完了希望</p><p>品物の全体と階段の写真を添付します。税込総額、料金に含まれる作業、追加費用が発生する条件、見積もり後に断った場合の費用を教えてください。現地確認が必要かもお知らせください。</p></blockquote><p className="mt-4">写真の後に品物が増えた場合は、回収当日まで待たずに見積もりの更新を相談します。内容を変えたら、比較中の他社にも同じ情報を伝えましょう。</p></section>
         <section id="faq"><h2>見積もり前によくある質問</h2><h3>片付けが終わっていなくても見積もりできますか？</h3><p>まずは現在の状態で相談し、回収する範囲と、まだ数量が確定していないことを伝えましょう。袋詰めや分別をどちらが担当するかでも作業内容が変わるため、必要な準備を業者に確認してください。</p><h3>写真だけで料金は確定しますか？</h3><p>業者や品物、搬出条件によって異なります。写真では大きさや経路が十分にわからない場合もあるため、「概算か確定額か」を確認します。大型家具や大量の不用品は、現地見積もりの要否も相談しましょう。</p><h3>見積もりを取ったら契約しなければいけませんか？</h3><p>見積もり依頼と回収の契約は分けて確認しましょう。訪問・見積もり自体が有料の場合もあるので、申込み前に費用の有無と、どの時点で契約になるかを尋ねます。提示条件に納得してから依頼してください。</p></section>
       </div>
-      <aside className="mt-10 rounded-xl bg-green-700 p-6 text-white"><h2 className="text-2xl font-black leading-relaxed">回収品と希望日を整理して、無料見積もりへ</h2><p className="mt-3 leading-8">わかる範囲の品目・地域・搬出条件を入力してください。写真も添えて、料金と作業条件を比較する準備を始めましょう。</p><Link href="/#contact" className="mt-5 inline-block rounded-lg bg-white px-6 py-4 font-black text-green-800 hover:bg-green-50">無料一括見積もりを依頼する</Link><p className="mt-4 text-sm leading-6">回収の可否・料金・日時は各業者の回答をご確認ください。</p></aside>
+      {isQuoteIntakeOpen() ? (<aside className="mt-10 rounded-xl bg-green-700 p-6 text-white"><h2 className="text-2xl font-black leading-relaxed">回収品と希望日を整理して、無料見積もりへ</h2><p className="mt-3 leading-8">わかる範囲の品目・地域・搬出条件を入力してください。写真も添えて、料金と作業条件を比較する準備を始めましょう。</p><Link href="/#contact" className="mt-5 inline-block rounded-lg bg-white px-6 py-4 font-black text-green-800 hover:bg-green-50">無料一括見積もりを依頼する</Link><p className="mt-4 text-sm leading-6">回収の可否・料金・日時は各業者の回答をご確認ください。</p></aside>) : <div className="mt-10"><IntakeNotice /></div>}
       <RelatedArticles articles={additionalArticles} />
       <p className="mt-6 text-sm leading-7 text-slate-600">参考：国民生活センター「不用品回収サービスのトラブル」（2022年11月2日公表、2026年9月21日確認）。地域や品物によって取扱いが異なるため、お住まいの自治体の案内もご確認ください。</p>
     </article>

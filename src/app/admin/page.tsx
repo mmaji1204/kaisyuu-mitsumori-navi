@@ -605,9 +605,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 </span>
                 <input
                   name="password"
-                  type="text"
-                  minLength={6}
-                  placeholder="password123"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  minLength={12}
+                  maxLength={256}
+                  placeholder="12文字以上"
                   className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 outline-none focus:border-orange-500"
                 />
               </label>

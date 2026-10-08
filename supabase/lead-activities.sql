@@ -17,5 +17,6 @@ drop policy if exists "Service role can manage lead activities" on lead_activiti
 create policy "Service role can manage lead activities"
   on lead_activities
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);

@@ -1,140 +1,33 @@
-# Supabase setup
+# Supabaseの保存・配信設定
 
-このプロジェクトを本番運用するためのSupabase設定手順です。
+## 現在の状態
 
-## 1. Supabaseでプロジェクトを作る
+2026年10月8日: プロジェクト `kiykxxadnhmprdjjjdwz` はINACTIVE。復元は組織のサービス制限で拒否されました。DBやStorageの変更は未適用です。受付は停止した状態で公開します。
 
-1. Supabaseにログインします。
-2. New projectを作成します。
-3. Project nameは `kaisyuu-mitsumori-navi` などにします。
-4. Database passwordは必ず控えておきます。
-5. Regionは日本向けなら近い地域を選びます。
+## 既存プロジェクトの復旧
 
-## 2. 案件テーブルを作る
+1. 所有者が組織の制限を確認し、復元可能な状態にする。
+2. テーブル・制約・RLS・Storage・既存の配信先を読み取りで確認する。既存データを上書きする初期化は行わない。
+3. 必要な差分をマイグレーションとして適用する。同意記録の列は `migrations/20261008042028_add_lead_consent.sql`。
+4. `lead-photos` バケットを非公開にし、旧公開URLの読み取りを拒否できることを確認する。写真へのアクセスは `/api/lead-photos/...` を経由し、管理者または当該案件の配信先だけに許可する。
+5. RLSを有効にし、anon/authenticated に顧客・配信・請求テーブルの読み書きを許可するポリシーがないことを確認する。サービスキーはサーバー専用。新規インストール用SQLにもサービスロールだけのポリシーを記載している。
 
-1. SupabaseのSQL Editorを開きます。
-2. `supabase/schema.sql` の中身を貼り付けます。
-3. Runを押します。
+## 新規インストール
 
-これで `leads` テーブルが作られます。
+`schema.sql` は新規環境の構造定義です。既存環境へ一括実行しないでください。`partner-routing.sql`, `lead-activities.sql`, `operation-upgrades.sql` は旧版向けの差分資料で、適用済みか確認してから必要な部分だけを使います。特に operation-upgrades.sql 末尾には過去の配信に対する請求項目作成があるため、請求方針の確認なしに実行しないでください。
 
-## 3. 環境変数を設定する
+既定の業者アカウント・共通パスワード・全案件の自動割当は作成しません。業者は管理画面から固有のパスワードで登録します。新しいパスワードは12文字以上とし、ソルト付きscryptで保存します。旧SHA-256ハッシュは正常なログイン時に移行します。
 
-Supabaseの Project Settings > API から次の値を確認します。
+## 通知・配信
 
-- Project URL
-- service_role key
+Resendの設定と管理者宛先が必要です。新規業者の自動配信はOFFで作成し、対応範囲と契約・配信条件を確認してから有効にします。個人情報は同意のある見積もりだけに使用してください。試験時はステージングの専用データを使用し、実業者へ不要な通知や配信料を発生させないでください。
 
-プロジェクト直下の `.env.local` に貼り付けます。
+受付開始の全手順は [Vercel公開・受付開始の手順](deploy-vercel.md) を参照してください。
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=xxxxx
-```
+## 参照した公式情報
 
-`SUPABASE_SERVICE_ROLE_KEY` は絶対に公開しないでください。
+- https://supabase.com/docs/guides/storage/buckets/fundamentals （private bucketとアクセス制御）
+- https://www.ppc.go.jp/all_faq_index/faq1-q4-17/ （入力画面での利用目的の明示）
+- https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/ （個人情報の取り扱い）
 
-## 4. 動作確認
-
-```bash
-npm run dev
-```
-
-トップページのフォームから送信します。
-そのあと `/business/users` を開いて、新しい案件が表示されれば成功です。
-
-## 5. 業者ごとの案件振り分けを有効にする
-
-1. SupabaseのSQL Editorを開きます。
-2. `supabase/partner-routing.sql` の中身を貼り付けます。
-3. Runを押します。
-
-これで次の2つが作られます。
-
-- `partners`: 業者情報
-- `lead_deliveries`: どの案件をどの業者に配信したか
-
-最初の業者として `クリーンリンク` が作られ、既存の案件もその業者に配信済みとして紐づきます。
-
-初期業者ログインは次の通りです。
-
-- メール: `partner@example.com`
-- パスワード: `password123`
-
-管理者画面から追加する業者は、追加時に入力したメールアドレスと初期パスワードでログインできます。
-
-## 6. 対応履歴を有効にする
-
-1. SupabaseのSQL Editorを開きます。
-2. `supabase/lead-activities.sql` の中身を貼り付けます。
-3. Runを押します。
-
-これで案件詳細ページから「電話した」「見積した」「成約」などの履歴を保存できます。
-
-## 7. 運用機能を有効にする
-
-1. SupabaseのSQL Editorを開きます。
-2. `supabase/operation-upgrades.sql` の中身を貼り付けます。
-3. Runを押します。
-
-これで次の運用機能が使えるようになります。
-
-- 業者ごとの日配信上限
-- 業者ごとの月予算上限
-- 業者ごとの通知メール
-- 自動配信のON/OFF
-- 通知ログ
-- 請求明細
-- 管理画面からのCSV出力
-- 希望日時
-- 写真名の記録
-- 写真URLの記録
-- 作業後写真の記録
-- 重複送信チェック
-
-写真アップロードでは、Supabase Storageに `lead-photos` バケットを自動作成します。
-初回送信時にバケットが作られ、案件ごとの写真URLが `leads.photo_urls` に保存されます。
-
-## 8. 外部サービスを接続するとき
-
-メール、LINE、SMS、クレジット決済は外部サービスの契約とAPIキーが必要です。
-本番で使う場合は `.env.local` とVercelの Environment Variables に次を追加します。
-
-```bash
-RESEND_API_KEY=
-NOTIFICATION_FROM_EMAIL=
-ADMIN_NOTIFY_EMAIL=
-LINE_CHANNEL_ACCESS_TOKEN=
-SMS_PROVIDER_API_KEY=
-STRIPE_SECRET_KEY=
-```
-
-今のアプリでは、案件が入った時点で通知ログと請求明細を作ります。
-実メール送信・LINE送信・SMS送信・Stripe請求は、APIキーを用意してから接続します。
-
-## 9. 管理者が使う画面
-
-- 管理ダッシュボード: `/admin`
-- 案件ボード: `/admin/board`
-- 分析ダッシュボード: `/admin/analytics`
-- 請求管理: `/admin/billing`
-- 案件詳細: `/admin/leads/案件ID`
-- 業者詳細: `/admin/partners/業者ID`
-- 請求書: `/admin/invoices/業者ID`
-
-## 10. Vercel公開時
-
-Vercelの Environment Variables にも同じ2つを設定します。
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `BUSINESS_LOGIN_EMAIL`
-- `BUSINESS_LOGIN_PASSWORD`
-- `BUSINESS_SESSION_TOKEN`
-- `BUSINESS_PARTNER_EMAIL`
-- `BUSINESS_PARTNER_NAME`
-- `ADMIN_LOGIN_EMAIL`
-- `ADMIN_LOGIN_PASSWORD`
-- `ADMIN_SESSION_TOKEN`
-
-設定後に再デプロイします。
+2026年10月8日確認。法令への適合はコード検証だけでは判断できないため、実際の運用・委託条件に沿って公開案内を確定します。

@@ -21,7 +21,7 @@ export async function POST(
   const password = formData.get("password")?.toString() ?? "";
   const returnTo = formData.get("return_to")?.toString() || `/admin/partners/${id}`;
 
-  if (password.length < 6 || !hasSupabaseServerEnv()) {
+  if (password.length < 12 || password.length > 256 || !hasSupabaseServerEnv()) {
     return NextResponse.redirect(new URL(`${returnTo}?partnerError=1`, request.url), {
       status: 303,
     });
@@ -30,7 +30,7 @@ export async function POST(
   const supabase = createSupabaseAdminClient();
   const { error } = await supabase
     .from("partners")
-    .update({ password_hash: hashPassword(password) })
+    .update({ password_hash: await hashPassword(password) })
     .eq("id", id);
 
   if (error) {

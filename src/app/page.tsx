@@ -4,6 +4,8 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { BlogArticleCard } from "@/components/BlogArticleCard";
 import { ContactForm } from "@/components/ContactForm";
 import { AreaSearch, QuoteJourney } from "@/components/QuoteJourney";
+import { IntakeNotice } from "@/components/IntakeNotice";
+import { isQuoteIntakeOpen } from "@/lib/intake-status";
 import { brand } from "@/lib/brand";
 import { additionalArticles } from "@/lib/blog-articles";
 
@@ -39,6 +41,8 @@ function Icon({ name, className = "" }: { name: "pin" | "box" | "truck" | "check
 }
 
 export default function Home() {
+  const intakeOpen = isQuoteIntakeOpen();
+  const ctaLabel = intakeOpen ? "無料相見積もり" : "受付状況を確認";
   const articles = [...additionalArticles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
   const jsonLd = { "@context": "https://schema.org", "@graph": [
     { "@type": "WebSite", name: brand.name, url: brand.siteUrl, description },
@@ -46,27 +50,27 @@ export default function Home() {
     { "@type": "FAQPage", mainEntity: faqs.map(faq => ({ "@type": "Question", name: faq.question, acceptedAnswer: { "@type": "Answer", text: faq.answer } })) },
   ] };
   return <QuoteJourney><div className="collection-site">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
     <a href="#main-content" className="skip-link">本文へ移動</a>
     <header className="site-header">
       <div className="site-container header-main">
         <BrandLogo />
-        <div className="header-actions"><Link href="/partners">掲載をご希望の事業者様へ <span aria-hidden="true">↗</span></Link><a className="primary-button" href="#contact">無料相見積もり <Icon name="arrow" /></a></div>
+        <div className="header-actions"><Link href="/partners">掲載をご希望の事業者様へ <span aria-hidden="true">↗</span></Link><a className="primary-button" href="#contact">{ctaLabel} <Icon name="arrow" /></a></div>
       </div>
       <nav className="site-container main-nav" aria-label="メインナビゲーション">
-        <a href="#area">地域から相談</a><a href="#compare">業者の比較ポイント</a><a href="#price">料金の目安</a><a href="#flow">ご利用の流れ</a><Link href="/blog">お役立ち記事</Link><a href="#faq">よくある質問</a>
+        <a href="#area">{intakeOpen ? "地域から相談" : "受付状況"}</a><a href="#compare">業者の比較ポイント</a><a href="#price">料金の目安</a><a href="#flow">ご利用の流れ</a><Link href="/blog">お役立ち記事</Link><a href="#faq">よくある質問</a>
       </nav>
     </header>
     <main id="main-content">
       <section className="hero-section">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-kicker">複数業者の見積もりを、まとめて比較</p>
+            <p className="hero-kicker">複数業者の見積もりを、まとめて比較</p>{!intakeOpen && <p className="mb-4 text-sm font-bold text-[#a4481b]">ただいま見積もり受付の準備中です</p>}
             <h1><span className="hero-title-intro">不用品回収の</span><em>相見積もり</em><span className="hero-title-detail">一括依頼・業者比較</span></h1>
             <p className="hero-description"><strong>1回の入力で、複数の回収業者へ。</strong><br />料金・日程・作業内容を比べて、依頼先を選べます。</p>
             <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />1社ずつの問い合わせ不要</span></div>
             <div className="hero-action">
-              <a className="primary-button hero-button" href="#area"><span className="hero-button-free">無料</span>まとめて見積もりを依頼する <Icon name="arrow" /></a>
+              <a className="primary-button hero-button" href="#area">{intakeOpen && <span className="hero-button-free">無料</span>}{intakeOpen ? "まとめて見積もりを依頼する" : "見積もりの受付状況を確認する"} <Icon name="arrow" /></a>
               <p className="hero-note">ご案内できる業者数は、地域・回収内容によって異なります。</p>
             </div>
           </div>
@@ -87,13 +91,22 @@ export default function Home() {
         </div>
       </section>
       <section id="area" className="site-container area-section" aria-labelledby="area-title">
-        <div className="area-panel"><div className="area-heading"><span className="icon-bubble"><Icon name="pin" /></span><div><p className="eyebrow">複数業者への見積もり依頼はこちら</p><h2 id="area-title">回収する地域を選んで、一括見積もり</h2></div><span className="free-label">相談無料</span></div>
-          <AreaSearch />
-          <p className="field-note">入力した地域を見積もりフォームに引き継ぎます。対応可否は地域・回収内容をもとに確認します。</p>
+        <div className="area-panel"><div className="area-heading"><span className="icon-bubble"><Icon name="pin" /></span><div><p className="eyebrow">複数業者への見積もり依頼はこちら</p><h2 id="area-title">{intakeOpen ? "回収する地域を選んで、一括見積もり" : "見積もりの受付状況"}</h2></div><span className="free-label">相談無料</span></div>
+          {intakeOpen ? <AreaSearch /> : <IntakeNotice />}
+          {intakeOpen && <p className="field-note">入力した地域を見積もりフォームに引き継ぎます。対応可否は地域・回収内容をもとに確認します。</p>}
+        </div>
+      </section>
+      <section id="flow" className="flow-section">
+        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>一度入力して、<br className="mobile-break" />比べてから決める。</h2></div>
+          <ol className="flow-grid">{[
+            ["一度、入力する", "地域・品目・希望日を入力。対応業者へまとめて見積もりを依頼します。"],
+            ["連絡を受けて、比べる", "対応業者から電話等でご案内。総額・作業範囲・回収日時を比べます。"],
+            ["納得して依頼する", "条件に納得したら回収を予約。気になる点は契約前に確認を。"],
+          ].map(([heading, body], i) => <li key={heading}><span className="step-number">STEP <b>0{i + 1}</b></span><h3>{heading}</h3><p>{body}</p></li>)}</ol>
         </div>
       </section>
       <section id="compare" className="site-container content-section">
-        <div className="section-heading"><p className="eyebrow">COMPARE</p><h2>安さだけで決めない、<br className="mobile-break" />納得できる業者選び。</h2><p>同じ品目・作業条件を伝えて、見積もりを比べましょう。</p></div>
+        <div className="section-heading"><p className="eyebrow">COMPARE</p><h2>相見積もりで比べたい、<br className="mobile-break" />3つのポイント。</h2><p>同じ品目・作業条件を伝えて、見積もりを比べましょう。</p></div>
         <div className="comparison-grid">
           {[
             { icon: "yen" as const, num: "01", title: "追加費用を含む総額", body: "基本料金だけでなく、搬出・出張・処分にかかる費用まで。見積書で内訳を確認しましょう。", tags: ["税込の総額", "追加料金の条件"] },
@@ -118,16 +131,7 @@ export default function Home() {
       </section>
       <section id="items" className="site-container content-section items-section">
         <div><p className="eyebrow">PICKUP ITEMS</p><h2>片付けたいものから、<br />まずは調べてみる。</h2><p>処分の方法や準備は、品物によってさまざま。<br />相談前の疑問を、記事で解消できます。</p></div>
-        <div className="item-links">{[["洗濯機", "washing-machine-disposal"], ["冷蔵庫", "refrigerator-disposal"], ["ソファ", "sofa-disposal"], ["マットレス", "mattress-disposal"], ["引っ越しの不用品", "moving-disposal-schedule"], ["まとめて片付け", "kei-truck-plan"]].map(([name, slug]) => <Link href={`/blog/${slug}`} key={slug}>{name}<span aria-hidden="true">↗</span></Link>)}</div>
-      </section>
-      <section id="flow" className="flow-section">
-        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>相談から回収まで、<br className="mobile-break" />ひとつずつ。</h2></div>
-          <ol className="flow-grid">{[
-            ["まとめて相談する", "地域・品目・希望日を一度入力。対応業者へ見積もりの相談内容を共有します。"],
-            ["見積もりを比較する", "各業者からの案内をもとに、総額・作業範囲・対応日時を比べます。"],
-            ["納得して依頼する", "条件に納得したら回収を予約。気になる点は契約前に確認を。"],
-          ].map(([heading, body], i) => <li key={heading}><span className="step-number">STEP <b>0{i + 1}</b></span><h3>{heading}</h3><p>{body}</p></li>)}</ol>
-        </div>
+        <div className="item-links">{[["テレビ", "television-disposal"], ["洗濯機", "washing-machine-disposal"], ["冷蔵庫", "refrigerator-disposal"], ["ソファ", "sofa-disposal"], ["マットレス", "mattress-disposal"], ["引っ越しの不用品", "moving-disposal-schedule"], ["まとめて片付け", "kei-truck-plan"]].map(([name, slug]) => <Link href={`/blog/${slug}`} key={slug}>{name}<span aria-hidden="true">↗</span></Link>)}</div>
       </section>
       <section id="reviews" className="site-container review-guide">
         <span className="quote-mark" aria-hidden="true">“</span><div><p className="eyebrow">口コミを参考にするときは</p><h2>星の数より、<br className="mobile-break" />自分と近い依頼内容を。</h2><p>同じ品目・量・搬出条件の体験談かを確認しましょう。追加料金の説明や当日の対応など、具体的な内容が比較のヒントになります。</p></div><Link href="/blog/estimate-preparation" className="outline-button">業者選びの準備を読む <Icon name="arrow" /></Link>
@@ -139,10 +143,10 @@ export default function Home() {
       <section id="faq" className="site-container content-section faq-section"><div><p className="eyebrow">Q & A</p><h2>よくあるご質問</h2><p>ご相談前の気になること。</p></div><div className="faq-list">{faqs.map(faq => <details key={faq.question}><summary><span>Q.</span>{faq.question}</summary><p>{faq.answer}</p></details>)}</div></section>
       <section id="contact" className="contact-section"><div className="site-container contact-grid">
         <div className="contact-copy"><p className="eyebrow">LET’S GET STARTED</p><h2>相見積もりで比べて、<br />納得できる回収選び。</h2><p>何を、いつ、どのくらい片付けたいか。<br />一度の入力で、対応業者へまとめて相談できます。</p><ul><li><Icon name="check" />見積もりの相談は無料</li><li><Icon name="check" />写真は任意・5枚まで添付可能</li><li><Icon name="check" />条件を比較してから依頼先を選択</li></ul><div className="contact-note">地域や回収内容によって、ご案内できる業者数・対応日時は異なります。</div></div>
-        <div className="quote-form"><div className="quote-form-heading"><span>無料</span><h3>一括見積もり依頼フォーム</h3></div><ContactForm /></div>
+        <div className="quote-form">{intakeOpen ? <><div className="quote-form-heading"><span>無料</span><h3>一括見積もり依頼フォーム</h3></div><ContactForm /></> : <IntakeNotice />}</div>
       </div></section>
     </main>
-    <footer className="site-footer"><div className="site-container"><div className="footer-main"><BrandLogo /><nav aria-label="フッターナビゲーション"><Link href="/blog">お役立ち記事</Link><Link href="/partners">掲載会社様へ</Link><Link href="/business/login">業者ログイン</Link></nav></div><div className="footer-bottom"><p>不用品回収の見積もりを、もっとわかりやすく。</p><small>© {new Date().getFullYear()} {brand.name}</small></div></div></footer>
-    <div className="mobile-cta"><a href="#area" className="outline-button">地域から相談</a><a href="#contact" className="primary-button">無料相見積もり <Icon name="arrow" /></a></div>
+    <footer className="site-footer"><div className="site-container"><div className="footer-main"><BrandLogo /><nav aria-label="フッターナビゲーション"><Link href="/blog">お役立ち記事</Link><Link href="/partners">掲載会社様へ</Link><Link href="/about">運営者情報</Link><Link href="/privacy">個人情報の取り扱い</Link><Link href="/business/login">業者ログイン</Link></nav></div><div className="footer-bottom"><p>不用品回収の見積もりを、もっとわかりやすく。</p><small>© {new Date().getFullYear()} {brand.name}</small></div></div></footer>
+    <div className="mobile-cta"><Link href={intakeOpen ? "#area" : "/blog"} className="outline-button">{intakeOpen ? "地域から相談" : "処分方法を調べる"}</Link><a href="#contact" className="primary-button">{ctaLabel} <Icon name="arrow" /></a></div>
   </div></QuoteJourney>;
 }

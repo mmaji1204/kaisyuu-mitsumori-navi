@@ -60,7 +60,7 @@ export default async function AdminLoginPage({
             <div className="mt-5 rounded-md bg-amber-50 px-4 py-3 text-sm font-bold leading-6 text-amber-700">
               管理者ログインが未設定です。Vercelの環境変数に
               ADMIN_LOGIN_EMAIL / ADMIN_LOGIN_PASSWORD /
-              ADMIN_SESSION_TOKEN を設定してください。
+              ADMIN_SESSION_SIGNING_SECRET を設定してください。
             </div>
           ) : null}
 

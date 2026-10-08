@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 export const BUSINESS_AUTH_COOKIE = "business-auth-token";
 
@@ -35,7 +36,8 @@ export function getBusinessLoginPassword() {
 
 export function getBusinessSessionToken() {
   return (
-    process.env.BUSINESS_SESSION_TOKEN ||
+    // The legacy BUSINESS_SESSION_TOKEN was exposed in cookies and must not sign new sessions.
+    process.env.BUSINESS_SESSION_SIGNING_SECRET ||
     (isDevelopmentBusinessAuthFallbackEnabled() ? defaultToken : "")
   );
 }
@@ -49,27 +51,48 @@ export function isBusinessFallbackAuthConfigured() {
 }
 
 export function createBusinessSessionValue(partnerId: string) {
-  return `${partnerId}:${getBusinessSessionToken()}`;
+  const secret = getBusinessSessionToken();
+  if (!secret || !partnerId) {
+    throw new Error("Business session signing is not configured.");
+  }
+  const payload = Buffer.from(JSON.stringify({
+    partnerId,
+    expiresAt: Date.now() + 8 * 60 * 60 * 1000,
+  })).toString("base64url");
+  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
+  return `${payload}.${signature}`;
 }
 
 export function getBusinessPartnerIdFromSession(value?: string) {
-  if (!value) {
+  const secret = getBusinessSessionToken();
+  if (!value || !secret) {
     return null;
   }
 
-  const [partnerId, token] = value.split(":");
-
-  if (!partnerId || token !== getBusinessSessionToken()) {
+  const parts = value.split(".");
+  if (parts.length !== 2 || !/^[\w-]+$/.test(parts[1])) {
     return null;
   }
-
-  return partnerId;
+  const [payload, signature] = parts;
+  const expected = createHmac("sha256", secret).update(payload).digest();
+  const actual = Buffer.from(signature, "base64url");
+  if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) {
+    return null;
+  }
+  try {
+    const session = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    if (typeof session.partnerId !== "string" || !session.partnerId ||
+        !Number.isFinite(session.expiresAt) || session.expiresAt <= Date.now()) {
+      return null;
+    }
+    return session.partnerId as string;
+  } catch {
+    return null;
+  }
 }
 
 export function isValidBusinessSession(value?: string) {
-  return Boolean(
-    value === getBusinessSessionToken() || getBusinessPartnerIdFromSession(value),
-  );
+  return Boolean(getBusinessPartnerIdFromSession(value));
 }
 
 export async function isBusinessLoggedIn() {

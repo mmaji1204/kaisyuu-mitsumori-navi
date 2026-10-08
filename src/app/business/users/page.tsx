@@ -97,7 +97,7 @@ export default function BusinessUsersPage() {
             ⓘ　見積金額の入力形式を変更いたしました。： 数値のみ（半角数字）で入力してください。テキストの入力はメモ欄をご活用ください。
           </div>
 
-          <BusinessLeadsManager initialLeads={leads} />
+          <BusinessLeadsManager initialLeads={process.env.NODE_ENV === "production" ? [] : leads} />
     </BusinessShell>
   );
 }

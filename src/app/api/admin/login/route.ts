@@ -4,7 +4,7 @@ import {
   isAdminAuthConfigured,
   getAdminLoginEmail,
   getAdminLoginPassword,
-  getAdminSessionToken,
+  createAdminSessionValue,
 } from "@/lib/admin-auth";
 
 export async function POST(request: NextRequest) {
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     status: 303,
   });
 
-  response.cookies.set(ADMIN_AUTH_COOKIE, getAdminSessionToken(), {
+  response.cookies.set(ADMIN_AUTH_COOKIE, createAdminSessionValue(), {
     httpOnly: true,
     maxAge: 60 * 60 * 8,
     path: "/",

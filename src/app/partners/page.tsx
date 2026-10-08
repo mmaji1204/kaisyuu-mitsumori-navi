@@ -13,7 +13,7 @@ const strengths = [
   },
   {
     title: "比較検討中のユーザーへ訴求",
-    body: "料金・スピード・口コミを見て選ぶユーザーに自社の強みを伝えられます。",
+    body: "料金・日程・作業内容を比較するユーザーへ、対応できる内容を案内できます。",
   },
 ];
 
@@ -25,9 +25,9 @@ const flow = [
 ];
 
 const metrics = [
-  ["掲載エリア", "全国対応"],
+  ["掲載エリア", "対応地域を確認"],
   ["相談カテゴリ", "家具・家電・粗大ごみ"],
-  ["掲載開始", "最短3営業日"],
+  ["掲載開始", "個別にご案内"],
 ];
 
 export default function PartnersPage() {
@@ -40,14 +40,8 @@ export default function PartnersPage() {
             href="#partner-contact"
             className="rounded-md bg-orange-600 px-5 py-3 text-sm font-black text-white"
           >
-            掲載について相談
+            掲載受付のご案内
           </a>
-          <Link
-            href="/business"
-            className="hidden rounded-md border-2 border-orange-500 px-5 py-3 text-sm font-black text-orange-600 sm:inline-flex"
-          >
-            管理画面デモ
-          </Link>
         </div>
       </header>
 
@@ -71,7 +65,7 @@ export default function PartnersPage() {
                 href="#partner-contact"
                 className="rounded-lg bg-orange-600 px-8 py-4 text-center text-xl font-black text-white shadow-sm"
               >
-                掲載について無料相談
+                掲載受付のご案内
               </a>
               <Link
                 href="/"
@@ -147,46 +141,18 @@ export default function PartnersPage() {
       <section id="partner-contact" className="bg-orange-600">
         <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-4 py-10 text-white lg:grid-cols-[0.8fr_1.2fr] lg:px-5">
           <div>
-            <h2 className="text-3xl font-black">掲載について相談する</h2>
+            <h2 className="text-3xl font-black">掲載受付のご案内</h2>
             <p className="mt-3 font-bold leading-7">
               対応エリア、回収品目、現在の集客状況をお聞きしたうえで、
               掲載方法をご案内します。
             </p>
           </div>
-          <form className="rounded-xl bg-white p-6 text-neutral-900 shadow-sm">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-sm font-black">会社名</span>
-                <input className="mt-2 h-12 w-full rounded-md border px-4" placeholder="株式会社サンプル" />
-              </label>
-              <label className="block">
-                <span className="text-sm font-black">ご担当者名</span>
-                <input className="mt-2 h-12 w-full rounded-md border px-4" placeholder="山田 太郎" />
-              </label>
-              <label className="block">
-                <span className="text-sm font-black">電話番号</span>
-                <input className="mt-2 h-12 w-full rounded-md border px-4" placeholder="03-0000-0000" />
-              </label>
-              <label className="block">
-                <span className="text-sm font-black">対応エリア</span>
-                <input className="mt-2 h-12 w-full rounded-md border px-4" placeholder="東京都・神奈川県など" />
-              </label>
-            </div>
-            <label className="mt-4 block">
-              <span className="text-sm font-black">相談内容</span>
-              <textarea
-                rows={4}
-                className="mt-2 w-full rounded-md border px-4 py-3"
-                placeholder="掲載について知りたい内容を入力してください。"
-              />
-            </label>
-            <button
-              type="button"
-              className="mt-5 rounded-md bg-green-600 px-6 py-3 font-black text-white"
-            >
-              掲載相談を送信する
-            </button>
-          </form>
+          <div className="rounded-xl bg-white p-6 text-neutral-900 shadow-sm">
+            <p className="text-sm font-bold text-green-800">掲載をご希望の事業者様へ</p>
+            <h3 className="mt-3 text-xl font-black">掲載相談の受付を準備しています</h3>
+            <p className="mt-4 leading-8 text-neutral-600">受付窓口の準備が整い次第、このページでご案内します。会社情報・対応地域・回収品目・収集運搬の体制を確認したうえで掲載条件をご案内する予定です。</p>
+            <Link href="/" className="mt-5 inline-block font-bold text-green-800 underline underline-offset-4">不用品回収ナビのトップへ戻る</Link>
+          </div>
         </div>
       </section>
     </main>

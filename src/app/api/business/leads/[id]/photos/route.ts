@@ -73,6 +73,9 @@ export async function POST(
 
   if (intent === "delete") {
     const photoUrl = formData.get("photo_url")?.toString() ?? "";
+    if (!currentUrls.includes(photoUrl)) {
+      return redirectToDetail(request, id, "error");
+    }
     const nextUrls = currentUrls.filter((url) => url !== photoUrl);
     const removedIndex = currentUrls.findIndex((url) => url === photoUrl);
     const nextNames =

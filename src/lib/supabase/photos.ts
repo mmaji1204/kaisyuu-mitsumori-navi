@@ -1,4 +1,5 @@
 import { createSupabaseAdminClient } from "@/lib/supabase/server";
+import { getLeadPhotoPath } from "@/lib/lead-photo-path";
 
 export const leadPhotosBucket = "lead-photos";
 
@@ -15,21 +16,31 @@ export async function ensureLeadPhotosBucket() {
   const { data: bucket } = await supabase.storage.getBucket(leadPhotosBucket);
 
   if (bucket) {
+    if (bucket.public) {
+      const { error } = await supabase.storage.updateBucket(leadPhotosBucket, { public: false });
+      if (error) throw new Error(error.message);
+    }
     return;
   }
 
   const { error } = await supabase.storage.createBucket(leadPhotosBucket, {
-    public: true,
+    public: false,
     fileSizeLimit: 8 * 1024 * 1024,
     allowedMimeTypes: ["image/jpeg", "image/png", "image/webp", "image/gif"],
   });
 
-  if (error && !error.message.toLowerCase().includes("already exists")) {
+  if (error) {
     throw new Error(error.message);
   }
 }
 
 export async function uploadLeadPhotos(leadId: string, photos: File[]) {
+  if (photos.length > 8 || photos.some(photo =>
+    !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(photo.type) ||
+    photo.size > 8 * 1024 * 1024,
+  )) {
+    throw new Error("Unsupported photo format, count or size.");
+  }
   if (photos.length === 0) {
     return {
       photoNames: [] as string[],
@@ -41,11 +52,7 @@ export async function uploadLeadPhotos(leadId: string, photos: File[]) {
 
   const supabase = createSupabaseAdminClient();
   const uploaded = await Promise.all(
-    photos.slice(0, 8).map(async (photo) => {
-      if (!photo.type.startsWith("image/") || photo.size > 8 * 1024 * 1024) {
-        return null;
-      }
-
+    photos.map(async (photo) => {
       const safeName = sanitizeFileName(photo.name || "photo");
       const path = `${leadId}/${crypto.randomUUID()}-${safeName}`;
       const { error } = await supabase.storage
@@ -59,12 +66,10 @@ export async function uploadLeadPhotos(leadId: string, photos: File[]) {
         throw new Error(error.message);
       }
 
-      const { data } = supabase.storage.from(leadPhotosBucket).getPublicUrl(path);
-
       return {
         name: photo.name,
         path,
-        url: data.publicUrl,
+        url: `lead-photos:${path}`,
       };
     }),
   );
@@ -81,13 +86,13 @@ export async function uploadLeadPhotos(leadId: string, photos: File[]) {
 }
 
 export async function deleteLeadPhotoByUrl(url: string) {
-  const marker = `/${leadPhotosBucket}/`;
-  const [, path] = url.split(marker);
+  const path = getLeadPhotoPath(url);
 
   if (!path) {
     return;
   }
 
   const supabase = createSupabaseAdminClient();
-  await supabase.storage.from(leadPhotosBucket).remove([decodeURIComponent(path)]);
+  const { error } = await supabase.storage.from(leadPhotosBucket).remove([path]);
+  if (error) throw new Error(error.message);
 }

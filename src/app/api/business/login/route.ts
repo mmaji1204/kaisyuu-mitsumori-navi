@@ -4,9 +4,10 @@ import {
   createBusinessSessionValue,
   getBusinessLoginEmail,
   getBusinessLoginPassword,
+  getBusinessSessionToken,
   isBusinessFallbackAuthConfigured,
 } from "@/lib/business-auth";
-import { hashPassword } from "@/lib/password";
+import { hashPassword, verifyPassword } from "@/lib/password";
 import {
   createSupabaseAdminClient,
   hasSupabaseServerEnv,
@@ -20,6 +21,11 @@ type PartnerLoginRow = {
 };
 
 export async function POST(request: NextRequest) {
+  if (!getBusinessSessionToken()) {
+    return NextResponse.redirect(new URL("/business/login?setup=1", request.url), {
+      status: 303,
+    });
+  }
   const formData = await request.formData();
   const email = formData.get("email")?.toString() ?? "";
   const password = formData.get("password")?.toString() ?? "";
@@ -39,7 +45,7 @@ export async function POST(request: NextRequest) {
       error ||
       !loginPartner ||
       loginPartner.status !== "active" ||
-      loginPartner.password_hash !== hashPassword(password)
+      !(await verifyPassword(password, loginPartner.password_hash))
     ) {
       return NextResponse.redirect(
         new URL("/business/login?error=1", request.url),
@@ -47,9 +53,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!loginPartner.password_hash?.startsWith("scrypt$")) {
+      const { error: upgradeError } = await supabase.from("partners")
+        .update({ password_hash: await hashPassword(password) }).eq("id", loginPartner.id);
+      if (upgradeError) return NextResponse.redirect(new URL("/business/login?error=1", request.url), { status: 303 });
+    }
     partnerId = loginPartner.id;
   } else {
-    if (!isBusinessFallbackAuthConfigured()) {
+    if (process.env.NODE_ENV === "production" || !isBusinessFallbackAuthConfigured()) {
       return NextResponse.redirect(
         new URL("/business/login?setup=1", request.url),
         { status: 303 },

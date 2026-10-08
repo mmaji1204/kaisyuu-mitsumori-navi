@@ -62,7 +62,7 @@ create table if not exists partners (
   daily_delivery_limit integer,
   monthly_budget_limit integer,
   notification_email text,
-  auto_assign_enabled boolean not null default true,
+  auto_assign_enabled boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -70,7 +70,7 @@ alter table partners add column if not exists password_hash text;
 alter table partners add column if not exists daily_delivery_limit integer;
 alter table partners add column if not exists monthly_budget_limit integer;
 alter table partners add column if not exists notification_email text;
-alter table partners add column if not exists auto_assign_enabled boolean not null default true;
+alter table partners add column if not exists auto_assign_enabled boolean not null default false;
 
 create table if not exists lead_deliveries (
   id uuid primary key default gen_random_uuid(),
@@ -140,54 +140,46 @@ drop policy if exists "Service role can manage billing items" on billing_items;
 create policy "Service role can manage leads"
   on leads
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage partners"
   on partners
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage lead deliveries"
   on lead_deliveries
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage lead activities"
   on lead_activities
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage notification logs"
   on notification_logs
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage billing items"
   on billing_items
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
-insert into partners (name, email, service_area, status)
-values ('クリーンリンク', 'partner@example.com', '広島県・近隣エリア', 'active')
-on conflict (email) do update
-set
-  name = excluded.name,
-  service_area = excluded.service_area,
-  status = excluded.status;
-
-update partners
-set password_hash = 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f'
-where email = 'partner@example.com' and password_hash is null;
-
-insert into lead_deliveries (lead_id, partner_id, delivery_status, fee)
-select leads.id, partners.id, leads.status, leads.fee
-from leads
-cross join partners
-where partners.email = 'partner@example.com'
-on conflict (lead_id, partner_id) do nothing;
+-- Store the wording version and server time of the applicant's consent.
+-- Existing requests remain NULL; historical consent is never inferred.
+alter table public.leads add column if not exists consent_version text;
+alter table public.leads add column if not exists consented_at timestamptz;

@@ -1,4 +1,6 @@
-import { NextRequest } from "next/server";
+import { isQuoteIntakeOpen } from "@/lib/intake-status";
+import { PRIVACY_VERSION } from "@/lib/consent";
+import type { NextRequest } from "next/server";
 import { createSupabaseAdminClient, hasSupabaseServerEnv } from "@/lib/supabase/server";
 import {
   LeadDeliveryRow,
@@ -15,20 +17,6 @@ import {
   getCurrentBusinessPartnerId,
   isBusinessLoggedIn,
 } from "@/lib/business-auth";
-
-async function fetchAllLeads() {
-  const supabase = createSupabaseAdminClient();
-  const { data, error } = await supabase
-    .from("leads")
-    .select("*")
-    .order("requested_at", { ascending: false });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return ((data ?? []) as LeadRow[]).map(mapLeadRowToLead);
-}
 
 async function parseLeadRequest(request: NextRequest) {
   const contentType = request.headers.get("content-type") ?? "";
@@ -159,11 +147,13 @@ async function canDeliverToPartner(partner: PartnerRow, feeAmount: number) {
   const dayStart = getDayStartIso();
   const monthStart = getMonthStartIso();
 
-  const { count: todayCount } = await supabase
+  const { count: todayCount, error: dailyError } = await supabase
     .from("lead_deliveries")
     .select("id", { count: "exact", head: true })
     .eq("partner_id", partner.id)
     .gte("created_at", dayStart);
+
+  if (dailyError) throw new Error("配信件数を確認できませんでした。");
 
   if (
     partner.daily_delivery_limit !== null &&
@@ -173,12 +163,14 @@ async function canDeliverToPartner(partner: PartnerRow, feeAmount: number) {
     return false;
   }
 
-  const { data: monthlyItems } = await supabase
+  const { data: monthlyItems, error: budgetError } = await supabase
     .from("billing_items")
     .select("amount")
     .eq("partner_id", partner.id)
     .gte("created_at", monthStart)
     .neq("status", "void");
+
+  if (budgetError) throw new Error("配信予算を確認できませんでした。");
 
   const monthlyTotal = ((monthlyItems ?? []) as { amount: number }[]).reduce(
     (sum, item) => sum + item.amount,
@@ -371,18 +363,11 @@ export async function GET() {
   }
 
   if (!hasSupabaseServerEnv()) {
-    return Response.json({ leads: [], mode: "demo" });
+    return Response.json({ message: "現在、案件を取得できません。" }, { status: 503 });
   }
 
   try {
-    let leads: Lead[];
-
-    try {
-      leads = await fetchLeadsForCurrentPartner();
-    } catch (routingError) {
-      console.warn("GET /api/leads routing fallback:", routingError);
-      leads = await fetchAllLeads();
-    }
+    const leads = await fetchLeadsForCurrentPartner();
 
     return Response.json({
       leads,
@@ -392,16 +377,31 @@ export async function GET() {
     console.error("GET /api/leads error:", error);
 
     return Response.json(
-      { message: error instanceof Error ? error.message : "Unknown error" },
+      { message: "案件を取得できませんでした。" },
       { status: 500 },
     );
   }
 }
 
 export async function POST(request: NextRequest) {
-  const { lead, photos } = await parseLeadRequest(request);
+  if (!isQuoteIntakeOpen()) {
+    return Response.json({ message: "現在、見積もりの受付は準備中です。" }, { status: 503, headers: { "Cache-Control": "no-store" } });
+  }
+  let parsed: Awaited<ReturnType<typeof parseLeadRequest>>;
+  try {
+    parsed = await parseLeadRequest(request);
+  } catch {
+    return Response.json({ message: "入力内容を読み取れませんでした。" }, { status: 400 });
+  }
+  const { lead: submittedLead, photos } = parsed;
 
-  if (!lead.name || !lead.phone || !lead.address || !lead.request) {
+  if (photos.length > 5 || photos.some(photo => photo.size > 8 * 1024 * 1024 ||
+    !["image/jpeg", "image/png", "image/webp", "image/gif"].includes(photo.type))) {
+    return Response.json({ message: "写真は対応形式・1枚8MB以下で、5枚まで送信できます。" }, { status: 400 });
+  }
+
+  if (!submittedLead || [submittedLead.name, submittedLead.phone, submittedLead.address, submittedLead.request]
+    .some(value => typeof value !== "string" || !value.trim() || value.length > 1000)) {
     return Response.json(
       { message: "必須項目が不足しています。" },
       { status: 400 },
@@ -409,8 +409,25 @@ export async function POST(request: NextRequest) {
   }
 
   if (!hasSupabaseServerEnv()) {
-    return Response.json({ lead, mode: "demo" }, { status: 201 });
+    return Response.json({ message: "現在、見積もりの受付を利用できません。" }, { status: 503 });
   }
+
+  const consent = submittedLead as Lead & { privacyAgreed?: unknown; privacyVersion?: unknown };
+  if (consent.privacyAgreed !== true || consent.privacyVersion !== PRIVACY_VERSION) {
+    return Response.json({ message: "個人情報の取り扱いをご確認のうえ、同意してください。" }, { status: 400 });
+  }
+
+  // Public requests cannot set delivery fees, internal status, IDs or stored URLs.
+  const lead: Lead = {
+    id: crypto.randomUUID(), date: new Date().toISOString(),
+    status: "課金", statusColor: "green", progress: "未対応", fee: "900 円",
+    name: submittedLead.name.trim(), phone: submittedLead.phone.trim(),
+    address: submittedLead.address.trim(), request: submittedLead.request.trim(),
+    kana: "", estimate: "", memo: "",
+    message: typeof submittedLead.message === "string" ? submittedLead.message.slice(0, 5000) : "",
+    desiredDate: typeof submittedLead.desiredDate === "string" ? submittedLead.desiredDate.slice(0, 200) : "",
+    photoNames: [], photoUrls: [], afterPhotoNames: [], afterPhotoUrls: [],
+  };
 
   try {
     const supabase = createSupabaseAdminClient();
@@ -438,13 +455,17 @@ export async function POST(request: NextRequest) {
     };
     const { data, error } = await supabase
       .from("leads")
-      .insert(mapLeadToInsert(leadToSave))
+      .insert({
+        ...mapLeadToInsert(leadToSave),
+        consent_version: PRIVACY_VERSION,
+        consented_at: new Date().toISOString(),
+      })
       .select("*")
       .single();
 
     if (error) {
       console.error("POST /api/leads Supabase error:", error.message);
-      return Response.json({ message: error.message }, { status: 500 });
+      return Response.json({ message: "見積もりの受付に失敗しました。" }, { status: 500 });
     }
 
     const savedLead = mapLeadRowToLead(data as LeadRow);
@@ -464,7 +485,7 @@ export async function POST(request: NextRequest) {
     console.error("POST /api/leads error:", error);
 
     return Response.json(
-      { message: error instanceof Error ? error.message : "Unknown error" },
+      { message: "見積もりの受付に失敗しました。" },
       { status: 500 },
     );
   }

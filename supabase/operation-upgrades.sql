@@ -1,7 +1,7 @@
 alter table partners add column if not exists daily_delivery_limit integer;
 alter table partners add column if not exists monthly_budget_limit integer;
 alter table partners add column if not exists notification_email text;
-alter table partners add column if not exists auto_assign_enabled boolean not null default true;
+alter table partners add column if not exists auto_assign_enabled boolean not null default false;
 alter table leads add column if not exists desired_date text;
 alter table leads add column if not exists photo_names text[] not null default '{}';
 alter table leads add column if not exists photo_urls text[] not null default '{}';
@@ -14,7 +14,7 @@ set
   daily_delivery_limit = coalesce(daily_delivery_limit, 10),
   monthly_budget_limit = coalesce(monthly_budget_limit, 300000),
   notification_email = coalesce(notification_email, email),
-  auto_assign_enabled = coalesce(auto_assign_enabled, true);
+  auto_assign_enabled = coalesce(auto_assign_enabled, false);
 
 create table if not exists notification_logs (
   id uuid primary key default gen_random_uuid(),
@@ -53,14 +53,16 @@ drop policy if exists "Service role can manage billing items" on billing_items;
 create policy "Service role can manage notification logs"
   on notification_logs
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 create policy "Service role can manage billing items"
   on billing_items
   for all
-  using (auth.role() = 'service_role')
-  with check (auth.role() = 'service_role');
+  to service_role
+  using (true)
+  with check (true);
 
 insert into billing_items (
   lead_delivery_id,

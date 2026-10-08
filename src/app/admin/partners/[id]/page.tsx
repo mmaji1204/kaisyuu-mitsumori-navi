@@ -538,8 +538,9 @@ export default async function AdminPartnerDetailPage({
                   <input
                     name="password"
                     type="text"
-                    minLength={6}
-                    placeholder="6文字以上"
+                    minLength={12}
+                    maxLength={256}
+                    placeholder="12文字以上"
                     className="mt-2 h-12 w-full rounded-md border border-slate-300 px-4 font-bold"
                   />
                 </label>
