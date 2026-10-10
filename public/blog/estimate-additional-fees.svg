@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#f4f6ef"/>
+  <circle cx="1070" cy="105" r="230" fill="#e7edde"/>
+  <g font-family="sans-serif" fill="#245b43">
+    <text x="64" y="82" font-size="25" font-weight="700" letter-spacing="3">不用品回収ナビ / 見積もり・料金比較</text>
+    <text x="64" y="206" font-size="61" font-weight="700">その見積もり、</text>
+    <text x="64" y="292" font-size="61" font-weight="700">どこまで込み？</text>
+    <rect x="64" y="340" width="502" height="72" rx="12" fill="#bf571f"/>
+    <text x="315" y="387" text-anchor="middle" fill="white" font-size="30" font-weight="700">追加料金を防ぐ 7つの確認</text>
+    <text x="64" y="479" font-size="28">見積書が届いたら、</text>
+    <text x="64" y="525" font-size="28">同じ条件で各社を比較。</text>
+  </g>
+  <rect x="665" y="131" width="453" height="448" rx="20" fill="#dbe5d6"/>
+  <rect x="644" y="112" width="453" height="448" rx="20" fill="white" stroke="#c8d7c3" stroke-width="3"/>
+  <g font-family="sans-serif" fill="#245b43" font-weight="700">
+    <text x="690" y="184" font-size="31">見積書 CHECK</text>
+    <path d="M690 211h358" stroke="#dfe6db" stroke-width="3"/>
+    <text x="777" y="287" font-size="33">税込総額</text>
+    <text x="777" y="389" font-size="33">作業範囲</text>
+    <text x="777" y="491" font-size="33">追加の条件</text>
+  </g>
+  <g fill="#edf3e8"><circle cx="716" cy="274" r="28"/><circle cx="716" cy="376" r="28"/><circle cx="716" cy="478" r="28"/></g>
+  <g fill="none" stroke="#bf571f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="m703 274 9 9 18-20"/><path d="m703 376 9 9 18-20"/><path d="m703 478 9 9 18-20"/></g>
+  <text x="600" y="626" text-anchor="middle" font-family="sans-serif" font-size="24" fill="#64745e">「未確認」の費用を、そのままにしない。</text>
+</svg>

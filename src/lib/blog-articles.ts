@@ -1,4 +1,5 @@
 import { launchArticles } from "./launch-articles";
+import { estimateAdditionalFeesArticle } from "./estimate-additional-fees";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -8,6 +9,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  estimateAdditionalFeesArticle,
   ...launchArticles,
   {
     slug: "washing-machine-disposal", category: "家電の処分", publishedAt: "2026-10-03",
