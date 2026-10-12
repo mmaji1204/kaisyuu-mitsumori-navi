@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { BlogArticleCard } from "@/components/BlogArticleCard";
@@ -62,32 +63,30 @@ export default function Home() {
       </nav>
     </header>
     <main id="main-content">
-      <section className="hero-section">
-        <div className="site-container hero-grid">
-          <div className="hero-copy">
-            <p className="hero-kicker">複数業者の見積もりを、まとめて比較</p>{!intakeOpen && <p className="mb-4 text-sm font-bold text-[#a4481b]">ただいま見積もり受付の準備中です</p>}
-            <h1><span className="hero-title-intro">不用品回収の</span><em>相見積もり</em><span className="hero-title-detail">一括依頼・業者比較</span></h1>
-            <p className="hero-description"><strong>1回の入力で、複数の回収業者へ。</strong><br />料金・日程・作業内容を比べて、依頼先を選べます。</p>
-            <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />1社ずつの問い合わせ不要</span></div>
-            <div className="hero-action">
-              <a className="primary-button hero-button" href="#area">{intakeOpen && <span className="hero-button-free">無料</span>}{intakeOpen ? "まとめて見積もりを依頼する" : "見積もりの受付状況を確認する"} <Icon name="arrow" /></a>
-              <p className="hero-note">ご案内できる業者数は、地域・回収内容によって異なります。</p>
+      <section className="hero-section" aria-labelledby="hero-title">
+        <div className="site-container">
+          <p className="hero-category">不用品回収の一括見積もり・比較サイト</p>
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <p className="hero-kicker">その回収料金、比べてみよう！</p>
+              <h1 id="hero-title"><span className="hero-title-intro">不用品回収の</span><em>相見積もり。</em><span className="hero-title-detail">まとめて、かしこく。</span></h1>
+              <p className="hero-description"><strong>1回の入力で、複数の業者へ。</strong><br />料金も、日程も、作業内容も。<br />比べて選べば、片付けにもっと納得。</p>
+              <div className="hero-checks"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />比べてから決められる</span></div>
+            </div>
+            <div className="hero-visual">
+              <p className="hero-visual-bubble">大きな家具も、まとめて相談！</p>
+              <Image src="/hero-collection-truck.webp" alt="家具や家電を積んだ回収トラックのイラスト" width={1200} height={900} sizes="(max-width: 767px) 85vw, (max-width: 1200px) 45vw, 510px" loading="eager" fetchPriority="high" className="hero-truck" />
+              <div className="hero-estimates" aria-label="複数業者の見積もりを比べるイメージ">
+                {["A社", "B社", "C社"].map(company => <div className="estimate-sheet" key={company}><span className="estimate-company">{company}</span><Icon name="yen" /><span className="estimate-lines" aria-hidden="true"><span /><span /></span></div>)}
+              </div>
+              <p className="estimate-caption">複数社を比較するイメージです。</p>
             </div>
           </div>
-          <aside className="hero-guide" aria-label="相見積もりで業者を比較">
-            <p className="hero-guide-label">相見積もりのしくみ</p>
-            <h2>1回の入力で、<br /><span>複数社へ一括見積もり。</span></h2>
-            <div className="estimate-request"><Icon name="box" /><span>あなたの回収条件<small>地域・回収品目・希望日を入力</small></span></div>
-            <div className="estimate-branches" aria-hidden="true"><span /><span /><span /></div>
-            <div className="hero-estimates">
-              {["A社", "B社", "C社"].map(company => <div className="estimate-sheet" key={company}>
-                <span className="estimate-company">{company}</span><Icon name="yen" /><strong>お見積もり</strong>
-                <div className="estimate-lines" aria-hidden="true"><span /><span /></div>
-              </div>)}
-            </div>
-            <div className="hero-compare-result"><p>料金<span>／</span>日程<span>／</span>作業内容</p><strong><Icon name="check" />比べて、納得できる1社へ</strong></div>
-            <p className="estimate-caption">比較のイメージです。ご案内できる業者数は条件により異なります。</p>
-          </aside>
+          <div className="hero-action">
+            <p className="hero-action-label">{intakeOpen ? "まずは回収する地域から" : "ただいま見積もり受付の準備中です"}</p>
+            <a className="primary-button hero-button" href="#area">{intakeOpen && <span className="hero-button-free">無料</span>}<span>{intakeOpen ? "まとめて見積もりしてみる" : "見積もりの受付状況を確認"}</span><span className="button-arrow"><Icon name="arrow" /></span></a>
+            <p className="hero-note">ご案内できる業者数は、地域・回収内容によって異なります。</p>
+          </div>
         </div>
       </section>
       <section id="area" className="site-container area-section" aria-labelledby="area-title">
@@ -97,7 +96,7 @@ export default function Home() {
         </div>
       </section>
       <section id="flow" className="flow-section">
-        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">HOW IT WORKS</p><h2>一度入力して、<br className="mobile-break" />比べてから決める。</h2></div>
+        <div className="site-container content-section"><div className="section-heading"><p className="eyebrow">かんたん 3 STEP</p><h2>入力は一度。<br className="mobile-break" />あとは、比べて選ぶだけ。</h2></div>
           <ol className="flow-grid">{[
             ["一度、入力する", "地域・品目・希望日を入力。対応業者へまとめて見積もりを依頼します。"],
             ["連絡を受けて、比べる", "対応業者から電話等でご案内。総額・作業範囲・回収日時を比べます。"],
