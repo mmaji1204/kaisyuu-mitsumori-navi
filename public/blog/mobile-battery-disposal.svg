@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">モバイルバッテリーの捨て方</title>
+  <desc id="desc">処分前に状態・メーカー・地域の回収方法を確認。膨張したものは事前に相談。</desc>
+  <rect width="1200" height="675" fill="#ffe647"/>
+  <rect x="42" y="42" width="1116" height="591" rx="28" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#172c30">
+    <text x="84" y="108" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 片付けの確認ガイド</text>
+    <text x="84" y="226" font-size="57" font-weight="700">モバイルバッテリー</text>
+    <text x="84" y="308" font-size="67" font-weight="700">どう捨てる？</text>
+    <rect x="84" y="350" width="510" height="64" rx="10" fill="#172c30"/>
+    <text x="339" y="393" text-anchor="middle" fill="white" font-size="28" font-weight="700">膨張したものは、まず相談</text>
+    <text x="84" y="488" font-size="27">状態・メーカー・地域のルール。</text>
+    <text x="84" y="533" font-size="27">確認してから、回収先へ。</text>
+  </g>
+  <circle cx="906" cy="359" r="181" fill="#bcebf0"/>
+  <g stroke="#172c30" stroke-width="7" stroke-linejoin="round">
+    <rect x="805" y="193" width="202" height="321" rx="29" fill="white"/>
+    <rect x="831" y="224" width="58" height="18" rx="5" fill="#172c30" stroke="none"/>
+    <rect x="912" y="224" width="34" height="18" rx="9" fill="#172c30" stroke="none"/>
+    <path d="M920 282 866 371h42l-16 66 59-99h-43z" fill="#ffe647"/>
+    <path d="M844 475h9m15 0h9m15 0h9" stroke-linecap="round"/>
+  </g>
+  <circle cx="1004" cy="482" r="48" fill="#ffe647" stroke="#172c30" stroke-width="6"/>
+  <path d="M1004 459v27m0 17v1" stroke="#172c30" stroke-width="9" stroke-linecap="round"/>
+</svg>

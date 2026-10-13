@@ -1,5 +1,6 @@
 import { launchArticles } from "./launch-articles";
 import { estimateAdditionalFeesArticle } from "./estimate-additional-fees";
+import { mobileBatteryDisposalArticle } from "./mobile-battery-disposal";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -9,6 +10,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  mobileBatteryDisposalArticle,
   estimateAdditionalFeesArticle,
   ...launchArticles,
   {
