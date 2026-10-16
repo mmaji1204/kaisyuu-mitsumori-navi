@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">エアコンの処分、工事も込み？</title>
+  <desc id="desc">室内機と室外機のイラスト。リサイクル、収集運搬、取り外しの費用を確認。</desc>
+  <rect width="1200" height="675" fill="#c9edf0"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="219" font-size="62" font-weight="700">エアコンの処分、</text>
+    <text x="82" y="302" font-size="68" font-weight="700">工事も込み？</text>
+    <rect x="82" y="347" width="508" height="65" rx="10" fill="#173f38"/>
+    <text x="336" y="390" text-anchor="middle" fill="white" font-size="28" font-weight="700">室外機まで、まとめて確認</text>
+    <text x="82" y="484" font-size="27">リサイクル ＋ 収集運搬</text>
+    <text x="82" y="532" font-size="27">＋ 取り外し・必要な作業</text>
+  </g>
+  <circle cx="901" cy="356" r="195" fill="#e6f5ed"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round">
+    <path d="M1010 290v66q0 22-24 22" fill="none"/>
+    <rect x="713" y="181" width="342" height="119" rx="20" fill="white"/>
+    <path d="M739 265h288m-288 17h288" stroke-width="5"/>
+    <path d="M1000 206h20" stroke="#d97736" stroke-linecap="round"/>
+    <rect x="787" y="367" width="267" height="164" rx="13" fill="white"/>
+    <circle cx="872" cy="447" r="57" fill="#d2edef"/>
+    <circle cx="872" cy="447" r="15" fill="white"/>
+    <path d="m872 391 0 41m0 30v41m-56-56h41m30 0h41m-95-40 29 29m20 20 29 29m-78 0 29-29m20-20 29-29" stroke-width="4"/>
+    <path d="M968 410h52m-52 21h52m-52 21h52m-52 21h52m-52 21h52" stroke-width="4"/>
+    <path d="M807 531v17h43v-17m141 0v17h43v-17" fill="#c9edf0"/>
+  </g>
+  <circle cx="1049" cy="354" r="38" fill="#ffe451"/>
+  <path d="m1034 354 11 11 20-25" fill="none" stroke="#173f38" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
