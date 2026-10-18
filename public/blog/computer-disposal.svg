@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">パソコンの処分、データは大丈夫？</title>
+  <desc id="desc">ノートパソコンと鍵のイラスト。回収先、費用、データ消去をチェック。</desc>
+  <rect width="1200" height="675" fill="#e4efdf"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="223" font-size="61" font-weight="700">パソコンの処分、</text>
+    <text x="82" y="309" font-size="59" font-weight="700">データは大丈夫？</text>
+    <rect x="82" y="357" width="500" height="65" rx="10" fill="#173f38"/>
+    <text x="332" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">無料回収の条件もチェック</text>
+    <text x="82" y="495" font-size="28">回収先・費用・データ消去</text>
+    <text x="82" y="542" font-size="25">手放す前に、3つの確認。</text>
+  </g>
+  <circle cx="891" cy="352" r="194" fill="#d9eff0"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round">
+    <rect x="731" y="244" width="321" height="213" rx="16" fill="white"/>
+    <rect x="750" y="263" width="283" height="170" rx="5" fill="#e6f5ed"/>
+    <path d="m731 457-43 66q-6 11 10 11h389q16 0 10-11l-45-66Z" fill="white"/>
+    <path d="M754 482h272m-146 23h38" fill="none" stroke-linecap="round"/>
+    <path d="M859 326v-22a33 33 0 0 1 66 0v22" fill="none" stroke-width="10"/>
+    <rect x="842" y="323" width="100" height="79" rx="12" fill="#ffe451"/>
+    <path d="M892 352v20" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <circle cx="1034" cy="223" r="40" fill="#173f38"/>
+  <path d="m1018 223 12 12 21-26" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
