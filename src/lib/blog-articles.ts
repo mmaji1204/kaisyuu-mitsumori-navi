@@ -3,6 +3,7 @@ import { estimateAdditionalFeesArticle } from "./estimate-additional-fees";
 import { mobileBatteryDisposalArticle } from "./mobile-battery-disposal";
 import { airConditionerDisposalArticle } from "./air-conditioner-disposal";
 import { computerDisposalArticle } from "./computer-disposal";
+import { microwaveDisposalArticle } from "./microwave-disposal";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -12,6 +13,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  microwaveDisposalArticle,
   computerDisposalArticle,
   airConditionerDisposalArticle,
   mobileBatteryDisposalArticle,

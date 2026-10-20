@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">電子レンジ、どう捨てる？</title>
+  <desc id="desc">電子レンジのイラスト。回収先・料金・運び出しを確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="225" font-size="62" font-weight="700">電子レンジ、</text>
+    <text x="82" y="313" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="359" width="477" height="65" rx="10" fill="#173f38"/>
+    <text x="320" y="402" text-anchor="middle" fill="white" font-size="28" font-weight="700">粗大ごみ？ 店頭回収？</text>
+    <text x="82" y="496" font-size="28">回収先・料金・運び出し</text>
+    <text x="82" y="543" font-size="25">自分に合う処分方法を確認。</text>
+  </g>
+  <circle cx="884" cy="351" r="198" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round">
+    <rect x="692" y="249" width="384" height="247" rx="17" fill="#fff"/>
+    <rect x="710" y="270" width="257" height="197" rx="9" fill="#e5efdf"/>
+    <path d="M949 294v149" stroke-width="10" stroke-linecap="round"/>
+    <rect x="991" y="279" width="62" height="29" rx="4" fill="#173f38" stroke="none"/>
+    <circle cx="1022" cy="355" r="18" fill="#f1cfb5"/>
+    <path d="M1004 401h36m-36 24h36" stroke-width="5" stroke-linecap="round"/>
+    <path d="M735 496v12m295-12v12" stroke-width="11" stroke-linecap="round"/>
+    <path d="M755 407h139m-122-9q4-43 51-43t51 43" fill="#fffdf7"/>
+  </g>
+  <circle cx="1047" cy="218" r="42" fill="#bc4b22"/>
+  <path d="m1029 217 13 13 23-28" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
