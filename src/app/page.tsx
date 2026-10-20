@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { BrandLogo } from "@/components/BrandLogo";
 import { BlogArticleCard } from "@/components/BlogArticleCard";
@@ -71,36 +70,51 @@ export default function Home() {
       <section className="hero-section" aria-labelledby="hero-title">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-category"><span />不用品回収の一括見積もり・比較サイト</p>
-            <h1 id="hero-title"><span className="hero-intro">不用品回収は、</span><em>相見積もり</em>で。<span className="hero-ending">比べて、納得。</span></h1>
-            <p className="hero-description">料金も、日程も、作業内容も。<br />複数の業者を比べて、<br className="mobile-break" />あなたに合う回収選び。</p>
-            <div className="hero-benefits"><span><Icon name="check" />相談無料</span><span><Icon name="check" />入力は一度</span><span><Icon name="check" />比較してから依頼</span></div>
+            <p className="hero-category"><span>相談無料</span>不用品回収業者の相見積もりサイト</p>
+            <h1 id="hero-title"><span className="hero-intro">不用品回収の料金を、</span><em>まとめて比較。</em></h1>
+            <p className="hero-description"><strong>一度の入力で、<br />複数の業者に見積もり依頼。</strong></p>
+            <div className="hero-benefits"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />入力は1回</span><span><Icon name="check" />比較してから依頼</span></div>
             <div className="hero-actions">
-              <Link href={intakeOpen ? "#area" : "/blog"} className="primary-button hero-cta">{intakeOpen ? "無料でまとめて見積もり" : "回収費用・処分方法を調べる"}<Icon name="arrow" /></Link>
-              <a href={intakeOpen ? "#compare" : "#contact"} className="hero-secondary">{intakeOpen ? "比較のポイントを見る" : "見積もりの受付状況"}<span aria-hidden="true">↗</span></a>
+              <a href={intakeOpen ? "#area" : "#contact"} className="primary-button hero-cta">{intakeOpen ? "無料でまとめて見積もり" : "一括見積もりの受付状況"}<Icon name="arrow" /></a>
+              <Link href="/blog" className="hero-secondary">費用・処分方法の記事を読む<span aria-hidden="true">↗</span></Link>
             </div>
             <p className="hero-note">{intakeOpen ? "ご案内できる業者数は、地域・回収内容によって異なります。" : "現在、見積もり受付は準備中です。"}</p>
           </div>
-          <div className="hero-scene">
-            <div className="hero-photo">
-              <Image src="/hero-home-collection.webp" alt="室内で荷物を運ぶ回収作業のイメージ" width={1440} height={960} sizes="(max-width: 767px) 100vw, (max-width: 1200px) 48vw, 560px" loading="eager" fetchPriority="high" />
-              <span className="photo-caption">暮らしに、次の余白を。<small>回収作業のイメージ</small></span>
+          <figure className="quote-diagram" aria-label="一度入力し、複数社の見積もりを比べて選ぶ仕組み">
+            <div className="quote-diagram-board">
+              <div className="quote-diagram-title"><span>相見積もりのしくみ</span><strong>1回の入力で、まとめて相談。</strong></div>
+              <ol className="quote-mobile-steps">
+                <li><span className="quote-step-number">1</span><strong>1回入力</strong><small>地域・品目など</small></li>
+                <li><span className="quote-step-number">2</span><strong>複数社から</strong><small>見積もり</small></li>
+                <li><span className="quote-step-number">3</span><strong>比較して選ぶ</strong><small>料金・日程など</small></li>
+              </ol>
+              <ol className="quote-diagram-steps">
+                <li className="quote-input-step">
+                  <span className="quote-step-number">1</span>
+                  <div><strong>回収したい物を入力</strong><p>地域・品目・希望日を伝える</p></div>
+                  <svg className="quote-phone" viewBox="0 0 36 48" fill="none" aria-hidden="true"><rect x="6" y="2" width="25" height="44" rx="5" stroke="currentColor" strokeWidth="2" /><path d="M14 7h9M14 40h9M12 17h13M12 23h13M12 29h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                </li>
+                <li className="quote-offers-step">
+                  <svg className="quote-branch" viewBox="0 0 300 34" fill="none" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0v13M50 30V13h200v17M150 13v17M46 25l4 5 4-5M146 25l4 5 4-5M246 25l4 5 4-5" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" /></svg>
+                  <p className="quote-step-label"><span className="quote-step-number">2</span><strong>複数社から見積もりが届く</strong></p>
+                  <div className="quote-company-grid">{["A", "B", "C"].map(company => <div className="quote-company" key={company}>
+                    <div className="quote-company-name"><Icon name="truck" /><strong>{company}<small>社</small></strong></div>
+                    <p>お見積もり</p><ul><li><Icon name="yen" />料金</li><li><Icon name="clock" />日程</li><li><Icon name="box" />作業内容</li></ul>
+                  </div>)}</div>
+                </li>
+                <li className="quote-choice-step">
+                  <span className="quote-step-number">3</span><strong>比べて、納得できる業者を選ぶ</strong><Icon name="check" />
+                </li>
+              </ol>
             </div>
-            <div className="hero-comparison" aria-label="相見積もりのイメージ">
-              <div className="comparison-intro"><span>相見積もりのイメージ</span><strong>一度の相談から、複数社を比較。</strong></div>
-              <div className="company-papers">{["A", "B", "C"].map(company => <div className="company-paper" key={company}>
-                <span className="company-letter">{company}<small>社</small></span><span className="paper-title">お見積もり</span><span className="paper-rule" /><span className="paper-rule short" />
-              </div>)}</div>
-              <div className="comparison-bottom"><span>税込総額</span><span>希望日</span><span>作業範囲</span><Icon name="check" /></div>
-            </div>
-            <p className="scene-note">紹介できる業者数は地域・回収内容によって異なります。</p>
-          </div>
+            <figcaption>相見積もりのイメージです。<br />ご案内できる業者数は、地域・回収内容によって異なります。</figcaption>
+          </figure>
         </div>
         <div className="hero-navigation"><div className="site-container"><span>まずは、気になることから。</span><a href="#price">費用の考え方<Icon name="arrow" /></a><a href="#items">品物から調べる<Icon name="arrow" /></a><a href="#compare">業者の比べ方<Icon name="arrow" /></a></div></div>
       </section>
 
       <section id="compare" className="site-container content-section compare-section" aria-labelledby="compare-title">
-        <div className="section-heading"><p className="eyebrow">01 / 比べる</p><h2 id="compare-title">安さだけで、<br />決めないための相見積もり。</h2><p>同じ品物・同じ作業条件を伝えること。<br />それが、納得できる比較のはじまりです。</p><Link href="/blog/estimate-preparation" className="text-link">相談前の準備を読む<Icon name="arrow" /></Link></div>
+        <div className="section-heading"><p className="eyebrow">01 / 比べる</p><h2 id="compare-title">比べるポイントは、<br />この3つ。</h2><p>料金・日程・作業内容。<br />同じ条件で見積もりを取ると、違いがわかります。</p><Link href="/blog/estimate-preparation" className="text-link">相談前の準備を読む<Icon name="arrow" /></Link></div>
         <ComparisonGuide />
       </section>
 

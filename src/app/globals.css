@@ -33,43 +33,51 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
 .collection-site .header-cta { padding-inline: 18px; min-height: 44px; font-size: 12px; gap: 15px; }
 .collection-site .header-cta svg { width: 16px; }
 .hero-section { background: linear-gradient(90deg, #fbfcf8, #f3f5ec); }
-.hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; padding-block: 54px 46px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 64px; padding-block: 44px 36px; }
 .hero-copy { min-width: 0; }
-.hero-category { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; letter-spacing: .035em; margin-bottom: 24px; }
-.hero-category > span { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
-.hero-copy h1 { font-size: clamp(44px, 4.5vw, 62px); letter-spacing: -.06em; line-height: 1.5; white-space: nowrap; }
-.hero-intro { display: block; font-size: .66em; font-weight: 700; letter-spacing: -.02em; margin-bottom: 4px; }
+.hero-category { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; margin-bottom: 24px; }
+.hero-category > span { background: var(--green); color: white; padding: 4px 10px; border-radius: 4px; white-space: nowrap; }
+.hero-copy h1 { font-size: clamp(44px, 5vw, 64px); letter-spacing: -.045em; line-height: 1.45; white-space: nowrap; }
+.hero-intro { display: block; font-size: .62em; font-weight: 700; letter-spacing: -.035em; margin-bottom: 8px; }
 .hero-copy h1 em { color: var(--orange); font-style: normal; text-decoration: underline; text-decoration-color: #efc9ab; text-decoration-thickness: 5px; text-underline-offset: 9px; }
-.hero-ending { display: block; }
-.hero-description { margin-top: 22px; font-size: 16px; color: var(--muted); line-height: 1.9; }
+.hero-description { margin-top: 24px; font-size: 22px; color: var(--ink); line-height: 1.7; }
+.hero-description strong { font-weight: 700; }
 .hero-benefits { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 22px; font-size: 11px; font-weight: 700; }
 .hero-benefits span { display: flex; align-items: center; gap: 4px; }
 .hero-benefits svg { width: 16px; height: 16px; color: var(--green); stroke-width: 2; }
 .hero-actions { display: flex; align-items: flex-start; flex-direction: column; gap: 12px; margin-top: 24px; }
 .collection-site .hero-cta { min-height: 58px; font-size: 15px; justify-content: space-between; gap: 30px; padding-inline: 24px; }
 .hero-secondary { display: flex; gap: 16px; align-items: center; color: var(--green); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
-.hero-note { color: var(--muted); font-size: 10px; margin-top: 12px; }
-.hero-scene { min-width: 0; position: relative; padding-bottom: 4px; }
-.hero-photo { position: relative; overflow: hidden; border-radius: 110px 12px 12px 12px; }
-.hero-photo > img { width: 100%; height: 330px; object-fit: cover; object-position: 58% 50%; }
-.photo-caption { position: absolute; top: 24px; right: 24px; color: #fff; font-size: 12px; letter-spacing: .14em; padding: 10px 13px; background: #163f36e8; border-radius: 4px; }
-.photo-caption small { display: block; font-size: 8px; letter-spacing: .04em; margin-top: 2px; opacity: .85; }
-.hero-comparison { position: relative; width: calc(100% - 40px); margin: -52px auto 0; padding: 20px 22px 14px; background: white; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 18px 38px #1f3d2b12; }
-.comparison-intro { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
-.comparison-intro > span { color: var(--muted); font-size: 9px; }
-.comparison-intro > strong { font-size: 13px; }
-.company-papers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.company-paper { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 8px; border: 1px solid #d7ded3; border-top: 3px solid #486b55; padding: 12px 11px; border-radius: 3px; background: #fcfdf9; }
-.company-paper:nth-child(2) { border-top-color: #c8571d; }
-.company-paper:nth-child(3) { border-top-color: #929e7e; }
-.company-letter { font-size: 23px; font-weight: 700; line-height: 1; }
-.company-letter small { font-size: 9px; margin-left: 2px; }
-.paper-title { font-size: 8px; color: var(--muted); text-align: right; }
-.paper-rule { grid-column: 1/-1; height: 3px; width: 90%; background: #dce4d7; margin-top: 3px; border-radius: 2px; }
-.paper-rule.short { width: 65%; margin-top: 0; }
-.comparison-bottom { display: flex; justify-content: center; align-items: center; gap: 24px; font-size: 11px; font-weight: 700; margin-top: 16px; }
-.comparison-bottom svg { width: 23px; height: 23px; background: #e5eee2; border-radius: 50%; padding: 3px; color: var(--green); }
-.scene-note { text-align: center; font-size: 9px; color: var(--muted); margin-top: 12px; }
+.hero-note { color: var(--muted); font-size: 11px; margin-top: 12px; }
+.quote-diagram { min-width: 0; }
+.quote-diagram-board { background: white; border: 1px solid #d5dfd1; border-radius: 16px; padding: 24px; box-shadow: 0 18px 44px #1f3d2b0c; }
+.quote-diagram-title { text-align: center; margin-bottom: 20px; }
+.quote-diagram-title > span { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+.quote-diagram-title > strong { font-size: 23px; letter-spacing: -.025em; }
+.quote-mobile-steps { display: none; }
+.quote-step-number { display: inline-grid; place-items: center; width: 28px; height: 28px; flex-shrink: 0; background: var(--green); color: white; border-radius: 50%; font-size: 14px; font-weight: 700; line-height: 1; }
+.quote-input-step { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px solid #d2ddcb; border-radius: 7px; background: #f3f6ef; }
+.quote-input-step strong { font-size: 17px; }
+.quote-input-step p { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.quote-phone { width: 34px; height: 44px; margin-left: auto; color: var(--green); }
+.quote-branch { display: block; width: 100%; height: 30px; color: #91a98b; margin-bottom: 5px; }
+.quote-step-label { display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 12px; font-size: 16px; }
+.quote-step-label .quote-step-number { background: var(--orange); }
+.quote-company-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+.quote-company { border: 1px solid #dbe2d7; border-radius: 7px; overflow: hidden; }
+.quote-company-name { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 6px; background: #edf2e8; border-bottom: 1px solid #dbe2d7; }
+.quote-company-name svg { width: 26px; height: 26px; color: var(--green); }
+.quote-company-name strong { font-size: 23px; line-height: 1.5; }
+.quote-company-name small { font-size: 12px; margin-left: 2px; }
+.quote-company > p { font-size: 10px; text-align: center; color: var(--muted); margin-top: 9px; }
+.quote-company ul { display: grid; gap: 3px; padding: 5px 14px 12px; }
+.quote-company li { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; }
+.quote-company li svg { width: 16px; height: 16px; color: #617b56; }
+.quote-choice-step { position: relative; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 12px; margin-top: 22px; border-radius: 7px; background: var(--green); color: white; font-size: 16px; }
+.quote-choice-step:before { content: ""; position: absolute; top: -13px; left: calc(50% - 6px); width: 12px; height: 7px; background: #91a98b; clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.quote-choice-step .quote-step-number { background: #fff; color: var(--green); }
+.quote-choice-step > svg { width: 20px; height: 20px; }
+.quote-diagram figcaption { font-size: 10px; line-height: 1.7; text-align: center; color: var(--muted); margin-top: 12px; }
 .hero-navigation { border-top: 1px solid #dce3d6; background: #fdfefb; }
 .hero-navigation > div { display: flex; min-height: 74px; align-items: center; gap: 32px; }
 .hero-navigation > div > span { color: var(--muted); font-size: 12px; margin-right: auto; }
@@ -195,13 +203,12 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .desktop-nav { gap: 18px; font-size: 10px; }
   .hero-grid { gap: 36px; }
   .hero-copy h1 { font-size: 5vw; }
-  .hero-photo > img { height: 310px; }
-  .hero-comparison { width: calc(100% - 18px); padding: 18px 14px 14px; }
-  .comparison-intro { flex-direction: column; align-items: flex-start; gap: 2px; }
-  .company-papers { gap: 8px; }
-  .company-paper { padding: 10px 8px; gap: 7px; }
-  .paper-title { font-size: 7px; }
-  .company-letter { font-size: 20px; }
+  .hero-description { font-size: 20px; }
+  .quote-diagram-board { padding: 20px 16px; }
+  .quote-diagram-title > strong { font-size: 20px; }
+  .quote-company-grid { gap: 8px; }
+  .quote-company ul { padding-inline: 10px; }
+  .quote-choice-step { font-size: 14px; gap: 8px; }
   .hero-navigation > div { gap: 20px; }
   .hero-navigation a { gap: 18px; padding-left: 20px; }
   .compare-section { gap: 40px; grid-template-columns: .8fr 1.2fr; }
@@ -218,9 +225,21 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .desktop-nav { display: none; }
   .header-main { min-height: 76px; }
   .hero-grid { gap: 28px; }
-  .hero-category { font-size: 10px; }
-  .hero-description { font-size: 14px; }
+  .hero-category { font-size: 9px; gap: 7px; }
+  .hero-category > span { padding-inline: 7px; }
+  .hero-description { font-size: 18px; }
   .hero-benefits { gap: 10px; font-size: 10px; }
+  .quote-diagram-title > strong { font-size: 17px; }
+  .quote-input-step { padding: 10px; gap: 8px; }
+  .quote-input-step strong, .quote-step-label { font-size: 14px; }
+  .quote-input-step p { font-size: 10px; }
+  .quote-company-name { gap: 6px; }
+  .quote-company-name svg { width: 20px; height: 20px; }
+  .quote-company-name strong { font-size: 20px; }
+  .quote-company ul { padding-inline: 7px; }
+  .quote-company li { gap: 5px; font-size: 11px; }
+  .quote-choice-step { font-size: 12px; padding-inline: 8px; }
+  .quote-choice-step > svg { display: none; }
   .collection-site .hero-cta { font-size: 12px; padding-inline: 16px; gap: 18px; }
   .hero-navigation > div > span { display: none; }
   .hero-navigation > div { justify-content: center; }
@@ -251,33 +270,33 @@ a, button, summary, input, select, textarea { -webkit-tap-highlight-color: trans
   .collection-site .header-main .brand-logo > img { width: 196px; }
   .collection-site .header-cta { min-height: 38px; font-size: 10px; padding-inline: 11px; }
   .header-cta svg { display: none; }
-  .hero-grid { grid-template-columns: 1fr; padding-block: 32px 28px; gap: 30px; }
-  .hero-category { font-size: 10px; gap: 7px; margin-bottom: 16px; }
-  .hero-category > span { width: 6px; height: 6px; }
-  .hero-copy h1 { font-size: clamp(37px, 10vw, 61px); line-height: 1.5; letter-spacing: -.05em; }
-  .hero-intro { font-size: .64em; }
+  .hero-grid { grid-template-columns: 1fr; padding-block: 26px 24px; gap: 26px; }
+  .hero-category { font-size: 10px; gap: 8px; margin-bottom: 16px; }
+  .hero-category > span { padding: 3px 8px; }
+  .hero-copy h1 { font-size: clamp(36px, 10.3vw, 56px); line-height: 1.4; letter-spacing: -.045em; }
+  .hero-intro { font-size: .65em; margin-bottom: 4px; }
   .hero-copy h1 em { text-decoration-thickness: 4px; text-underline-offset: 7px; }
-  .hero-description { font-size: 13px; margin-top: 16px; }
-  .hero-benefits { font-size: 10px; gap: 12px; margin-top: 18px; }
+  .hero-description { font-size: 17px; margin-top: 17px; line-height: 1.6; }
+  .hero-benefits { font-size: 10px; gap: 12px; margin-top: 14px; }
   .hero-benefits svg { width: 14px; height: 14px; }
-  .hero-actions { margin-top: 20px; gap: 11px; }
+  .hero-actions { margin-top: 18px; gap: 10px; }
   .collection-site .hero-cta { width: 100%; min-height: 54px; font-size: 13px; padding-inline: 18px; }
   .hero-secondary { font-size: 11px; }
-  .hero-note { font-size: 9px; margin-top: 8px; }
-  .hero-scene { width: min(500px, 100%); margin-inline: auto; }
-  .hero-photo { border-radius: 70px 10px 10px 10px; }
-  .hero-photo > img { height: 240px; object-position: 50% 45%; }
-  .photo-caption { top: 17px; right: 17px; font-size: 11px; }
-  .hero-comparison { width: calc(100% - 28px); margin-top: -40px; padding: 14px 13px 12px; }
-  .comparison-intro { gap: 4px; margin-bottom: 12px; }
-  .comparison-intro > span { font-size: 8px; }
-  .comparison-intro > strong { font-size: 12px; }
-  .company-paper { padding: 10px 8px; }
-  .company-letter { font-size: 20px; }
-  .paper-title { font-size: 7px; }
-  .comparison-bottom { gap: 18px; font-size: 10px; margin-top: 12px; }
-  .comparison-bottom svg { width: 21px; height: 21px; }
-  .scene-note { font-size: 8px; margin-top: 10px; }
+  .hero-note { font-size: 10px; margin-top: 8px; }
+  .quote-diagram { width: min(500px, 100%); margin-inline: auto; }
+  .quote-diagram-board { padding: 18px 16px; border-radius: 12px; }
+  .quote-diagram-title { margin-bottom: 14px; }
+  .quote-diagram-title > strong { font-size: 18px; }
+  .quote-diagram-title > span { font-size: 10px; margin-bottom: 2px; }
+  .quote-diagram-steps { display: none; }
+  .quote-mobile-steps { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; text-align: center; }
+  .quote-mobile-steps li { position: relative; display: flex; align-items: center; flex-direction: column; min-width: 0; }
+  .quote-mobile-steps li + li:before { content: "→"; position: absolute; left: -12px; top: 1px; color: #7b9271; }
+  .quote-mobile-steps .quote-step-number { width: 28px; height: 28px; margin-bottom: 8px; font-size: 13px; }
+  .quote-mobile-steps li:nth-child(2) .quote-step-number { background: var(--orange); }
+  .quote-mobile-steps strong { font-size: 13px; white-space: nowrap; }
+  .quote-mobile-steps small { font-size: 10px; color: var(--muted); margin-top: 2px; white-space: nowrap; }
+  .quote-diagram figcaption { font-size: 9px; margin-top: 10px; }
   .hero-navigation > div { min-height: 62px; gap: 0; justify-content: space-between; }
   .hero-navigation a { font-size: 10px; padding: 6px 0 6px 12px; gap: 7px; }
   .hero-navigation svg { width: 13px; height: 13px; }
