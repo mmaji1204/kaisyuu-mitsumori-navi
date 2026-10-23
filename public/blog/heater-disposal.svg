@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">ストーブ、どう捨てる？</title>
+  <desc id="desc">ストーブとファンヒーターのイラスト。灯油・電池・回収先を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 暖房器具の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">ストーブ、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">ファンヒーターも確認</text>
+    <text x="82" y="494" font-size="30" font-weight="700">灯油・電池・回収先</text>
+    <text x="82" y="541" font-size="25">料金と、出す前の準備を整理。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round">
+    <rect x="673" y="242" width="202" height="259" rx="24" fill="#fffdf7"/>
+    <path d="M705 241v-20q0-15 16-15h106q16 0 16 15v20" fill="none"/>
+    <rect x="695" y="268" width="159" height="154" rx="12" fill="#f1cfb5"/>
+    <path d="M715 278v132m29-132v132m30-132v132m30-132v132m29-132v132M701 316h147m-147 59h147" fill="none" stroke-width="5"/>
+    <circle cx="771" cy="456" r="18" fill="#fff"/>
+    <rect x="658" y="497" width="233" height="19" rx="6" fill="#173f38"/>
+    <rect x="850" y="336" width="242" height="190" rx="17" fill="#fff"/>
+    <path d="M878 367h93" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="1059" cy="367" r="10" fill="#bc4b22" stroke="none"/>
+    <rect x="871" y="400" width="199" height="98" rx="8" fill="#e5efdf"/>
+    <path d="M882 421h177m-177 24h177m-177 24h177" fill="none" stroke-width="5"/>
+    <path d="M873 528v8m195-8v8" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <circle cx="1041" cy="217" r="42" fill="#bc4b22"/>
+  <path d="m1023 216 13 13 23-28" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
