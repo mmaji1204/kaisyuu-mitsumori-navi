@@ -5,6 +5,7 @@ import { airConditionerDisposalArticle } from "./air-conditioner-disposal";
 import { computerDisposalArticle } from "./computer-disposal";
 import { microwaveDisposalArticle } from "./microwave-disposal";
 import { heaterDisposalArticle } from "./heater-disposal";
+import { bedDisposalArticle } from "./bed-disposal";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -14,6 +15,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  bedDisposalArticle,
   heaterDisposalArticle,
   microwaveDisposalArticle,
   computerDisposalArticle,
