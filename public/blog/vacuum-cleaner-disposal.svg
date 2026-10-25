@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">掃除機、どう捨てる？</title>
+  <desc id="desc">コードレス掃除機とロボット掃除機のイラスト。電池・付属品・回収先を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">掃除機、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">コードレス・ロボット型も</text>
+    <text x="82" y="494" font-size="30" font-weight="700">電池・付属品・回収先</text>
+    <text x="82" y="541" font-size="25">本体と電池の出し方を確認。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round">
+    <path d="M771 203h54q17 0 17 17v63h-33v-48h-38Z" fill="#fffdf7"/>
+    <rect x="716" y="202" width="76" height="140" rx="21" fill="#fff"/>
+    <path d="M718 257h72v52h-72Z" fill="#f1cfb5"/>
+    <path d="M741 343h27v165h-27Z" fill="#fff"/>
+    <path d="M690 504h133l20 27H672Z" fill="#f1cfb5"/>
+    <path d="M675 532h165v17H675Z" fill="#173f38"/>
+    <rect x="903" y="292" width="159" height="151" rx="18" fill="#fffdf7"/>
+    <rect x="937" y="321" width="91" height="20" rx="6" fill="#e5efdf"/>
+    <path d="M904 374h156" fill="none" stroke-width="4"/>
+    <path d="M860 459v35c0 33 231 33 231 0v-35" fill="#f1cfb5"/>
+    <ellipse cx="976" cy="459" rx="116" ry="51" fill="#fff"/>
+    <ellipse cx="976" cy="454" rx="78" ry="28" fill="#e5efdf" stroke-width="3"/>
+    <circle cx="1000" cy="448" r="9" fill="#bc4b22" stroke="none"/>
+    <path d="M913 514h32m16 3h48" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <circle cx="1037" cy="205" r="42" fill="#bc4b22"/>
+  <path d="m1019 204 13 13 23-28" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
