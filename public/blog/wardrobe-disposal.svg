@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">タンス、どう捨てる？</title>
+  <desc id="desc">洋服タンスとチェストのイラスト。サイズ・解体・搬出を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家具の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">タンス、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">サイズ・解体・搬出を確認</text>
+    <text x="82" y="494" font-size="30" font-weight="700">部屋から運べないときも</text>
+    <text x="82" y="541" font-size="25">必要な作業をそろえて、料金比較。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M719 194h200v317H719Z" fill="#f1cfb5"/>
+    <path d="M719 194h200l22 17v300h-22V194" fill="#d6ad87"/>
+    <path d="M819 195v314" fill="none" stroke-width="4"/>
+    <path d="M802 334v27m34-27v27" fill="none" stroke-width="7"/>
+    <path d="M733 512v24m172-24v24" fill="none" stroke-width="10"/>
+    <rect x="869" y="359" width="193" height="164" rx="8" fill="#fffdf7"/>
+    <path d="M870 413h190m-190 55h190" fill="none" stroke-width="4"/>
+    <path d="M946 386h38m-38 54h38m-38 55h38" fill="none"/>
+    <path d="M884 524v16m162-16v16" fill="none" stroke-width="10"/>
+    <path d="M682 206v297m-8-286 8-11 8 11m-16 275 8 11 8-11" fill="none" stroke-width="4"/>
+  </g>
+  <circle cx="1030" cy="212" r="43" fill="#bc4b22"/>
+  <path d="m1012 211 13 13 23-28" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
