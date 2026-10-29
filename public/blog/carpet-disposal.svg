@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">カーペット、どう捨てる？</title>
+  <desc id="desc">巻いたカーペットと電気カーペット。種類・大きさ・出し方を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 生活用品の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">カーペット、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">種類・大きさ・出し方を確認</text>
+    <text x="82" y="494" font-size="30" font-weight="700">ラグ・電気式・ウッド</text>
+    <text x="82" y="541" font-size="25">切る前に、地域のルールを確認。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="m718 383 249-72 110 153-249 71Z" fill="#a8c6b6"/>
+    <path d="m743 392 213-62 95 126-213 61Z" fill="none" stroke="#fffdf7" stroke-width="4"/>
+    <path d="m805 390 37 49m13-63 37 49m13-63 37 49" fill="none" stroke="#fffdf7" stroke-width="4"/>
+    <path d="M1055 476q35 8 28 45t-44 19" fill="none"/>
+    <rect x="1000" y="513" width="47" height="65" rx="12" fill="#fffdf7"/>
+    <rect x="1012" y="526" width="23" height="15" rx="4" fill="#bc4b22" stroke="none"/>
+    <circle cx="1023" cy="556" r="4" fill="#173f38" stroke="none"/>
+    <path d="m730 240 205-67q45-10 65 35t-12 67l-205 67Z" fill="#f1cfb5"/>
+    <path d="m796 220 45 100m37-126 45 100" stroke="#fffdf7" stroke-width="13"/>
+    <ellipse cx="755" cy="293" rx="49" ry="58" transform="rotate(-25 755 293)" fill="#fffdf7"/>
+    <path d="M735 263c-25 15-16 59 11 64 29 6 41-32 21-44-15-10-26 5-17 17" fill="none"/>
+  </g>
+</svg>
