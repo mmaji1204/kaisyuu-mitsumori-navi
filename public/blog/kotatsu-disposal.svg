@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">こたつ、どう捨てる？</title>
+  <desc id="desc">天板と本体を分けたこたつ、畳んだ布団。部品・料金・搬出を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 暖房器具の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">こたつ、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">部品・料金・搬出を確認</text>
+    <text x="82" y="494" font-size="30" font-weight="700">本体・天板・布団を整理。</text>
+    <text x="82" y="541" font-size="25">解体する前に、出し方を確認。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="m719 351 24 9v131l-24-9Z" fill="#a8c6b6"/>
+    <path d="m973 322 24-8v130l-24 8Z" fill="#a8c6b6"/>
+    <path d="m895 398 25-8v133l-25 8Z" fill="#a8c6b6"/>
+    <path d="m708 330 90-47 214 62-103 51Z" fill="#fffdf7"/>
+    <path d="m708 330 201 66v24l-201-66Z" fill="#a8c6b6"/>
+    <path d="m909 396 103-51v24l-103 51Z" fill="#a8c6b6"/>
+    <path d="m797 347 74 24v33l-74-24Z" fill="#bc4b22"/>
+    <path d="m810 363 47 15m-47-6 47 15" stroke="#fffdf7" stroke-width="3"/>
+    <path d="m692 227 106-51 230 67-117 56Z" fill="#f1cfb5"/>
+    <path d="m692 227 219 72v18l-219-72Z" fill="#e9b995"/>
+    <path d="m911 299 117-56v18l-117 56Z" fill="#e9b995"/>
+    <path d="M854 424q-22 3-17 25t31 18" fill="none" stroke-width="4"/>
+    <rect x="862" y="455" width="19" height="32" rx="5" fill="#fffdf7"/>
+    <rect x="929" y="469" width="151" height="62" rx="19" fill="#fffdf7"/>
+    <path d="M1066 490H954q-12 0-12 10t12 10h110" fill="none" stroke-width="3"/>
+    <path d="M982 470v61m22-61v61" stroke="#bc4b22" stroke-width="9"/>
+  </g>
+</svg>
