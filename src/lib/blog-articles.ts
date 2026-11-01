@@ -10,6 +10,7 @@ import { vacuumCleanerDisposalArticle } from "./vacuum-cleaner-disposal";
 import { futonDisposalArticle } from "./futon-disposal";
 import { wardrobeDisposalArticle } from "./wardrobe-disposal";
 import { carpetDisposalArticle } from "./carpet-disposal";
+import { airPurifierDisposalArticle } from "./air-purifier-disposal";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -19,6 +20,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  airPurifierDisposalArticle,
   carpetDisposalArticle,
   wardrobeDisposalArticle,
   futonDisposalArticle,
