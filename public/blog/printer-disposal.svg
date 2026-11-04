@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">プリンター、どう捨てる？</title>
+  <desc id="desc">プリンター、インクカートリッジと鍵。回収先・インク・初期化を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">プリンター、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">回収先・インク・初期化</text>
+    <text x="82" y="494" font-size="30" font-weight="700">本体も、残った設定も。</text>
+    <text x="82" y="541" font-size="25">手放す前の準備を、ひとつずつ。</text>
+  </g>
+  <circle cx="873" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M746 305v-84h235v84" fill="#a8c6b6"/>
+    <path d="M771 286V188h185v98" fill="#fffdf7"/>
+    <path d="M792 216h140m-140 23h140m-140 23h96" stroke-width="3"/>
+    <rect x="690" y="290" width="344" height="174" rx="22" fill="#fffdf7"/>
+    <path d="M690 346h344" fill="none"/>
+    <rect x="735" y="366" width="253" height="65" rx="7" fill="#173f38"/>
+    <path d="M766 397h191l24 112H742Z" fill="#fffdf7"/>
+    <path d="M786 435h150m-155 22h160m-165 22h170" stroke="#a8c6b6" stroke-width="5"/>
+    <rect x="718" y="309" width="64" height="20" rx="4" fill="#a8c6b6" stroke-width="3"/>
+    <circle cx="1006" cy="318" r="7" fill="#bc4b22" stroke="none"/>
+    <rect x="1000" y="461" width="39" height="66" rx="8" fill="#bc4b22" stroke-width="4"/>
+    <rect x="1051" y="461" width="39" height="66" rx="8" fill="#a8c6b6" stroke-width="4"/>
+    <path d="M1009 460v-11h20v11m31 0v-11h20v11" fill="#fffdf7" stroke-width="4"/>
+  </g>
+  <circle cx="1040" cy="220" r="49" fill="#bc4b22"/>
+  <g fill="none" stroke="#fffdf7" stroke-width="5" stroke-linejoin="round">
+    <rect x="1020" y="214" width="40" height="31" rx="5"/>
+    <path d="M1027 214v-11a13 13 0 0 1 26 0v11m-13 12v9"/>
+  </g>
+</svg>
