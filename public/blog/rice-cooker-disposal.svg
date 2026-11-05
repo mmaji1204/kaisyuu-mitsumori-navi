@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">炊飯器、どう捨てる？</title>
+  <desc id="desc">炊飯器と取り外した内釜。内釜・電池・回収先を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">炊飯器、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">内釜・電池・回収先</text>
+    <text x="82" y="494" font-size="30" font-weight="700">本体も、内釜も。</text>
+    <text x="82" y="541" font-size="25">手放す前に、出し方を確認。</text>
+  </g>
+  <circle cx="872" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M701 312v-32c0-66 286-66 286 0v32" fill="none" stroke-width="15"/>
+    <path d="M687 313h315v124c0 76-315 76-315 0Z" fill="#fffdf7"/>
+    <ellipse cx="844" cy="313" rx="157" ry="58" fill="#a8c6b6"/>
+    <ellipse cx="844" cy="302" rx="129" ry="35" fill="#e5efdf" stroke-width="3"/>
+    <rect x="807" y="280" width="74" height="20" rx="10" fill="#173f38"/>
+    <path d="M791 365h106l17 62H774Z" fill="#e5efdf"/>
+    <rect x="808" y="376" width="73" height="26" rx="5" fill="#fffdf7" stroke-width="3"/>
+    <path d="M823 388h39" stroke-width="3"/>
+    <circle cx="793" cy="415" r="4" fill="#bc4b22" stroke="none"/>
+    <circle cx="895" cy="415" r="4" fill="#173f38" stroke="none"/>
+    <path d="M722 472v12m239-12v12" stroke-width="13"/>
+    <path d="M938 468h153l-13 57c-10 29-116 29-126 0Z" fill="#a8c6b6"/>
+    <ellipse cx="1014" cy="468" rx="77" ry="25" fill="#173f38"/>
+    <path d="M957 465c25-15 89-15 115 0" fill="none" stroke="#e5efdf" stroke-width="3"/>
+  </g>
+  <circle cx="1040" cy="220" r="49" fill="#bc4b22"/>
+  <path d="M1019 220l15 15 29-32" fill="none" stroke="#fffdf7" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

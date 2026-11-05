@@ -14,6 +14,7 @@ import { airPurifierDisposalArticle } from "./air-purifier-disposal";
 import { kotatsuDisposalArticle } from "./kotatsu-disposal";
 import { bicycleDisposalArticle } from "./bicycle-disposal";
 import { printerDisposalArticle } from "./printer-disposal";
+import { riceCookerDisposalArticle } from "./rice-cooker-disposal";
 
 export type BlogArticle = {
   slug: string; title: string; metaTitle: string; description: string; category: string;
@@ -23,6 +24,7 @@ export type BlogArticle = {
   sources: { title: string; url: string }[];
 };
 export const additionalArticles: BlogArticle[] = [
+  riceCookerDisposalArticle,
   printerDisposalArticle,
   bicycleDisposalArticle,
   kotatsuDisposalArticle,
