@@ -38,6 +38,7 @@ export const airPurifierDisposalArticle: BlogArticle = {
       ],
       links: [
         { title: "見積もりに使う写真と品物リストの準備", href: "/blog/estimate-preparation" },
+        { title: "除湿機能付きは、フロンの有無と回収先も確認", href: "/blog/dehumidifier-disposal" },
       ],
     },
     {
