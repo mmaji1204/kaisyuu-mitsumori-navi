@@ -91,6 +91,7 @@ export const riceCookerDisposalArticle: BlogArticle = {
       links: [
         { title: "象印ダイレクト：らくらくリサイクルの条件と準備", href: purchaseCollection },
         { title: "電子レンジも処分する場合の回収方法", href: "/blog/microwave-disposal" },
+        { title: "食洗機も処分する場合の取り外しと回収方法", href: "/blog/dishwasher-disposal" },
       ],
     },
     {

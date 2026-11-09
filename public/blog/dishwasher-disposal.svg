@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">食洗機、どう捨てる？</title>
+  <desc id="desc">卓上型の食洗機と給排水ホース、水栓。水抜き・取り外し・回収先を確認する案内。</desc>
+  <rect width="1200" height="675" fill="#efe4d6"/>
+  <rect x="42" y="42" width="1116" height="591" rx="26" fill="#fffdf7"/>
+  <g font-family="sans-serif" fill="#173f38">
+    <text x="82" y="105" font-size="24" font-weight="700" letter-spacing="2">不用品回収ナビ / 家電の処分</text>
+    <text x="82" y="224" font-size="65" font-weight="700">食洗機、</text>
+    <text x="82" y="312" font-size="65" font-weight="700">どう捨てる？</text>
+    <rect x="82" y="356" width="480" height="66" rx="10" fill="#173f38"/>
+    <text x="322" y="400" text-anchor="middle" fill="white" font-size="28" font-weight="700">水抜き・取り外し・回収先</text>
+    <text x="82" y="494" font-size="30" font-weight="700">設置タイプから、確認。</text>
+    <text x="82" y="541" font-size="25">工事と回収の範囲をそろえよう。</text>
+  </g>
+  <circle cx="878" cy="347" r="208" fill="#e5efdf"/>
+  <g stroke="#173f38" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M991 413h43c20 0 32 13 32 34v23c0 20-12 32-32 32h-21" fill="none" stroke="#a8c6b6" stroke-width="17"/>
+    <path d="M991 413h43c20 0 32 13 32 34v23c0 20-12 32-32 32h-21" fill="none" stroke-width="3"/>
+    <path d="M1036 357v-57c0-29 49-29 49 0v15" fill="none" stroke-width="13"/>
+    <path d="M1020 326h33m-17-12v13" fill="none" stroke-width="8"/>
+    <path d="M1008 358h56" fill="none" stroke-width="9"/>
+    <rect x="688" y="224" width="302" height="287" rx="23" fill="#fffdf7"/>
+    <path d="M688 282h302" fill="none"/>
+    <rect x="721" y="244" width="91" height="16" rx="6" fill="#a8c6b6" stroke="none"/>
+    <circle cx="953" cy="252" r="7" fill="#bc4b22" stroke="none"/>
+    <rect x="713" y="309" width="252" height="163" rx="15" fill="#e5efdf"/>
+    <path d="M744 447v-88m30 88v-99m30 99v-104m30 104v-102" fill="none" stroke-width="8"/>
+    <path d="M864 403h48v44h-48zm48 7h10c16 0 16 27 0 27h-10" fill="#fffdf7" stroke-width="4"/>
+    <path d="M731 449h215" fill="none"/>
+    <path d="M720 512v13m237-13v13" fill="none" stroke-width="10"/>
+    <path d="M650 531h440" fill="none" stroke-width="10"/>
+  </g>
+  <circle cx="1009" cy="191" r="46" fill="#bc4b22"/>
+  <path d="m989 191 14 14 27-30" stroke="#fffdf7" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
