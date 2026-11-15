@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map(article => article.publishedAt).sort().at(-1)!;
 
   return [
+    { url: `${siteUrl}/compare`, lastModified: "2026-11-15", changeFrequency: "monthly", priority: 0.7 },
     ...additionalArticles.map(article => ({ url: `${siteUrl}/blog/${article.slug}`, lastModified: article.publishedAt, changeFrequency: "monthly" as const, priority: 0.8 })),
     { url: `${siteUrl}/blog`, lastModified: latestArticleDate, changeFrequency: "weekly", priority: 0.7 },
     { url: `${siteUrl}/blog/${preparationArticle.slug}`, lastModified: preparationArticle.publishedAt, changeFrequency: "monthly", priority: 0.8 },

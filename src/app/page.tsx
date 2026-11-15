@@ -117,7 +117,7 @@ export default function Home() {
 
       <section id="compare" className="site-container content-section compare-section" aria-labelledby="compare-title">
         <div className="section-heading"><p className="eyebrow">01 / 比べる</p><h2 id="compare-title">比べるポイントは、<br />この3つ。</h2><p>料金・日程・作業内容。<br />同じ条件で見積もりを取ると、違いがわかります。</p><Link href="/blog/estimate-preparation" className="text-link">相談前の準備を読む<Icon name="arrow" /></Link></div>
-        <ComparisonGuide />
+        <div><ComparisonGuide /><Link href="/compare" className="outline-button mt-5">手元の見積もりを比較シートにまとめる →</Link></div>
       </section>
 
       <section id="flow" className="flow-section">
