@@ -57,7 +57,7 @@ export function RelatedArticles({ articles }: { articles: ArticleCardData[] }) {
         <Link href="/blog" className="text-sm font-bold text-green-800 underline underline-offset-4">記事一覧を見る</Link>
       </div>
       <ul className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {articles.map(article => <li key={article.slug} className="min-w-0"><BlogArticleCard article={article} /></li>)}
+        {articles.slice(0, 4).map(article => <li key={article.slug} className="min-w-0"><BlogArticleCard article={article} /></li>)}
       </ul>
     </section>
   );

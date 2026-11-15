@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { isQuoteIntakeOpen } from "@/lib/intake-status";
 import { PRIVACY_VERSION } from "@/lib/consent";
 import type { NextRequest } from "next/server";
@@ -135,9 +136,8 @@ function normalizeAreas(serviceArea: string) {
 function matchesServiceArea(partner: PartnerRow, lead: Lead) {
   const areas = normalizeAreas(partner.service_area);
 
-  if (areas.length === 0 || areas.some((area) => area.includes("全国"))) {
-    return true;
-  }
+  if (areas.length === 0) return false;
+  if (areas.includes("全国")) return true;
 
   return areas.some((area) => lead.address.includes(area));
 }
@@ -278,7 +278,7 @@ async function createBillingItem({
 }) {
   const supabase = createSupabaseAdminClient();
 
-  await supabase.from("billing_items").upsert(
+  const { error } = await supabase.from("billing_items").upsert(
     {
       lead_delivery_id: deliveryId,
       partner_id: partnerId,
@@ -291,6 +291,7 @@ async function createBillingItem({
       ignoreDuplicates: true,
     },
   );
+  if (error) throw new Error("配信料の記録を確認できませんでした。");
 }
 
 async function deliverLeadToActivePartners(lead: Lead) {
@@ -417,9 +418,18 @@ export async function POST(request: NextRequest) {
     return Response.json({ message: "個人情報の取り扱いをご確認のうえ、同意してください。" }, { status: 400 });
   }
 
+  const requestKey = (submittedLead as Lead & { requestKey?: unknown }).requestKey;
+  if (typeof requestKey !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestKey)) {
+    return Response.json({ message: "ページを再読み込みしてお試しください。" }, { status: 400 });
+  }
+  const digest = createHash("sha256").update(`quote-intake-v1:${requestKey.toLowerCase()}`).digest("hex");
+  const receiptId = `${digest.slice(0, 8)}-${digest.slice(8, 12)}-4${digest.slice(13, 16)}-a${digest.slice(17, 20)}-${digest.slice(20, 32)}`;
+  const receipt = () => Response.json({ receiptId, mode: "supabase", status: "received" },
+    { status: 201, headers: { "Cache-Control": "no-store" } });
+
   // Public requests cannot set delivery fees, internal status, IDs or stored URLs.
   const lead: Lead = {
-    id: crypto.randomUUID(), date: new Date().toISOString(),
+    id: receiptId, date: new Date().toISOString(),
     status: "課金", statusColor: "green", progress: "未対応", fee: "900 円",
     name: submittedLead.name.trim(), phone: submittedLead.phone.trim(),
     address: submittedLead.address.trim(), request: submittedLead.request.trim(),
@@ -431,27 +441,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const supabase = createSupabaseAdminClient();
-    const uploadedPhotos = await uploadLeadPhotos(lead.id, photos);
+
     const duplicateSince = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-    const { count: recentSamePhoneCount } = await supabase
+    const { count: recentSamePhoneCount, error: duplicateCheckError } = await supabase
       .from("leads")
       .select("id", { count: "exact", head: true })
       .eq("phone", lead.phone)
       .gte("created_at", duplicateSince);
+    if (duplicateCheckError) throw new Error("重複確認ができませんでした。");
     const duplicateWarning = (recentSamePhoneCount ?? 0) > 0;
     const leadToSave = {
       ...lead,
-      photoNames:
-        uploadedPhotos.photoNames.length > 0
-          ? uploadedPhotos.photoNames
-          : lead.photoNames,
-      photoUrls: uploadedPhotos.photoUrls,
       duplicateWarning,
-      memo: duplicateWarning
-        ? [lead.memo, "重複注意: 1時間以内に同じ電話番号の送信があります。"]
-            .filter(Boolean)
-            .join("\n")
-        : lead.memo,
+      memo: ["【配信要確認】受付を保存。配信・通知の完了を管理画面で確認してください。", duplicateWarning ? "重複注意: 1時間以内に同じ電話番号の送信があります。" : ""].filter(Boolean).join("\n"),
     };
     const { data, error } = await supabase
       .from("leads")
@@ -463,24 +465,35 @@ export async function POST(request: NextRequest) {
       .select("*")
       .single();
 
+    if (error?.code === "23505") return receipt();
     if (error) {
       console.error("POST /api/leads Supabase error:", error.message);
       return Response.json({ message: "見積もりの受付に失敗しました。" }, { status: 500 });
     }
 
-    const savedLead = mapLeadRowToLead(data as LeadRow);
-
+    let savedLead = mapLeadRowToLead(data as LeadRow);
+    // After reservation, always acknowledge storage. Retrying must not distribute twice.
+    // The durable memo remains for operator reconciliation, including interrupted runs.
+    try {
+      const uploadedPhotos = await uploadLeadPhotos(lead.id, photos);
+      if (photos.length) {
+        const { error: photoError } = await supabase.from("leads").update({
+          photo_names: uploadedPhotos.photoNames, photo_urls: uploadedPhotos.photoUrls,
+        }).eq("id", lead.id);
+        if (photoError) throw new Error("写真の保存結果を確認できませんでした。");
+        savedLead = { ...savedLead, ...uploadedPhotos };
+      }
+      // A recent repeat with a new key requires manual review, never automatic rebilling.
+      if (!duplicateWarning) await deliverLeadToActivePartners(savedLead);
+    } catch (deliveryError) {
+      console.warn("POST /api/leads requires operator review:", deliveryError);
+    }
     try {
       await notifyAdmin(savedLead);
-      await deliverLeadToActivePartners(savedLead);
-    } catch (deliveryError) {
-      console.warn("POST /api/leads delivery skipped:", deliveryError);
+    } catch (notificationError) {
+      console.warn("POST /api/leads admin notification requires review:", notificationError);
     }
-
-    return Response.json(
-      { lead: savedLead, mode: "supabase" },
-      { status: 201 },
-    );
+    return receipt();
   } catch (error) {
     console.error("POST /api/leads error:", error);
 

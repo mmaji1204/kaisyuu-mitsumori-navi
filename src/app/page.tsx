@@ -10,8 +10,9 @@ import { isQuoteIntakeOpen } from "@/lib/intake-status";
 import { brand } from "@/lib/brand";
 import { additionalArticles } from "@/lib/blog-articles";
 
-const title = `不用品回収の一括見積もり・相見積もり比較 | ${brand.name}`;
-const description = "不用品回収ナビは、不用品回収業者の相見積もりサイトです。一度の入力で対応業者へ無料見積もりを相談。複数業者の料金・日程・作業内容を比較して選べます。ご案内できる業者数は地域・回収内容によって異なります。";
+const intakeAvailable = isQuoteIntakeOpen();
+const title = `${intakeAvailable ? "不用品回収の一括見積もり・相見積もり比較" : "不用品の処分方法・見積もりの比較ガイド"} | ${brand.name}`;
+const description = intakeAvailable ? "不用品回収ナビは、不用品回収業者の相見積もりサイトです。一度の入力で対応業者へ無料見積もりを相談。複数業者の料金・日程・作業内容を比較して選べます。ご案内できる業者数は地域・回収内容によって異なります。" : "家具・家電の処分方法と、見積もりの税込総額・追加料金・搬出条件の比較ポイントを紹介。一括見積もりの受付は現在準備中です。";
 export const metadata: Metadata = {
   title, description,
   alternates: { canonical: brand.siteUrl },
@@ -43,11 +44,12 @@ function Icon({ name, className = "" }: { name: "pin" | "box" | "truck" | "check
 
 export default function Home() {
   const intakeOpen = isQuoteIntakeOpen();
-  const ctaLabel = intakeOpen ? "無料で相見積もり" : "受付状況を見る";
+  const ctaLabel = intakeOpen ? "無料で相見積もり" : "品物から調べる";
+  const ctaHref = intakeOpen ? "#contact" : "#items";
   const articles = [...additionalArticles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 3);
   const visibleFaqs = intakeOpen ? faqs : [
     { question: "今すぐ見積もりを依頼できますか？", answer: "現在、一括見積もりは受付準備中です。受付開始はこのサイトでお知らせします。処分方法や見積もりの比較ポイントは、お役立ち記事をご利用ください。" },
-    ...faqs,
+    ...faqs.map(faq => ({ ...faq, answer: `受付開始後のご案内です。${faq.answer}` })),
   ];
   const jsonLd = { "@context": "https://schema.org", "@graph": [
     { "@type": "WebSite", name: brand.name, url: brand.siteUrl, description },
@@ -63,26 +65,26 @@ export default function Home() {
         <nav className="desktop-nav" aria-label="メインナビゲーション">
           <a href="#compare">相見積もりのポイント</a><a href="#flow">ご利用の流れ</a><Link href="/blog">お役立ち記事</Link>
         </nav>
-        <a className="primary-button header-cta" href="#contact">{ctaLabel}<Icon name="arrow" /></a>
+        <a className="primary-button header-cta" href={ctaHref}>{ctaLabel}<Icon name="arrow" /></a>
       </div>
     </header>
     <main id="main-content">
       <section className="hero-section" aria-labelledby="hero-title">
         <div className="site-container hero-grid">
           <div className="hero-copy">
-            <p className="hero-category"><span>相談無料</span>不用品回収業者の相見積もりサイト</p>
-            <h1 id="hero-title"><span className="hero-intro">不用品回収の料金を、</span><em>まとめて比較。</em></h1>
-            <p className="hero-description"><strong>一度の入力で、<br />複数の業者に見積もり依頼。</strong></p>
-            <div className="hero-benefits"><span><Icon name="check" />見積もり相談無料</span><span><Icon name="check" />入力は1回</span><span><Icon name="check" />比較してから依頼</span></div>
+            <p className="hero-category"><span>{intakeOpen ? "相談無料" : "受付準備中"}</span>不用品回収・比較ガイド</p>
+            <h1 id="hero-title"><span className="hero-intro">{intakeOpen ? "不用品回収の料金を、" : "その不用品、どうする？"}</span><em>{intakeOpen ? "まとめて比較。" : "片付け方を比較。"}</em></h1>
+            <p className="hero-description"><strong>{intakeOpen ? <>一度の入力で、<br />対応業者に見積もり相談。</> : <>品物に合う処分方法と、<br />見積もりの比べ方がわかります。</>}</strong></p>
+            <div className="hero-benefits"><span><Icon name="check" />{intakeOpen ? "見積もり相談無料" : "品物別の処分方法"}</span><span><Icon name="check" />{intakeOpen ? "入力は1回" : "追加料金の確認"}</span><span><Icon name="check" />比較してから依頼</span></div>
             <div className="hero-actions">
-              <a href={intakeOpen ? "#area" : "#contact"} className="primary-button hero-cta">{intakeOpen ? "無料でまとめて見積もり" : "一括見積もりの受付状況"}<Icon name="arrow" /></a>
+              <a href={intakeOpen ? "#area" : "#items"} className="primary-button hero-cta">{intakeOpen ? "無料でまとめて見積もり" : "品物から処分方法を調べる"}<Icon name="arrow" /></a>
               <Link href="/blog" className="hero-secondary">費用・処分方法の記事を読む<span aria-hidden="true">↗</span></Link>
             </div>
             <p className="hero-note">{intakeOpen ? "ご案内できる業者数は、地域・回収内容によって異なります。" : "現在、見積もり受付は準備中です。"}</p>
           </div>
           <figure className="quote-diagram" aria-label="一度入力し、複数社の見積もりを比べて選ぶ仕組み">
             <div className="quote-diagram-board">
-              <div className="quote-diagram-title"><span>相見積もりのしくみ</span><strong>1回の入力で、まとめて相談。</strong></div>
+              <div className="quote-diagram-title"><span>{intakeOpen ? "相見積もりのしくみ" : "受付開始後の相談イメージ"}</span><strong>1回の入力で、まとめて相談。</strong></div>
               <ol className="quote-mobile-steps">
                 <li><span className="quote-step-number">1</span><strong>1回入力</strong><small>地域・品目など</small></li>
                 <li><span className="quote-step-number">2</span><strong>複数社から</strong><small>見積もり</small></li>
@@ -165,6 +167,6 @@ export default function Home() {
       </div></section>
     </main>
     <footer className="site-footer"><div className="site-container"><div className="footer-main"><div><BrandLogo /><p>不用品回収の見積もりを、もっとわかりやすく。</p></div><nav aria-label="フッターナビゲーション"><Link href="/blog">お役立ち記事</Link><Link href="/partners">掲載をご希望の事業者様</Link><Link href="/about">運営者情報</Link><Link href="/privacy">個人情報の取り扱い</Link><Link href="/business/login">業者ログイン</Link></nav></div><div className="footer-bottom"><span>くらしを、すっきり。その一歩に。</span><small>© {new Date().getFullYear()} {brand.name}</small></div></div></footer>
-    <nav className="mobile-cta" aria-label="すぐに使えるメニュー"><Link href={intakeOpen ? "#compare" : "#items"}>{intakeOpen ? "比較のポイント" : "品物から調べる"}</Link><a href="#contact" className="primary-button">{ctaLabel}<Icon name="arrow" /></a></nav>
+    <nav className="mobile-cta" aria-label="すぐに使えるメニュー"><Link href="#compare">比較のポイント</Link><a href={ctaHref} className="primary-button">{ctaLabel}<Icon name="arrow" /></a></nav>
   </div></QuoteJourney>;
 }

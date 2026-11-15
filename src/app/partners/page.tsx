@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
 import { BrandLogo } from "@/components/BrandLogo";
+
+export const metadata: Metadata = {
+  title: `掲載をご希望の事業者様へ | ${brand.name}`,
+  description: "不用品回収ナビへの掲載案内。対応地域・品目・収集運搬体制を確認したうえで掲載条件をご案内します。掲載相談は現在準備中です。",
+  alternates: { canonical: `${brand.siteUrl}/partners` },
+};
 
 const strengths = [
   {

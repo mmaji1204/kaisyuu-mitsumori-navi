@@ -2,11 +2,14 @@
 
 import Link from "next/link";
 import { PRIVACY_VERSION } from "@/lib/consent";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect, useRef } from "react";
 import type { Lead } from "@/lib/leads";
 import { useQuoteArea } from "@/components/QuoteJourney";
 
+import { quoteItems } from "@/lib/quote-items";
+
 type SubmittedData = {
+  receiptId: string;
   name: string;
   item: string;
 };
@@ -27,6 +30,12 @@ export function ContactForm() {
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const requestKey = useRef("");
+  const itemInput = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const article = new URLSearchParams(window.location.search).get("article") || "";
+    if (itemInput.current && quoteItems[article]) itemInput.current.value = quoteItems[article];
+  }, []);
   const { area, setArea } = useQuoteArea();
 
   async function handlePostalCodeBlur(postalCode: string) {
@@ -61,6 +70,8 @@ export function ContactForm() {
     event.preventDefault();
     const form = event.currentTarget;
 
+    if (isSubmitting) return;
+    if (!requestKey.current) requestKey.current = crypto.randomUUID();
     setIsSubmitting(true);
     setErrorMessage("");
     setSubmittedData(null);
@@ -106,7 +117,7 @@ export function ContactForm() {
 
     try {
       const uploadFormData = new FormData();
-      uploadFormData.append("lead", JSON.stringify({ ...lead, privacyAgreed: formData.get("privacy_agreed") === "on", privacyVersion: PRIVACY_VERSION }));
+      uploadFormData.append("lead", JSON.stringify({ ...lead, requestKey: requestKey.current, privacyAgreed: formData.get("privacy_agreed") === "on", privacyVersion: PRIVACY_VERSION }));
       photos.slice(0, 5).forEach((photo) => {
         uploadFormData.append("photos", photo);
       });
@@ -121,22 +132,22 @@ export function ContactForm() {
       }
 
       const result = (await response.json()) as {
-        lead?: Lead;
+        receiptId?: string;
         mode?: "demo" | "supabase";
       };
 
-      if (result.mode !== "supabase" || !result.lead?.id) {
+      if (result.mode !== "supabase" || !result.receiptId) {
         throw new Error("受付の保存を確認できませんでした。");
       }
 
       setErrorMessage("");
       form.reset();
       setArea("");
-      setSubmittedData({ name, item });
+      setSubmittedData({ name, item, receiptId: result.receiptId });
     } catch {
       setSubmittedData(null);
       setErrorMessage(
-        "送信できませんでした。時間をおいてもう一度お試しください。",
+        "受付結果を確認できませんでした。入力内容を変えずに再送すると、同じ申込みとして確認します。",
       );
     } finally {
       setIsSubmitting(false);
@@ -146,12 +157,14 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
+      onChange={() => { requestKey.current = ""; }}
       className="rounded-lg bg-white p-4 text-slate-900 shadow-sm sm:p-6"
     >
       <div className="mb-5 rounded-lg bg-[#f2f6ed] p-4 text-sm leading-7 text-[#263d32]">
         <p className="font-bold">入力は1回。対応業者へまとめて相談できます。</p>
         <p>送信後、対応業者から電話等でご連絡します。料金や日程を比べてから依頼先をお選びください。</p>
       </div>
+      <fieldset disabled={isSubmitting || Boolean(submittedData)} className="min-w-0 border-0 p-0">
       <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
         <label className="block">
           <span className="text-sm font-bold">お名前 <span className="text-xs text-orange-700">必須</span></span>
@@ -208,6 +221,7 @@ export function ContactForm() {
           <input
             type="text"
             name="item"
+            ref={itemInput}
             placeholder="ソファ、冷蔵庫、洗濯機など"
             required
             className="mt-2 h-12 w-full rounded-md border border-slate-300 px-3 text-base outline-none transition-colors focus:border-emerald-600 sm:px-4"
@@ -265,6 +279,8 @@ export function ContactForm() {
         {isSubmitting ? "送信中..." : "無料でまとめて見積もりを依頼する →"}
       </button>
 
+      </fieldset>
+
       {!submittedData && errorMessage ? (
         <div role="alert" className="mt-4 rounded-md bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
           {errorMessage}
@@ -277,11 +293,13 @@ export function ContactForm() {
             {submittedData.name} 様、送信しました。
           </p>
           <p>
-            「{submittedData.item}」について、担当者からの連絡をお待ちください。
+            「{submittedData.item}」について、相談内容を保存しました。業者への共有・対応可否は確認中です。見積もりや回収予約の確定ではありません。
           </p>
+          <p className="mt-2 break-all">受付番号：{submittedData.receiptId}</p>
+          <Link href="/about" className="underline">運営者・お問い合わせ先</Link>
           <button
             type="button"
-            onClick={() => setSubmittedData(null)}
+            onClick={() => { requestKey.current = ""; setSubmittedData(null); }}
             className="mt-3 font-bold text-emerald-800 underline underline-offset-4"
           >
             もう一度入力する

@@ -22,6 +22,7 @@ type Partner = {
 type Lead = {
   id: string;
   requested_at: string;
+  memo?: string;
   request: string;
   name: string;
   address: string;
@@ -262,7 +263,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   );
   const filteredLeads = leads.filter((lead) => {
     const matchesKeyword = q
-      ? [lead.request, lead.name, lead.address, lead.phone, lead.progress]
+      ? [lead.id, lead.request, lead.name, lead.address, lead.phone, lead.progress, lead.memo]
           .join(" ")
           .toLowerCase()
           .includes(q.toLowerCase())
@@ -648,6 +649,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 </span>
               </div>
 
+              <p className="mb-4 text-sm leading-7"><Link href="/admin?q=%E9%85%8D%E4%BF%A1%E8%A6%81%E7%A2%BA%E8%AA%8D" className="font-bold text-orange-700 underline">配信要確認の受付を見る</Link>：配信・通知・請求記録を確認し、対応後は案件メモに結果を残して「【配信要確認】」を外してください。</p>
               <form
                 action="/admin"
                 className="mb-5 grid gap-3 rounded-lg bg-slate-50 p-4 lg:grid-cols-[1fr_160px_190px_110px]"
@@ -655,7 +657,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 <input
                   name="q"
                   defaultValue={q}
-                  placeholder="名前・電話番号・地域・品目で検索"
+                  placeholder="受付番号・名前・地域・品目・メモで検索"
                   className="h-11 rounded-md border border-slate-300 px-4 font-bold outline-none focus:border-orange-500"
                 />
                 <select
@@ -698,6 +700,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                     </p>
                     <div>
                       <p className="font-black text-slate-800">{lead.request}</p>
+                      {lead.memo?.includes("【配信要確認】") && <Link href={`/admin/leads/${lead.id}`} className="mt-2 inline-block rounded bg-amber-50 px-2 py-1 text-sm font-bold text-amber-800">受付済・配信要確認 →</Link>}
                       <p className="mt-1 text-sm font-bold text-slate-500">
                         {lead.name} / {lead.address} / {lead.phone}
                       </p>
